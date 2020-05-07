@@ -91,13 +91,43 @@ const edit = async(user, assignment) => {
     return res;
 };
 
-//查询作业
+//查询某个科目所有作业
 const query = async(user, name) => {
     let res = {};
     try {
         await USER_SERVICE.active(user);
         res.errcode = 0;
         res.data = await ACTION.query(name);
+        res.msg = "查询作业成功";
+    } catch (e) {
+        res.errcode = e.errno;
+        res.msg = e.message;
+    }
+    return res;
+};
+
+//查询某个科目在deadLine前的所有作业
+const queryNameBeforeDeadLine = async(user, name, deadLine) => {
+    let res = {};
+    try {
+        await USER_SERVICE.active(user);
+        res.errcode = 0;
+        res.data = await ACTION.queryNameBeforeDeadLine(name, deadLine);
+        res.msg = "查询作业成功";
+    } catch (e) {
+        res.errcode = e.errno;
+        res.msg = e.message;
+    }
+    return res;
+};
+
+//查询全部科目在deadLine前的所有作业
+const queryBeforeDeadLine = async(user, name) => {
+    let res = {};
+    try {
+        await USER_SERVICE.active(user);
+        res.errcode = 0;
+        res.data = await ACTION.queryBeforeDeadLine(name);
         res.msg = "查询作业成功";
     } catch (e) {
         res.errcode = e.errno;
@@ -121,4 +151,12 @@ const queryAll = async(user) => {
     return res;
 };
 
-module.exports = { add, remove, edit, query, queryAll };
+module.exports = {
+    add,
+    remove,
+    edit,
+    query,
+    queryNameBeforeDeadLine,
+    queryBeforeDeadLine,
+    queryAll,
+};
