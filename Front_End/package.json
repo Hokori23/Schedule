@@ -1,11 +1,11 @@
 {
-    "name": "Schedule",
-    "version": "0.0.1",
-    "description": "Schedule",
-    "productName": "Schedule",
+    "name": "Assignment Table",
+    "version": "0.1.4",
+    "description": "Assignment Table",
+    "productName": "Assignment Table",
     "cordovaId": "",
     "capacitorId": "",
-    "author": "Hokori23 <hokori23@qq.com>",
+    "author": "Hokori <hokori23@qq.com>",
     "private": true,
     "scripts": {
         "test": "echo \"No test specified\" && exit 0"

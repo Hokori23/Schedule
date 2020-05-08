@@ -4,8 +4,8 @@ import messages from 'src/i18n'
 Vue.use(VueI18n)
 
 const i18n = new VueI18n({
-    locale: localStorage.getItem('language') || 'zh-cn',
-    fallbackLocale: 'zh-cn',
+    locale: localStorage.getItem('language') || 'zh-hans',
+    fallbackLocale: 'zh-hans',
     messages
 })
 

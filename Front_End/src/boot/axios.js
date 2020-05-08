@@ -5,7 +5,6 @@ require("promise.prototype.finally").shim();
 if (process.env.DEV) {
     axios.defaults.baseURL = "/api";
 }
-
 axios.interceptors.request.use(
     req => {
         //从localStorage中取出JWT并带到请求头中
@@ -58,11 +57,11 @@ axios.interceptors.response.use(
                 localStorage.removeItem("Authorization");
                 // Unauthorized
                 // 登陆失效
-                err.errcode = 401;
+                error.errcode = 401;
             } else if (error.response.status === 403) {
                 // Forbidden
                 // 无权限
-                err.errcode = 403;
+                error.errcode = 403;
             }
 
             let msg = error.response.data.msg;

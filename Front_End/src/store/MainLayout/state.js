@@ -1,3 +1,9 @@
 export default {
-    path: '/'
+    path: "/",
+    title: "",
+    rightTopIcon: "add",
+    leftTopIcon: "menu",
+    refreshIcon: "refresh",
+    refreshState: false,
+    login: Number(localStorage.getItem("login"))
 };

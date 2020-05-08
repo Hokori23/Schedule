@@ -3,14 +3,16 @@
 
 export default {
     config: {
-        name: '作业板',
-        version: 'v1.4',
-        updateTime: '2020/5/7'
+        name: "作业板",
+        version: "0.1.4",
+        updateTime: "2020/5/8",
+        author: "Hokori"
     },
     configInfo: {
-        name: '项目名',
-        version: '版本号',
-        updateTime: '更新时间'
+        name: "项目名",
+        version: "版本号",
+        updateTime: "更新时间",
+        author: "作者"
     },
     login: {
         account: "账号",
@@ -18,7 +20,7 @@ export default {
         accountErr: "账号不能为空",
         accountErr: "不能为空，填写账号",
         accountWrong: "账号不存在",
-        accountExisted: '账号已存在',
+        accountExisted: "账号已存在",
         password: "密码",
         passwordErr: "密码不能为空",
         passwordWrong: "账号或密码错误",
@@ -28,7 +30,7 @@ export default {
         loginExpired: "登录失效，请重新登录",
         noAccountYet: "还没有账号？",
         register: "立即注册",
-        registerSuccess: '注册成功',
+        registerSuccess: "注册成功",
         forgot: "无法登录?",
         phoneNumber: "手机号",
         phoneNumberErr: "手机号不能为空",
@@ -51,11 +53,21 @@ export default {
         continue: "继续",
         finish: "完成",
         back: "返回",
-        alert: "提示"
+        alert: "提示",
+        more: "更多",
+        loading: '加载中',
     },
     location: {
-        home: '首页',
-        setting: '设置',
-        about: '关于'
+        home: "首页",
+        setting: "设置",
+        about: "关于",
+        user: "用户中心",
+        userList: "用户目录"
+    },
+    setting: {
+        language: "多语言",
+        assignment: "作业表设置",
+        darkMode: "夜间模式",
+        days: "显示作业天数"
     }
 };

@@ -22,7 +22,6 @@ const add = async(user, assignment) => {
         await USER_SERVICE.active(user);
         if (await getPower(user.id)) {
             let queryAssign = await ACTION.queryNameAndDeadLine(assignment);
-            console.log(queryAssign);
             if (queryAssign.length) {
                 res.errcode = 1;
                 res.data = queryAssign;
@@ -121,13 +120,73 @@ const queryNameBeforeDeadLine = async(user, name, deadLine) => {
     return res;
 };
 
-//查询全部科目在deadLine前的所有作业
-const queryBeforeDeadLine = async(user, name) => {
+//查询某个科目在startLine后的所有作业
+const queryNameAfterStartLine = async(user, name, startLine) => {
     let res = {};
     try {
         await USER_SERVICE.active(user);
         res.errcode = 0;
-        res.data = await ACTION.queryBeforeDeadLine(name);
+        res.data = await ACTION.queryNameAfterStartLine(name, startLine);
+        res.msg = "查询作业成功";
+    } catch (e) {
+        res.errcode = e.errno;
+        res.msg = e.message;
+    }
+    return res;
+};
+
+//查询某个科目在period的所有作业
+const queryNameInPeriod = async(user, name, startLine, deadLine) => {
+    let res = {};
+    try {
+        await USER_SERVICE.active(user);
+        res.errcode = 0;
+        res.data = await ACTION.queryNameInPeriod(name, startLine, deadLine);
+        res.msg = "查询作业成功";
+    } catch (e) {
+        res.errcode = e.errno;
+        res.msg = e.message;
+    }
+    return res;
+};
+
+//查询全部科目在deadLine前的所有作业
+const queryBeforeDeadLine = async(user, deadLine) => {
+    let res = {};
+    try {
+        await USER_SERVICE.active(user);
+        res.errcode = 0;
+        res.data = await ACTION.queryBeforeDeadLine(deadLine);
+        res.msg = "查询作业成功";
+    } catch (e) {
+        res.errcode = e.errno;
+        res.msg = e.message;
+    }
+    return res;
+};
+
+//查询全部科目在startLine后的所有作业
+const queryAfterStartLine = async(user, startLine) => {
+    let res = {};
+    try {
+        await USER_SERVICE.active(user);
+        res.errcode = 0;
+        res.data = await ACTION.queryAfterStartLine(startLine);
+        res.msg = "查询作业成功";
+    } catch (e) {
+        res.errcode = e.errno;
+        res.msg = e.message;
+    }
+    return res;
+};
+
+//查询全部科目在period的所有作业
+const queryInPeriod = async(user, startLine, deadLine) => {
+    let res = {};
+    try {
+        await USER_SERVICE.active(user);
+        res.errcode = 0;
+        res.data = await ACTION.queryInPeriod(startLine, deadLine);
         res.msg = "查询作业成功";
     } catch (e) {
         res.errcode = e.errno;
@@ -157,6 +216,10 @@ module.exports = {
     edit,
     query,
     queryNameBeforeDeadLine,
+    queryNameAfterStartLine,
+    queryNameInPeriod,
     queryBeforeDeadLine,
+    queryAfterStartLine,
+    queryInPeriod,
     queryAll,
 };

@@ -55,7 +55,6 @@ const edit = (assignment) => {
                                             author = ?
                                     WHERE (name = ?) AND (deadLine = ?)`;
         let params = assignment.destruct();
-        console.log(params);
         let db = await DB();
         db.query(sql, params, (err, res) => {
             if (err) {
@@ -84,13 +83,14 @@ const query = (name) => {
 };
 
 //通过科目名和期限查询
-const queryNameAndDeadLine = (name, deadLine) => {
+const queryNameAndDeadLine = (assignment) => {
     return new Promise(async(resolve, reject) => {
         let sql = `SELECT * FROM assignment
                                     WHERE   (name = ?) 
                                     AND     (deadLine = ?)`;
         let db = await DB();
-        db.query(sql, [name, deadLine], (err, res) => {
+        console.log(assignment.name);
+        db.query(sql, [assignment.name, assignment.deadLine], (err, res) => {
             if (err) {
                 reject(err);
             }
@@ -117,13 +117,79 @@ const queryNameBeforeDeadLine = (name, deadLine) => {
     });
 };
 
+//查询某个科目在startLine后的所有作业
+const queryNameAfterStartLine = (name, startLine) => {
+    return new Promise(async(resolve, reject) => {
+        let sql = `SELECT * FROM assignment
+                                    WHERE   (name = ?) 
+                                    AND     (deadLine > ?)`;
+        let db = await DB();
+        db.query(sql, [name, startLine], (err, res) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(res);
+        });
+        db.end();
+    });
+};
+
+//查询某个科目在period的所有作业
+const queryNameInPeriod = (name, startLine, deadLine) => {
+    return new Promise(async(resolve, reject) => {
+        let sql = `SELECT * FROM assignment
+                                    WHERE   (name = ?) 
+                                    AND     (deadLine BETWEEN ? AND ?)`;
+        let db = await DB();
+        db.query(sql, [name, startLine, deadLine], (err, res) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(res);
+        });
+        db.end();
+    });
+};
+
 //查询全部科目在deadLine前的所有作业
-const queryBeforeDeadLine = (assignment) => {
+const queryBeforeDeadLine = (deadLine) => {
     return new Promise(async(resolve, reject) => {
         let sql = `SELECT * FROM assignment
                                     WHERE     (deadLine < ?)`;
         let db = await DB();
-        db.query(sql, [assignment.deadLine], (err, res) => {
+        db.query(sql, [deadLine], (err, res) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(res);
+        });
+        db.end();
+    });
+};
+
+//查询全部科目在startLine后的所有作业
+const queryAfterStartLine = (startLine) => {
+    return new Promise(async(resolve, reject) => {
+        let sql = `SELECT * FROM assignment
+                                    WHERE     (deadLine > ?)`;
+        let db = await DB();
+        db.query(sql, [startLine], (err, res) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(res);
+        });
+        db.end();
+    });
+};
+
+//查询全部科目在period的所有作业
+const queryInPeriod = (startLine, deadLine) => {
+    return new Promise(async(resolve, reject) => {
+        let sql = `SELECT * FROM assignment
+                                    WHERE   (deadLine BETWEEN ? AND ?)`;
+        let db = await DB();
+        db.query(sql, [startLine, deadLine], (err, res) => {
             if (err) {
                 reject(err);
             }
@@ -155,6 +221,10 @@ module.exports = {
     query,
     queryNameAndDeadLine,
     queryNameBeforeDeadLine,
+    queryNameAfterStartLine,
+    queryNameInPeriod,
     queryBeforeDeadLine,
+    queryAfterStartLine,
+    queryInPeriod,
     queryAll,
 };

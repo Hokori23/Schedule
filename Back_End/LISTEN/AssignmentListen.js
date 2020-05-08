@@ -1,5 +1,16 @@
 const SERVICE = require("../SERVICE/assignmentService");
 const VO = require("../VO/assignment");
+const proofXSS = (info) => {
+    return info.replace(/[<>&"']/g, function(c) {
+        return {
+            "<": "&lt;",
+            ">": "&gt;",
+            "&": "&amp;",
+            '"': "&quot;",
+            "'": "&#039",
+        }[c];
+    });
+};
 
 const listen = (APP) => {
     const path = "/schedule/assignment";
@@ -15,6 +26,8 @@ const listen = (APP) => {
             });
             return;
         }
+        name = proofXSS(name);
+        info = proofXSS(info);
 
         let user = {
             activatedTime: req.reqTime,
@@ -62,6 +75,8 @@ const listen = (APP) => {
     APP.put(path, async(req, res) => {
         let { name, info, deadLine } = req.body;
 
+        name = proofXSS(name);
+        info = proofXSS(info);
         if (!name || !info || !deadLine) {
             res.status(400).json({
                 errcode: 1,
@@ -87,24 +102,44 @@ const listen = (APP) => {
 
     //查询作业
     /*
+     * [name,startLine,deadLine]查询在某个科目period的所有作业
+     * [name,startLine]查询某个科目在startLine后的所有作业
      * [name,deadLine]查询某个科目在deadLine前的所有作业
-     * [deadLine]查询全部科目在deadLine前的所有作业
      * [name]查询某个科目的所有作业
+     * [startLine,deadLine]查询全部科目在period的所有作业
+     * [startLine]查询全部科目在startLine后的所有作业
+     * [deadLine]查询全部科目在deadLine前的所有作业
      * [null]查询所有科目的所有作业
      */
     APP.get(path, async(req, res) => {
-        let { name, deadLine } = req.query;
+        let { name, startLine, deadLine } = req.query;
         let result = null;
         let user = {
             activatedTime: req.reqTime,
             id: req.user_id,
         };
-        if (name && deadLine) {
-            result = await SERVICE.queryNameBeforeDeadLine(name, deadLine);
-        } else if (deadLine) {
-            result = await SERVICE.queryBeforeDeadLine(deadLine);
+        if (startLine) {
+            startLine--;
+        }
+        if (deadLine) {
+            deadLine++;
+        }
+
+        //Check params
+        if (name && startLine && deadLine) {
+            result = await SERVICE.queryNameInPeriod(user, name, startLine, deadLine);
+        } else if (name && deadLine) {
+            result = await SERVICE.queryNameBeforeDeadLine(user, name, deadLine);
+        } else if (name && startLine) {
+            result = await SERVICE.queryNameAfterStartLine(user, name, startLine);
         } else if (name) {
             result = await SERVICE.query(user, name);
+        } else if (startLine && deadLine) {
+            result = await SERVICE.queryInPeriod(user, startLine, deadLine);
+        } else if (startLine) {
+            result = await SERVICE.queryAfterStartLine(user, startLine);
+        } else if (deadLine) {
+            result = await SERVICE.queryBeforeDeadLine(user, deadLine);
         } else {
             result = await SERVICE.queryAll(user);
         }

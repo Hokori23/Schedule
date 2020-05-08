@@ -97,11 +97,11 @@
             <q-btn round color="primary" icon="g_translate" class="lang" dense>
               <q-menu>
                 <q-list style="min-width: 100px">
-                  <q-item clickable v-close-popup @click="lang('zh-cn')">
-                    <q-item-section>中文简体</q-item-section>
+                  <q-item clickable v-close-popup @click="changeLang('zh-hans')">
+                    <q-item-section>中文(简体)</q-item-section>
                   </q-item>
-                  <q-item clickable v-close-popup @click="lang('en-us')">
-                    <q-item-section>English</q-item-section>
+                  <q-item clickable v-close-popup @click="changeLang('en-us')">
+                    <q-item-section>English (US)</q-item-section>
                   </q-item>
                 </q-list>
               </q-menu>
@@ -114,7 +114,6 @@
 </template>
 
 <script>
-// import languages from "quasar/lang/index.json";
 export default {
   name: "login",
   data() {
@@ -133,11 +132,12 @@ export default {
         password: this.$t("login.passwordErr")
       },
       loginState: false,
-      isPwd: true
+      isPwd: true,
+      cancelTokenArr: []
     };
   },
   methods: {
-    login() {
+    async login() {
       let flag = true;
       if (!this.info.account) {
         this.text.account = this.$t("login.accountErr");
@@ -151,13 +151,26 @@ export default {
       }
       if (flag && !this.loginState) {
         //登录
-        this.$store.dispatch("LoginLayout/login", this);
+        try {
+          let res = await this.$store.dispatch("LoginLayout/login", this);
+          this.$router.push("/");
+        } catch (e) {
+          if (e.errcode === 2) {
+            e.message = this.$t("login.accountWrong");
+          } else if (e.errcode === 3) {
+            e.message = this.$t("login.passwordWrong");
+          }
+          this.$q.dialog({
+            message: e.message,
+            title: this.$t("common.alert")
+          });
+        }
       }
     },
     clear(value) {
       this.valid[value] = true;
     },
-    lang(value) {
+    changeLang(value) {
       this.$store.commit("Setting/lang", [value, this]);
     }
   },
@@ -165,6 +178,13 @@ export default {
     next(vm => {
       vm.$emit("header", false);
     });
+  },
+  beforeRouteLeave(to, from, next) {
+    //清除ajax请求队列
+    this.cancelTokenArr.forEach(source => {
+      source.cancel("清除Ajax请求队列");
+    });
+    next();
   },
   mounted() {
     (function(vm) {

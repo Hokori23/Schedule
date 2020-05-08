@@ -6,7 +6,7 @@ module.exports = function(ctx) {
         // app boot file (/src/boot)
         // --> boot files are part of "main.js"
         // https://quasar.dev/quasar-cli/cli-documentation/boot-files
-        boot: ["i18n", "axios", "imgErr"],
+        boot: ["i18n", "axios", "imgErr", "function", "quasar-lang-pack"],
 
         // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
         css: ["app.sass"],
@@ -44,7 +44,7 @@ module.exports = function(ctx) {
             directives: ["GoBack"],
 
             // Quasar plugins
-            plugins: ["Dialog", "LoadingBar", "Notify"],
+            plugins: ["Dialog", "LoadingBar", "Notify", "QDate", "QSpinnerAudio"],
 
             // QUasar plugins config
             config: {
@@ -58,7 +58,7 @@ module.exports = function(ctx) {
                     position: "bottom",
                     timeout: "500",
                     icon: "announcement"
-                },
+                }
             }
         },
 

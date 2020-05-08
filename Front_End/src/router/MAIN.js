@@ -3,28 +3,49 @@ export default {
     component: () =>
         import ("layouts/MainLayout.vue"),
     children: [{
-        path: '',
-        meta: {
-            index: 0,
-            keepAlive: true
+            path: "",
+            meta: {
+                index: 0,
+                keepAlive: true
+            },
+            component: () =>
+                import ("pages/MAIN/Home.vue")
         },
-        component: () =>
-            import ("pages/MAIN/Home.vue")
-    }, {
-        path: 'setting',
-        meta: {
-            index: -1,
-            keepAlive: true
+        {
+            path: "setting",
+            meta: {
+                index: 1,
+                keepAlive: true
+            },
+            component: () =>
+                import ("pages/MAIN/Setting.vue")
         },
-        component: () =>
-            import ("pages/MAIN/Setting.vue")
-    }, {
-        path: 'userList',
-        meta: {
-            index: -1,
-            keepAlive: true
+        {
+            path: "about",
+            meta: {
+                index: 1,
+                keepAlive: true
+            },
+            component: () =>
+                import ("pages/MAIN/About.vue")
         },
-        component: () =>
-            import ("pages/MAIN/UserList.vue")
-    }]
+        {
+            path: "user",
+            meta: {
+                index: 1,
+                keepAlive: true
+            },
+            component: () =>
+                import ("pages/MAIN/User.vue")
+        },
+        {
+            path: "userList",
+            meta: {
+                index: 1,
+                keepAlive: true
+            },
+            component: () =>
+                import ("pages/MAIN/UserList.vue")
+        }
+    ]
 };

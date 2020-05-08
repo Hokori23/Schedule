@@ -13,7 +13,7 @@ A application to record assignments.
 * **Author:** Hokori
 
 * **Email:** hokori23@qq.com(preferred) or a524159845@gmail.com(rarely used)
-* **Version:** v1.4
+* **Version:** 0.1.4
 
 #### Install the dependencies
 

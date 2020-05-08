@@ -18,8 +18,17 @@
 </template>
 
 <script>
+import languages from "quasar/lang/index.json";
+const appLanguages = languages.filter(lang =>
+  ["zh-hans", "en-us"].includes(lang.isoName)
+);
 export default {
   name: "loginLayout",
+  computed: {
+    lang() {
+      return this.$i18n.locale;
+    }
+  },
   data() {
     return {
       header: false,
@@ -40,14 +49,36 @@ export default {
       } else {
         this.transitionName = "";
       }
+    },
+    lang(lang) {
+      // dynamic import, so loading on demand only
+      import(
+        /* webpackInclude: /(zh-hans|en-us)\.js$/ */
+        `quasar/lang/${lang}`
+      ).then(lang => {
+        this.$q.lang.set(lang.default);
+      });
     }
   },
   beforeRouteEnter(to, from, next) {
-    if (localStorage.getItem("Authorization")) {
+    if (
+      localStorage.getItem("Authorization") &&
+      localStorage.getItem("Authorization") !== "0"
+    ) {
       next({ path: "/", replace: true });
     } else {
-      next();
+      next(vm => {
+        vm.$q.dark.set(false);
+      });
     }
+  },
+  created() {
+    import(
+      /* webpackInclude: /(zh-hans|en-us)\.js$/ */
+      `quasar/lang/${this.lang}`
+    ).then(lang => {
+      this.$q.lang.set(lang.default);
+    });
   }
 };
 </script>

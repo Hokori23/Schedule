@@ -6,7 +6,7 @@ const DB = async() => {
         const connection = await MYSQL.createConnection(SETTINGS);
         await connection.connect((err) => {
             if (err) {
-                reject(err)
+                Promise.reject(err)
             }
             //  else {
             //     console.log('connected as id ' + connection.threadId)
