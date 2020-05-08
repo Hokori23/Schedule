@@ -21,6 +21,9 @@ const getAllSubjects = ({ commit, state }, vm) => {
                 resolve(res.data.data);
             })
             .catch(e => {
+                if ((e.message = "取消请求")) {
+                    resolve(null);
+                }
                 //获取科目失败
                 reject(e);
             })
@@ -56,7 +59,9 @@ const getAllAssignments = ({ commit, state }, vm) => {
                 resolve(res.data.data);
             })
             .catch(e => {
-                console.log(e);
+                if ((e.message = "取消请求")) {
+                    resolve(null);
+                }
                 //获取所有作业失败
                 reject(e);
             })
@@ -99,11 +104,14 @@ const getAssignmentsInPeriod = ({ commit, state }, [days, vm]) => {
                 let length = data.length;
                 for (let i = 0; i < length; i++) {
                     data[i].deadLine = Number(data[i].deadLine);
+                    data[i].lastModified = Number(data[i].lastModified);
                 }
                 resolve(data);
             })
             .catch(e => {
-                console.log(e);
+                if ((e.message = "取消请求")) {
+                    resolve(null);
+                }
                 //获取某时间段所有作业失败
                 reject(e);
             })
@@ -118,5 +126,65 @@ const getAssignmentsInPeriod = ({ commit, state }, [days, vm]) => {
     });
 };
 
-// const getSelf()
-export { getAllSubjects, getAllAssignments, getAssignmentsInPeriod };
+const getSelf = ({ commit, state }, vm) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .get("/user", {
+                params: {
+                    id: vm.user.id
+                }
+            })
+            .then(res => {
+                commit("user", res.data.data[0]);
+                resolve();
+            })
+            .catch(e => {
+                reject(e);
+            });
+    });
+};
+
+const editSelf = ({ commit, state }, [name, vm]) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .put("/user", {
+                id: vm.user.id,
+                name: name
+            })
+            .then(res => {
+                commit("user", res.data.data[0]);
+                resolve();
+            })
+            .catch(e => {
+                reject(e);
+            });
+    });
+};
+
+const deleteSelf = ({ commit, state }, [password, vm]) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .delete("/user", {
+                params: {
+                    id: vm.user.id,
+                    password: password
+                }
+            })
+            .then(res => {
+                //Log out operation here
+                commit("login", false)
+                resolve();
+            })
+            .catch(e => {
+                reject(e);
+            });
+    });
+};
+export {
+    getAllSubjects,
+    getAllAssignments,
+    getAssignmentsInPeriod,
+    getSelf,
+    editSelf,
+    deleteSelf
+};

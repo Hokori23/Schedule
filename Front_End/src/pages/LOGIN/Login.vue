@@ -133,7 +133,6 @@ export default {
       },
       loginState: false,
       isPwd: true,
-      cancelTokenArr: []
     };
   },
   methods: {
@@ -153,6 +152,7 @@ export default {
         //登录
         try {
           let res = await this.$store.dispatch("LoginLayout/login", this);
+          this.$store.commit("MainLayout/user",res.data.data[0]);
           this.$router.push("/");
         } catch (e) {
           if (e.errcode === 2) {
@@ -178,13 +178,6 @@ export default {
     next(vm => {
       vm.$emit("header", false);
     });
-  },
-  beforeRouteLeave(to, from, next) {
-    //清除ajax请求队列
-    this.cancelTokenArr.forEach(source => {
-      source.cancel("清除Ajax请求队列");
-    });
-    next();
   },
   mounted() {
     (function(vm) {

@@ -41,6 +41,7 @@
             class="q-mb-md"
           />
           <q-chat-message
+            hoverable
             name="Hokori"
             avatar="https://hokori.online/image/profile.jpg"
             :text="[$t('login.registerAnnouncement2')]"
@@ -155,7 +156,8 @@ export default {
         password: this.$t("login.passwordErr")
       },
       registerState: false,
-      isPwd: true
+      isPwd: true,
+      cancelTokenArr: []
     };
   },
   methods: {
@@ -165,7 +167,7 @@ export default {
     clear(value) {
       this.valid[value] = true;
     },
-    next() {
+    async next() {
       if (this.step === 1) {
         this.$refs.stepper.next();
       } else if (this.step === 2) {
@@ -186,7 +188,20 @@ export default {
           flag = false;
         }
         if (flag) {
-          this.$store.dispatch("LoginLayout/register", this);
+          try {
+            await this.$store.dispatch("LoginLayout/register", this);
+            let res = await this.$store.dispatch("LoginLayout/login", this);
+            this.$store.commit("MainLayout/user", res.data.data[0]);
+            this.$router.push("/");
+          } catch (e) {
+            if (e.errcode === 2) {
+              e.message = this.$t("login.accountExisted");
+            }
+            this.$q.dialog({
+              message: e.message,
+              title: this.$t("common.alert")
+            });
+          }
         }
       }
     }

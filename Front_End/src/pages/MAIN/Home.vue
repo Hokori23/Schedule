@@ -38,8 +38,23 @@
           <q-spinner-audio size="50px" color="primary" />
         </q-inner-loading>
       </div>
-      <div v-for="(n,index) in days" :key="subject.name+'-'+n" class="q-pa-md assign-block">
-        <div v-html="paintAssign(subject,index)" class="ellipsis-2-lines text-force-wrap"></div>
+      <div
+        v-for="(n,index) in days"
+        :key="subject.name+'-'+n"
+        :class="{'shadow-2':paintAssign(subject,index),'assign-block':paintAssign(subject,index)}"
+      >
+        <transition
+          appear
+          enter-active-class="animated zoomIn"
+          leave-active-class="animated zoomOut"
+        >
+          <!-- Assign-Block HERE -->
+          <div
+            v-if="paintAssign(subject,index)"
+            v-html="paintAssign(subject,index)"
+            class="ellipsis-3-lines text-force-wrap q-px-md text-weight-bold"
+          ></div>
+        </transition>
       </div>
     </header>
     <q-inner-loading :showing="initState">
@@ -83,17 +98,23 @@ export default {
     },
     getTimeStamp() {
       return index => {
-        //获取当前的floorTime时间戳
-        return this.$timeStampFloor(Date.now() + index * this.$day);
+        //获取当前块的floorTime时间戳
+        let time = this.$timeStampFloor(Date.now() + index * this.$day);
+        return time;
       };
     },
     paintAssign() {
       return (subject, index) => {
-        let subjectTimeStamp = this.$timeStampFloor(subject.deadLine);
-        let nowTimeStamp = this.getTimeStamp(index);
-        if (subjectTimeStamp === nowTimeStamp) {
-          console.log(subject)
-          return subject.info;
+        let length = this.data.length;
+        for (let i = 0; i < this.data.length; i++) {
+          let nowTimeStamp = this.getTimeStamp(index);
+          let subjectTimeStamp = this.$timeStampFloor(this.data[i].deadLine);
+          if (
+            subjectTimeStamp === nowTimeStamp &&
+            this.data[i].name === subject.name
+          ) {
+            return this.data[i].info;
+          }
         }
         return "";
       };
@@ -126,7 +147,6 @@ export default {
       subjects: [{ name: this.$t("common.loading"), type: 0 }],
       data: [],
       cancelTokenArr: [],
-      dialogArr: []
     };
   },
   methods: {
@@ -187,7 +207,6 @@ export default {
           message: e.message
         });
       }
-      console.log(this.data);
       this.initState = false;
     }
   },
@@ -203,7 +222,7 @@ export default {
   beforeRouteLeave(to, from, next) {
     //清除ajax请求队列
     this.cancelTokenArr.forEach(source => {
-      source.cancel("清除Ajax请求队列");
+      source.cancel("取消请求");
     });
 
     this.$store.commit("MainLayout/refreshIcon", "");
@@ -337,8 +356,8 @@ export default {
     // this.$axios
     //   .post("/assignment", {
     //     name: "JavaWeb",
-    //     info: "<script>alert('ohhhh')<\/script>",
-    //     deadLine: Date.now()
+    //     info: "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
+    //     deadLine: Date.now() + this.$day*2
     //   })
     //   .then(res => {
     //     console.log(res);
@@ -422,13 +441,19 @@ export default {
 
 .subject-general
   .header-subject
-    background-color: $positive
+    background-color: $primary
 
 .subject-elective
   .header-subject
-    background-color: $primary
+    background-color: $positive
 
 .subject-majory
   .header-subject
-    background-color: $negative
+    background-color: $warning
+
+.assign-block
+  background-color: $negative
+  opacity: .9
+  color: #fff
+  letter-spacing: .5px
 </style>

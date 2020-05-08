@@ -22,21 +22,6 @@
 
           <q-item-section>{{$t('config.name')}}</q-item-section>
         </q-item>
-        <!-- 用户中心 -->
-        <q-item
-          clickable
-          v-ripple
-          :active="path === '/user'"
-          @click="to('/user')"
-          class="drawer-item"
-          active-class="text-primary shadow-transition shadow-1"
-        >
-          <q-item-section avatar>
-            <q-icon name="account_circle" />
-          </q-item-section>
-
-          <q-item-section>{{$t('location.user')}}</q-item-section>
-        </q-item>
         <!-- 首页 -->
         <q-item
           clickable
@@ -44,13 +29,29 @@
           :active="path === '/'"
           @click="to('/')"
           class="drawer-item"
-          active-class="text-primary shadow-transition shadow-1"
+          active-class="text-primary shadow-transition shadow-24 inset-shadow hoverable"
         >
           <q-item-section avatar>
             <q-icon name="home" />
           </q-item-section>
 
           <q-item-section>{{$t('location.home')}}</q-item-section>
+        </q-item>
+
+        <!-- 用户中心 -->
+        <q-item
+          clickable
+          v-ripple
+          :active="path === '/user'"
+          @click="to('/user')"
+          class="drawer-item"
+          active-class="text-primary shadow-transition shadow-24 inset-shadow hoverable"
+        >
+          <q-item-section avatar>
+            <q-icon name="account_circle" />
+          </q-item-section>
+
+          <q-item-section>{{$t('location.user')}}</q-item-section>
         </q-item>
 
         <!-- 设置 -->
@@ -60,7 +61,7 @@
           :active="path === '/setting'"
           @click="to('/setting')"
           class="drawer-item"
-          active-class="text-primary shadow-transition shadow-1"
+          active-class="text-primary shadow-transition shadow-24 inset-shadow hoverable"
         >
           <q-item-section avatar>
             <q-icon name="settings" />
@@ -76,7 +77,7 @@
           :active="path === '/about'"
           @click="to('/about')"
           class="drawer-item"
-          active-class="text-primary shadow-transition shadow-1"
+          active-class="text-primary shadow-transition shadow-24"
         >
           <q-item-section avatar>
             <q-icon name="error" />
@@ -106,6 +107,9 @@ const appLanguages = languages.filter(lang =>
 export default {
   name: "mainLayout",
   computed: {
+    login(){
+      return this.$store.state.MainLayout.login;
+    },
     lang() {
       return this.$i18n.locale;
     },
@@ -175,7 +179,7 @@ export default {
       ).then(lang => {
         this.$q.lang.set(lang.default);
       });
-    }
+    },
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -183,14 +187,14 @@ export default {
         vm.$q.dark.set(true);
       }
       if (!localStorage.getItem("Authorization")||localStorage.getItem("Authorization")==='0') {
-        vm.$store.commit("MainLayout/login",'')
+        vm.$store.commit("MainLayout/login",false)
         vm.$q
           .dialog({
             message: vm.$t("login.loginExpired"),
             title: vm.$t("common.alert")
           })
           .onDismiss(() => {
-            vm.$router.push("/login");
+            vm.$router.replace("/login");
           });
       }else{
         vm.$store.commit("MainLayout/login",true)

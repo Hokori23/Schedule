@@ -16,8 +16,6 @@ export default {
     },
     login: {
         account: "User ID",
-        account: "User ID",
-        accountErr: "User ID required",
         accountErr: "User ID required",
         accountWrong: "User ID not existed",
         accountExisted: "User ID has already existed",
@@ -56,7 +54,8 @@ export default {
         back: "Back",
         alert: "Alert",
         more: "More",
-        loading: 'Loading',
+        loading: "Loading",
+        edit: "Edit"
     },
     location: {
         home: "Home",
@@ -64,6 +63,15 @@ export default {
         about: "About",
         user: "User Center",
         userList: "User Directory"
+    },
+    user: {
+        createdTime: "Created Time",
+        activatedTime: "Last Activated Time",
+        editMsg: "Edit Nickname",
+        delete: "Cancel Account",
+        deleteMsg: "Input your password to confirm the operation",
+        logOut: "Log out",
+        logOutConfirm: "Are you really want to log out?"
     },
     setting: {
         language: "Language",

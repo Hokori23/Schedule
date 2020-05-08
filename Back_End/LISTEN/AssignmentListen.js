@@ -12,6 +12,16 @@ const proofXSS = (info) => {
     });
 };
 
+const timeStampFloor = (timeStamp) => {
+    let time = null;
+    if (timeStamp) {
+        time = new Date(timeStamp);
+    } else {
+        time = new Date();
+    }
+    let floorTime = new Date(time.getFullYear(), time.getMonth(), time.getDate());
+    return floorTime.getTime();
+};
 const listen = (APP) => {
     const path = "/schedule/assignment";
 
@@ -75,6 +85,7 @@ const listen = (APP) => {
     APP.put(path, async(req, res) => {
         let { name, info, deadLine } = req.body;
 
+        deadLine = timeStampFloor(deadLine);
         name = proofXSS(name);
         info = proofXSS(info);
         if (!name || !info || !deadLine) {
@@ -119,9 +130,11 @@ const listen = (APP) => {
             id: req.user_id,
         };
         if (startLine) {
+            startLine = timeStampFloor(startLine);
             startLine--;
         }
         if (deadLine) {
+            deadLine = timeStampFloor(deadLine);
             deadLine++;
         }
 
