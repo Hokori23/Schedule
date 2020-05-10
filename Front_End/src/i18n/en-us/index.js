@@ -16,6 +16,8 @@ export default {
     },
     login: {
         account: "User ID",
+        account: "User ID",
+        accountErr: "User ID required",
         accountErr: "User ID required",
         accountWrong: "User ID not existed",
         accountExisted: "User ID has already existed",
@@ -54,8 +56,7 @@ export default {
         back: "Back",
         alert: "Alert",
         more: "More",
-        loading: "Loading",
-        edit: "Edit"
+        loading: 'Loading',
     },
     location: {
         home: "Home",

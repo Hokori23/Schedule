@@ -41,7 +41,6 @@
             class="q-mb-md"
           />
           <q-chat-message
-            hoverable
             name="Hokori"
             avatar="https://hokori.online/image/profile.jpg"
             :text="[$t('login.registerAnnouncement2')]"
@@ -155,8 +154,7 @@ export default {
         password: this.$t("login.passwordErr")
       },
       registerState: false,
-      isPwd: true,
-      cancelTokenArr: []
+      isPwd: true
     };
   },
   methods: {

@@ -10,8 +10,7 @@ export default {
     user: localStorage.getItem("user") !== "undefined" &&
         localStorage.getItem("user") !== "null" &&
         localStorage.getItem("user") ?
-        JSON.parse(localStorage.getItem("user")) :
-        {
+        JSON.parse(localStorage.getItem("user")) : {
             id: null,
             name: null,
             createdTime: null,

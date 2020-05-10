@@ -50,22 +50,6 @@
 
           <q-item-section>{{$t('config.name')}}</q-item-section>
         </q-item>
-        <!-- 首页 -->
-        <q-item
-          clickable
-          v-ripple
-          :active="path === '/'"
-          @click="to('/')"
-          class="drawer-item"
-          active-class="text-primary shadow-transition shadow-24 inset-shadow hoverable"
-        >
-          <q-item-section avatar>
-            <q-icon name="home" />
-          </q-item-section>
-
-          <q-item-section>{{$t('location.home')}}</q-item-section>
-        </q-item>
-
         <!-- 用户中心 -->
         <q-item
           clickable
@@ -73,13 +57,28 @@
           :active="path === '/user'"
           @click="to('/user')"
           class="drawer-item"
-          active-class="text-primary shadow-transition shadow-24 inset-shadow hoverable"
+          active-class="text-primary shadow-transition shadow-1"
         >
           <q-item-section avatar>
             <q-icon name="account_circle" />
           </q-item-section>
 
           <q-item-section>{{$t('location.user')}}</q-item-section>
+        </q-item>
+        <!-- 首页 -->
+        <q-item
+          clickable
+          v-ripple
+          :active="path === '/'"
+          @click="to('/')"
+          class="drawer-item"
+          active-class="text-primary shadow-transition shadow-1"
+        >
+          <q-item-section avatar>
+            <q-icon name="home" />
+          </q-item-section>
+
+          <q-item-section>{{$t('location.home')}}</q-item-section>
         </q-item>
 
         <!-- 设置 -->
@@ -89,7 +88,7 @@
           :active="path === '/setting'"
           @click="to('/setting')"
           class="drawer-item"
-          active-class="text-primary shadow-transition shadow-24 inset-shadow hoverable"
+          active-class="text-primary shadow-transition shadow-1"
         >
           <q-item-section avatar>
             <q-icon name="settings" />

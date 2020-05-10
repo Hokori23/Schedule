@@ -1,5 +1,5 @@
-const SERVICE = require("../../SERVICE/userService");
-const jwt = require("jwt-simple");
+const SERVICE = require('../../SERVICE/userService');
+const jwt = require('jwt-simple');
 //秘钥
 const jwtSecret = "Hokori-homework";
 //过期时间
@@ -56,7 +56,7 @@ const checkAndSpawn = async(req, res, next) => {
         req.user_name = decoded.name;
         console.log(`账号: ${decoded.jti}`, `昵称: ${decoded.name}`);
     } else {
-        let id = (req.query && req.query.id) || (req.body && req.body.id);
+        let id = req.query && req.query.id || req.body && req.body.id;
         if (id) {
             //设置JWT
             console.log(id, "获取jwt");
@@ -65,20 +65,29 @@ const checkAndSpawn = async(req, res, next) => {
                 let jwt = {};
                 if (queryResult.data.length) {
                     jwt = {
-                        iss: "Hokori-Nodejs-Server",
+                        iss: 'Hokori-Nodejs-Server',
                         jti: queryResult.data[0].id,
                         name: queryResult.data[0].name,
-                        expires: time + tokenExpiresTime,
-                    };
-                    jwt = encode(jwt);
-                    res.set("Authorization", jwt);
+                        expires: time + tokenExpiresTime
+                    }
+                } else {
+                    //无此账号
+                    jwt = {
+                        iss: 'Hokori-Nodejs-Server',
+                        jti: 'null',
+                        expires: time + tokenExpiresTime
+                    }
                 }
+                jwt = encode(jwt);
+                res.set('Authorization', jwt);
+                next()
+            } else {
+                res.status(401).end()
             }
         } else {
-            console.log("游客访问");
+            res.status(401).end()
         }
     }
-    next();
-};
+}
 
-module.exports = checkAndSpawn;
+module.exports = checkAndSpawn

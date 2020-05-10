@@ -33,6 +33,7 @@ const listen = (APP) => {
         if (password) {
             result = await SERVICE.login(new VO.userLogin(id, password, req.reqTime));
             if (result.errcode) {
+                console.log('clear authorization')
                 res.set("Authorization", 0);
             }
         } else {
@@ -73,6 +74,7 @@ const listen = (APP) => {
     //修改昵称--用户
     APP.put(path, async(req, res) => {
         let { id, name } = req.body;
+
         if (!id || !name) {
             res.status(400).json({
                 errcode: 1,

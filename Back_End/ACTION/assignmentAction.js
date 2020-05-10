@@ -89,6 +89,7 @@ const queryNameAndDeadLine = (assignment) => {
                                     WHERE   (name = ?) 
                                     AND     (deadLine = ?)`;
         let db = await DB();
+        console.log(assignment.name);
         db.query(sql, [assignment.name, assignment.deadLine], (err, res) => {
             if (err) {
                 reject(err);

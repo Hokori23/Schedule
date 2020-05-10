@@ -1,6 +1,6 @@
 <template>
   <section class="page">
-    <q-list class='list-container' bordered>
+    <q-list>
       <!-- 语言设置 -->
       <q-item-label header>{{$t('setting.language')}}</q-item-label>
 
@@ -38,6 +38,14 @@
         </q-item-section>
       </q-item>
 
+      <q-separator inset class='q-mb-md'/>
+
+      <q-item-label class="q-mx-lg">
+        <q-badge color="accent" class="q-px-md q-py-sm">{{$t('setting.days')}}: {{assign.days}}</q-badge>
+      </q-item-label>
+      <q-item class='row justify-center'>
+        <q-date v-model="date" today-btn />
+      </q-item>
 
       <q-separator class='q-my-xs'/>
 

@@ -1,6 +1,6 @@
 <template>
   <section class="page">
-    <q-list class='list-container' bordered>
+    <q-list>
       <q-item-label header>{{$t('location.about')}}</q-item-label>
       <q-item clickable v-ripple>
         <q-item-section>{{$t('configInfo.name')}}</q-item-section>

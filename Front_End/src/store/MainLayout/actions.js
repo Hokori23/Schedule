@@ -19,9 +19,6 @@ const getAllSubjects = ({ commit, state }, vm) => {
                 resolve(null);
             })
             .catch(e => {
-                if ((e.message = "取消请求")) {
-                    resolve(null);
-                }
                 //获取科目失败
                 reject(e);
             })
@@ -54,9 +51,7 @@ const getAllAssignments = ({ commit, state }, vm) => {
                 resolve(res.data.data);
             })
             .catch(e => {
-                if ((e.message = "取消请求")) {
-                    resolve(null);
-                }
+                console.log(e);
                 //获取所有作业失败
                 reject(e);
             })
@@ -96,14 +91,11 @@ const getAssignmentsInPeriod = ({ commit, state }, [days, vm]) => {
                 let length = data.length;
                 for (let i = 0; i < length; i++) {
                     data[i].deadLine = Number(data[i].deadLine);
-                    data[i].lastModified = Number(data[i].lastModified);
                 }
                 resolve(data);
             })
             .catch(e => {
-                if ((e.message = "取消请求")) {
-                    resolve(null);
-                }
+                console.log(e);
                 //获取某时间段所有作业失败
                 reject(e);
             })
