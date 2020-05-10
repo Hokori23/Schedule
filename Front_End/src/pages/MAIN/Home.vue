@@ -38,8 +38,23 @@
           <q-spinner-audio size="50px" color="primary" />
         </q-inner-loading>
       </div>
-      <div v-for="(n,index) in days" :key="subject.name+'-'+n" class="q-pa-md assign-block">
-        <div v-html="paintAssign(subject,index)" class="ellipsis-2-lines text-force-wrap"></div>
+      <div
+        v-for="(n,index) in days"
+        :key="subject.name+'-'+n"
+        :class="{'shadow-2':paintAssign(subject,index),'assign-block':paintAssign(subject,index)}"
+      >
+        <transition
+          appear
+          enter-active-class="animated zoomIn"
+          leave-active-class="animated zoomOut"
+        >
+          <!-- Assign-Block HERE -->
+          <div
+            v-if="paintAssign(subject,index)"
+            v-html="paintAssign(subject,index)"
+            class="ellipsis-3-lines text-force-wrap q-px-md text-weight-bold"
+          ></div>
+        </transition>
       </div>
     </header>
     <q-inner-loading :showing="initState">
@@ -83,17 +98,23 @@ export default {
     },
     getTimeStamp() {
       return index => {
-        //获取当前的floorTime时间戳
-        return this.$timeStampFloor(Date.now() + index * this.$day);
+        //获取当前块的floorTime时间戳
+        let time = this.$timeStampFloor(Date.now() + index * this.$day);
+        return time;
       };
     },
     paintAssign() {
       return (subject, index) => {
-        let subjectTimeStamp = this.$timeStampFloor(subject.deadLine);
-        let nowTimeStamp = this.getTimeStamp(index);
-        if (subjectTimeStamp === nowTimeStamp) {
-          console.log(subject)
-          return subject.info;
+        let length = this.data.length;
+        for (let i = 0; i < this.data.length; i++) {
+          let nowTimeStamp = this.getTimeStamp(index);
+          let subjectTimeStamp = this.$timeStampFloor(this.data[i].deadLine);
+          if (
+            subjectTimeStamp === nowTimeStamp &&
+            this.data[i].name === subject.name
+          ) {
+            return this.data[i].info;
+          }
         }
         return "";
       };
@@ -103,6 +124,14 @@ export default {
     },
     refreshState() {
       return this.$store.state.MainLayout.refreshState;
+    },
+    subjects() {
+      let subjects = this.$store.state.MainLayout.subjects;
+      if (!subjects.length) {
+        subjects = [{ name: this.$t("common.loading"), type: 0 }];
+      }
+
+      return subjects;
     }
   },
   watch: {
@@ -122,10 +151,8 @@ export default {
       proxyDate: "",
       /******日历选择器高亮事件******/
       events: [],
-      /******科目******/
-      subjects: [{ name: this.$t("common.loading"), type: 0 }],
       data: [],
-      cancelTokenArr: [],
+      cancelTokenArr: []
     };
   },
   methods: {
@@ -136,7 +163,7 @@ export default {
       this.date = this.proxyDate;
     },
     init: async function() {
-      if (this.initState || !this.$store.state.MainLayout.login) {
+      if (this.initState) {
         return;
       }
       this.initState = true;
@@ -146,9 +173,7 @@ export default {
 
       /************* 获取所有科目 *************/
       try {
-        this.subjects =
-          (await this.$store.dispatch("MainLayout/getAllSubjects", this)) ||
-          this.subjects;
+        await this.$store.dispatch("MainLayout/getAllSubjects", this);
       } catch (e) {
         this.$q.dialog({
           message: e.message
@@ -186,6 +211,9 @@ export default {
           message: e.message
         });
       }
+
+      //状态复原
+      this.$store.commit("MainLayout/refreshState", false);
       this.initState = false;
     }
   },
@@ -201,7 +229,7 @@ export default {
   beforeRouteLeave(to, from, next) {
     //清除ajax请求队列
     this.cancelTokenArr.forEach(source => {
-      source.cancel("清除Ajax请求队列");
+      source.cancel("取消请求");
     });
 
     this.$store.commit("MainLayout/refreshIcon", "");
@@ -334,8 +362,8 @@ export default {
     // );
     // this.$axios
     //   .post("/assignment", {
-    //     name: "JavaWeb",
-    //     info: "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
+    //     name: "PE",
+    //     info: "assignment2",
     //     deadLine: Date.now() + this.$day*2
     //   })
     //   .then(res => {
@@ -420,13 +448,19 @@ export default {
 
 .subject-general
   .header-subject
-    background-color: $positive
+    background-color: $primary
 
 .subject-elective
   .header-subject
-    background-color: $primary
+    background-color: $positive
 
 .subject-majory
   .header-subject
-    background-color: $negative
+    background-color: $warning
+
+.assign-block
+  background-color: $negative
+  opacity: .9
+  color: #fff
+  letter-spacing: .5px
 </style>

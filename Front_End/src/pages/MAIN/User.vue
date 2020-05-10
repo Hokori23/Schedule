@@ -136,12 +136,31 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.$store.commit("MainLayout/title", vm.$t("location.user"));
-      vm.$store.dispatch("MainLayout/getSelf", vm);
+      if (!Number(localStorage.getItem("login"))) {
+        let flag = 0;
+        vm.$q
+          .dialog({
+            message: vm.$t("user.notLogin"),
+            ok: vm.$t("user.suggestToLogin"),
+            cancel:vm.$t('common.cancel')
+          })
+          .onOk(() => {
+            flag = 1
+            vm.$router.push("/login");
+          })
+          .onDismiss(()=>{
+            if(!flag){
+              vm.$router.push(from.path)
+            }
+          })
+      } else {
+        vm.$store.commit("MainLayout/title", vm.$t("location.user"));
+        vm.$store.dispatch("MainLayout/getSelf", vm);
+        vm.$store.commit("MainLayout/rightTopIcon", "");
+      }
     });
   }
 };
 </script>
 <style lang="sass" scoped>
-
 </style>

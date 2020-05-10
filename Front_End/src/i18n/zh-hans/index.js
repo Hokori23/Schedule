@@ -16,9 +16,7 @@ export default {
     },
     login: {
         account: "账号",
-        account: "账号",
         accountErr: "账号不能为空",
-        accountErr: "不能为空，填写账号",
         accountWrong: "账号不存在",
         accountExisted: "账号已存在",
         password: "密码",
@@ -42,7 +40,8 @@ export default {
         send: "发送",
         registerAnnounceTitle: "注册须知",
         registerAnnouncement1: "您在此注册所用的账号密码将不会被公开滥用，请放心注册。",
-        registerAnnouncement2: ""
+        registerAnnouncement2: "如果你对我的项目感兴趣的话，可以通过点击这条信息访问我的博客，亦可以在评论区留言\n \n或者直接通过邮箱联系我[ hokori23@qq.com ]",
+        registerAnnouncement3: "这是一个用来记录我作业的网站。\n如果你是我的同学的话，请随意注册登录使用这个网站。"
     },
     common: {
         confirm: "确定",
@@ -56,6 +55,7 @@ export default {
         alert: "提示",
         more: "更多",
         loading: '加载中',
+        edit: '修改'
     },
     location: {
         home: "首页",
@@ -65,6 +65,8 @@ export default {
         userList: "用户目录"
     },
     user: {
+        notLogin: "您还没有登录噢",
+        suggestToLogin: "是否前往登录页面？",
         createdTime: "创建时间",
         activatedTime: "最后活跃时间",
         editMsg: "修改昵称",
@@ -78,5 +80,9 @@ export default {
         assignment: "作业表设置",
         darkMode: "夜间模式",
         days: "显示作业天数"
+    },
+    error: {
+        unauthorized: '登录失效',
+        forbidden: '无权限'
     }
 };

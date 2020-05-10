@@ -133,7 +133,6 @@ export default {
       },
       loginState: false,
       isPwd: true,
-      cancelTokenArr: []
     };
   },
   methods: {
@@ -163,7 +162,9 @@ export default {
           }
           this.$q.dialog({
             message: e.message,
-            title: this.$t("common.alert")
+            title: this.$t("common.alert"),
+            ok:this.$t('common.confirm'),
+            cancel:this.$t('common.cancel')
           });
         }
       }
@@ -179,13 +180,6 @@ export default {
     next(vm => {
       vm.$emit("header", false);
     });
-  },
-  beforeRouteLeave(to, from, next) {
-    //清除ajax请求队列
-    this.cancelTokenArr.forEach(source => {
-      source.cancel("清除Ajax请求队列");
-    });
-    next();
   },
   mounted() {
     (function(vm) {

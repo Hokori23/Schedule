@@ -11,13 +11,11 @@ export default {
     configInfo: {
         name: "Project Name",
         version: "Version",
-        updateTime: "Update Time",
+        updateTime: "Latest Update Time",
         author: "Author"
     },
     login: {
         account: "User ID",
-        account: "User ID",
-        accountErr: "User ID required",
         accountErr: "User ID required",
         accountWrong: "User ID not existed",
         accountExisted: "User ID has already existed",
@@ -56,7 +54,8 @@ export default {
         back: "Back",
         alert: "Alert",
         more: "More",
-        loading: 'Loading',
+        loading: "Loading",
+        edit: "Edit"
     },
     location: {
         home: "Home",
@@ -66,6 +65,8 @@ export default {
         userList: "User Directory"
     },
     user: {
+        notLogin: "Haven't logged in yet",
+        suggestToLogin: "Move to login page?",
         createdTime: "Created Time",
         activatedTime: "Last Activated Time",
         editMsg: "Edit Nickname",
@@ -79,5 +80,9 @@ export default {
         assignment: "Assignment Table Configuration",
         darkMode: "Dark Mode",
         days: "The numbers of shown days"
+    },
+    error: {
+        unauthorized: 'Unauthorized',
+        forbidden: 'Forbidden'
     }
 };
