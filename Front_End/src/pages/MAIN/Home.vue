@@ -103,14 +103,6 @@ export default {
     },
     refreshState() {
       return this.$store.state.MainLayout.refreshState;
-    },
-    subjects() {
-      let subjects = this.$store.state.MainLayout.subjects;
-      if (!subjects.length) {
-        subjects = [{ name: this.$t("common.loading"), type: 0 }];
-      }
-
-      return subjects;
     }
   },
   watch: {
@@ -130,8 +122,10 @@ export default {
       proxyDate: "",
       /******日历选择器高亮事件******/
       events: [],
+      /******科目******/
+      subjects: [{ name: this.$t("common.loading"), type: 0 }],
       data: [],
-      cancelTokenArr: []
+      cancelTokenArr: [],
     };
   },
   methods: {
@@ -142,7 +136,7 @@ export default {
       this.date = this.proxyDate;
     },
     init: async function() {
-      if (this.initState) {
+      if (this.initState || !this.$store.state.MainLayout.login) {
         return;
       }
       this.initState = true;
@@ -152,7 +146,9 @@ export default {
 
       /************* 获取所有科目 *************/
       try {
-        await this.$store.dispatch("MainLayout/getAllSubjects", this);
+        this.subjects =
+          (await this.$store.dispatch("MainLayout/getAllSubjects", this)) ||
+          this.subjects;
       } catch (e) {
         this.$q.dialog({
           message: e.message
@@ -190,9 +186,6 @@ export default {
           message: e.message
         });
       }
-
-      //状态复原
-      this.$store.commit("MainLayout/refreshState", false);
       this.initState = false;
     }
   },
@@ -341,8 +334,8 @@ export default {
     // );
     // this.$axios
     //   .post("/assignment", {
-    //     name: "PE",
-    //     info: "assignment2",
+    //     name: "JavaWeb",
+    //     info: "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
     //     deadLine: Date.now() + this.$day*2
     //   })
     //   .then(res => {

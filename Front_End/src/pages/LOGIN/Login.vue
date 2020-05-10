@@ -163,9 +163,7 @@ export default {
           }
           this.$q.dialog({
             message: e.message,
-            title: this.$t("common.alert"),
-            ok:this.$t('common.confirm'),
-            cancel:this.$t('common.cancel')
+            title: this.$t("common.alert")
           });
         }
       }

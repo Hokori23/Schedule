@@ -1,5 +1,6 @@
 import Vue from "vue";
 import axios from "axios";
+
 require("promise.prototype.finally").shim();
 if (process.env.DEV) {
     axios.defaults.baseURL = "/api";
@@ -42,9 +43,9 @@ axios.interceptors.response.use(
                 message: res.data.msg || "",
                 data: data || null
             };
-            // if (errcode === 1062) {
-            //     err.message = "主键重复";
-            // }
+            if (errcode === 1062) {
+                err.message = "主键重复";
+            }
             return Promise.reject(err);
         }
 
@@ -52,12 +53,15 @@ axios.interceptors.response.use(
     },
     error => {
         if (error.response) {
-            if (error.response.status >= 400) {
-                error.errcode = error.response.status;
-            }
-
             if (error.response.status === 401) {
                 localStorage.removeItem("Authorization");
+                // Unauthorized
+                // 登陆失效
+                error.errcode = 401;
+            } else if (error.response.status === 403) {
+                // Forbidden
+                // 无权限
+                error.errcode = 403;
             }
 
             let msg = error.response.data.msg;

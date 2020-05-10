@@ -197,8 +197,7 @@ export default {
             }
             this.$q.dialog({
               message: e.message,
-              title: this.$t("common.alert"),
-              ok: this.$t("common.confirm")
+              title: this.$t("common.alert")
             });
           }
         }

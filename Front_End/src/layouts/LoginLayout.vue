@@ -61,16 +61,16 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    // if (
-    //   localStorage.getItem("Authorization") &&
-    //   localStorage.getItem("Authorization") !== "0"
-    // ) {
-    //   next({ path: "/", replace: true });
-    // } else {
-    next(vm => {
-      vm.$q.dark.set(false);
-    });
-    // }
+    if (
+      localStorage.getItem("Authorization") &&
+      localStorage.getItem("Authorization") !== "0"
+    ) {
+      next({ path: "/", replace: true });
+    } else {
+      next(vm => {
+        vm.$q.dark.set(false);
+      });
+    }
   },
   created() {
     import(

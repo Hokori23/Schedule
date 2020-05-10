@@ -5,7 +5,6 @@ export default {
     leftTopIcon: "menu",
     refreshIcon: "refresh",
     refreshState: false,
-    subjects: [],
     login: Number(localStorage.getItem("login")),
     user: localStorage.getItem("user") !== "undefined" &&
         localStorage.getItem("user") !== "null" &&

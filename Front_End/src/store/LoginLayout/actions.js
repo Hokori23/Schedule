@@ -14,14 +14,10 @@ const login = ({ commit, state }, vm) => {
             })
             .then(res => {
                 //登陆成功
-                commit("login", true)
-                commit("user", res.data.data[0])
                 resolve(res);
             })
             .catch(e => {
                 //登陆失败
-                commit("login", false)
-                commit("user", null)
                 reject(e);
             })
             .finally(() => {

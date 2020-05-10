@@ -26,14 +26,11 @@ const login = (state, value) => {
         }
         localStorage.setItem("login", Number(value));
     } else {
-        state.login = false;
+        state.login = false
         localStorage.setItem("login", Number(false));
         localStorage.removeItem("Authorization");
         localStorage.removeItem("user");
     }
-};
-const subjects = (state, value) => {
-    state.subjects = value;
 };
 const user = (state, value) => {
     state.user = value;
@@ -47,6 +44,5 @@ export {
     refreshIcon,
     refreshState,
     login,
-    subjects,
     user
 };

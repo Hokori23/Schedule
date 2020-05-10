@@ -1,6 +1,9 @@
 import axios from "axios";
 
 const getAllSubjects = ({ commit, state }, vm) => {
+    if (!vm.$store.state.MainLayout.login) {
+        return;
+    }
     return new Promise((resolve, reject) => {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
@@ -15,8 +18,7 @@ const getAllSubjects = ({ commit, state }, vm) => {
             })
             .then(res => {
                 //获取科目成功
-                commit("subjects", res.data.data);
-                resolve(null);
+                resolve(res.data.data);
             })
             .catch(e => {
                 //获取科目失败
@@ -34,6 +36,9 @@ const getAllSubjects = ({ commit, state }, vm) => {
 };
 
 const getAllAssignments = ({ commit, state }, vm) => {
+    if (!vm.$store.state.MainLayout.login) {
+        return;
+    }
     return new Promise((resolve, reject) => {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
@@ -67,6 +72,9 @@ const getAllAssignments = ({ commit, state }, vm) => {
 };
 
 const getAssignmentsInPeriod = ({ commit, state }, [days, vm]) => {
+    if (!vm.$store.state.MainLayout.login) {
+        return;
+    }
     return new Promise((resolve, reject) => {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
@@ -156,7 +164,7 @@ const deleteSelf = ({ commit, state }, [password, vm]) => {
             })
             .then(res => {
                 //Log out operation here
-                commit("login", false);
+                commit("login", false)
                 resolve();
             })
             .catch(e => {

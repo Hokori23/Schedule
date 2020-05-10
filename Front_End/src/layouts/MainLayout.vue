@@ -2,40 +2,12 @@
   <q-layout view="hHh LpR fFf" class="mainLayout">
     <q-header reveal elevated class="bg-primary text-white">
       <q-toolbar>
-        <!-- btn Animation -->
-        <transition
-          appear
-          enter-active-class="animated fadeIn"
-          leave-active-class="animated fadeOut"
-        >
-          <q-btn flat round :icon="leftTopIcon" @click="leftTopIconClick()" />
-        </transition>
+        <q-btn flat round :icon="leftTopIcon" @click="leftTopIconClick()" />
 
         <q-toolbar-title>{{title}}</q-toolbar-title>
 
-        <!-- btn Animation -->
-        <transition
-          appear
-          enter-active-class="animated fadeIn"
-          leave-active-class="animated fadeOut"
-        >
-          <q-btn
-            flat
-            round
-            :icon="refreshIcon"
-            v-if="refreshIcon"
-            @click.prevent="refreshIconClick"
-          />
-        </transition>
-
-        <!-- btn Animation -->
-        <transition
-          appear
-          enter-active-class="animated fadeIn"
-          leave-active-class="animated fadeOut"
-        >
-          <q-btn flat round :icon="rightTopIcon" v-if="rightTopIcon" @click="rightTopIconClick" />
-        </transition>
+        <q-btn flat round :icon="refreshIcon" v-if="refreshIcon" @click.prevent="refreshIconClick" />
+        <q-btn flat round :icon="rightTopIcon" v-if="rightTopIcon" />
       </q-toolbar>
     </q-header>
 
@@ -104,7 +76,7 @@
           :active="path === '/about'"
           @click="to('/about')"
           class="drawer-item"
-          active-class="text-primary shadow-transition shadow-24 inset-shadow hoverable"
+          active-class="text-primary shadow-transition shadow-24"
         >
           <q-item-section avatar>
             <q-icon name="error" />
@@ -127,7 +99,6 @@
 
 
 <script>
-import AddAssignment from "../components/AddAssignment";
 import languages from "quasar/lang/index.json";
 const appLanguages = languages.filter(lang =>
   ["zh-hans", "en-us"].includes(lang.isoName)
@@ -135,7 +106,7 @@ const appLanguages = languages.filter(lang =>
 export default {
   name: "mainLayout",
   computed: {
-    login() {
+    login(){
       return this.$store.state.MainLayout.login;
     },
     lang() {
@@ -161,7 +132,7 @@ export default {
     return {
       drawer: false,
       transitionName: "",
-      path: this.$route.path
+      path: this.$route.path,
     };
   },
   methods: {
@@ -169,7 +140,7 @@ export default {
       if (this.$route.path !== path) {
         this.$router.push(path);
       }
-      // this.drawer = false;
+      this.drawer = false;
     },
     leftTopIconClick() {
       if (this.leftTopIcon === "menu") {
@@ -181,36 +152,9 @@ export default {
     refreshIconClick() {
       if (this.refreshIcon && !this.refreshState) {
         this.$store.commit("MainLayout/refreshState", true);
-      }
-    },
-    //添加作业
-    async rightTopIconClick() {
-      if (this.rightTopIcon === "add") {
-        //添加作业
-        if (this.$route.path === "/") {
-          let subjectsObject = this.$store.state.MainLayout.subjects;
-          //判断是否有科目
-          if (!subjectsObject.length) {
-            await this.$store.dispatch("MainLayout/getAllsubjects", this);
-          }
-          let subjects = subjectsObject.map(value => {
-            console.log(value.name);
-            return value.name;
-          });
-          console.log(subjects);
-          this.$q
-            .dialog({
-              component: AddAssignment,
-              parent: this,
-              subjects: subjects,
-              ok: this.$t("common.confirm"),
-              cancel: this.$t("common.cancel")
-            })
-            .onOk(data => {
-              //添加作业
-              console.log("get data", data);
-            });
-        }
+        setTimeout(() => {
+          this.$store.commit("MainLayout/refreshState", false);
+        }, 2000);
       }
     }
   },
@@ -235,18 +179,24 @@ export default {
         this.$q.lang.set(lang.default);
       });
     },
-    login(value) {
-      if (!value) {
-        this.$store.commit("MainLayout/login", false);
-        this.$router.replace("/login");
-      }
-    }
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      //夜间模式
       if (localStorage.getItem("dark-mode") == true) {
         vm.$q.dark.set(true);
+      }
+      if (!localStorage.getItem("Authorization")||localStorage.getItem("Authorization")==='0') {
+        vm.$store.commit("MainLayout/login",false)
+        vm.$q
+          .dialog({
+            message: vm.$t("login.loginExpired"),
+            title: vm.$t("common.alert")
+          })
+          .onDismiss(() => {
+            vm.$router.replace("/login");
+          });
+      }else{
+        vm.$store.commit("MainLayout/login",true)
       }
     });
   },
