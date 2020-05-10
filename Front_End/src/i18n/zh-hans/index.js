@@ -65,6 +65,8 @@ export default {
         userList: "用户目录"
     },
     user: {
+        notLogin: "您还没有登录噢",
+        suggestToLogin: "是否前往登录页面？",
         createdTime: "创建时间",
         activatedTime: "最后活跃时间",
         editMsg: "修改昵称",
@@ -78,5 +80,9 @@ export default {
         assignment: "作业表设置",
         darkMode: "夜间模式",
         days: "显示作业天数"
+    },
+    error: {
+        unauthorized: '登录失效',
+        forbidden: '无权限'
     }
 };

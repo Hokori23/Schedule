@@ -5,14 +5,17 @@ export default {
     leftTopIcon: "menu",
     refreshIcon: "refresh",
     refreshState: false,
+    subjects: [],
     login: Number(localStorage.getItem("login")),
-    user: localStorage.getItem("user") !== "undefined" && localStorage.getItem("user") ?
+    user: localStorage.getItem("user") !== "undefined" &&
+        localStorage.getItem("user") !== "null" &&
+        localStorage.getItem("user") ?
         JSON.parse(localStorage.getItem("user")) :
         {
-            createdTime: "",
-            activatedTime: "",
-            power: "",
-            id: "",
-            name: ""
+            id: null,
+            name: null,
+            createdTime: null,
+            activatedTime: null,
+            power: null
         }
 };
