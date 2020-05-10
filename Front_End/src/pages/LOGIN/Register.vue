@@ -189,19 +189,10 @@ export default {
         }
         if (flag) {
           try {
-            await this.$store.dispatch("LoginLayout/register", this);
-            let res = await this.$store.dispatch("LoginLayout/login", this);
-            this.$store.commit("MainLayout/user", res.data.data[0]);
-            this.$router.push("/");
+            let res = await this.$store.dispatch("LoginLayout/register", this);
+            this.$dealWithSuccess(this,res.data)
           } catch (e) {
-            if (e.errcode === 2) {
-              e.message = this.$t("login.accountExisted");
-            }
-            this.$q.dialog({
-              message: e.message,
-              title: this.$t("common.alert"),
-              ok: this.$t("common.confirm")
-            });
+          this.$dealWithError(this,e);
           }
         }
       }

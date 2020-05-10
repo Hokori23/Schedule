@@ -100,9 +100,17 @@ export default {
           },
           cancel: true
         })
-        .onOk(data => {
+        .onOk(async data => {
           if (data !== this.user.name) {
-            this.$store.dispatch("MainLayout/editSelf", [data, this]);
+            try {
+              let res = await this.$store.dispatch("MainLayout/editSelf", [
+                data,
+                this
+              ]);
+              this.$dealWithSuccess(this, res.data);
+            } catch (e) {
+              this.$dealWithError(this, e);
+            }
           }
         });
     },
@@ -116,9 +124,17 @@ export default {
           },
           cancel: true
         })
-        .onOk(data => {
+        .onOk(async data => {
           if (data) {
-            this.$store.dispatch("MainLayout/deleteSelf", [data, this]);
+            try {
+              let res = awaitthis.$store.dispatch("MainLayout/deleteSelf", [
+                data,
+                this
+              ]);
+              this.$dealWithSuccess(this, res.data);
+            } catch (e) {
+              this.$dealWithError(this, e);
+            }
           }
         });
     },
@@ -142,20 +158,24 @@ export default {
           .dialog({
             message: vm.$t("user.notLogin"),
             ok: vm.$t("user.suggestToLogin"),
-            cancel:vm.$t('common.cancel')
+            cancel: vm.$t("common.cancel")
           })
           .onOk(() => {
-            flag = 1
+            flag = 1;
             vm.$router.push("/login");
           })
-          .onDismiss(()=>{
-            if(!flag){
-              vm.$router.push(from.path)
+          .onDismiss(() => {
+            if (!flag) {
+              vm.$router.push(from.path);
             }
-          })
+          });
       } else {
         vm.$store.commit("MainLayout/title", vm.$t("location.user"));
-        vm.$store.dispatch("MainLayout/getSelf", vm);
+        try {
+          vm.$store.dispatch("MainLayout/getSelf", vm);
+        } catch (e) {
+          this.$dealWithError(this, e);
+        }
         vm.$store.commit("MainLayout/rightTopIcon", "");
       }
     });

@@ -22,15 +22,15 @@ const add = async(user, assignment) => {
         await USER_SERVICE.active(user);
         if (await getPower(user.id)) {
             let queryAssign = await ACTION.queryNameAndDeadLine(assignment);
-            if (queryAssign.length) {
-                res.errcode = 1;
-                res.data = queryAssign;
-                res.msg = "已有该日作业，是否查看？";
-            } else {
+            if (!queryAssign.length) {
                 await ACTION.add(assignment);
-                res.errcode = 0;
+                res.errcode = 30000;
                 res.data = await ACTION.queryNameAndDeadLine(assignment);
                 res.msg = "添加作业成功";
+            } else {
+                res.errcode = 30100;
+                res.data = queryAssign;
+                res.msg = "已有该日作业，是否查看？";
             }
         } else {
             return false;
@@ -48,13 +48,14 @@ const remove = async(user, assignment) => {
     try {
         await USER_SERVICE.active(user);
         if (await getPower(user.id)) {
-            let sqlRes = await ACTION.remove(assignment);
-            if (sqlRes.affectedRows > 0) {
-                res.errcode = 0;
+            let queryAssign = await ACTION.queryNameAndDeadLine(assignment);
+            if (queryAssign.length) {
+                res.errcode = 30001;
+                res.data = await ACTION.remove(assignment);
                 res.msg = "删除作业成功";
             } else {
-                res.errcode = 2;
-                res.msg = "无此日作业";
+                res.errcode = 30101;
+                res.msg = "无此日作业，删除失败";
             }
         } else {
             return false;
@@ -74,10 +75,10 @@ const edit = async(user, assignment) => {
         if (await getPower(user.id)) {
             let sqlRes = await ACTION.edit(assignment);
             if (sqlRes.affectedRows > 0) {
-                res.errcode = 0;
+                res.errcode = 30002;
                 res.msg = "编辑作业成功";
             } else {
-                res.errcode = 2;
+                res.errcode = 30102;
                 res.msg = "编辑作业失败";
             }
         } else {
@@ -95,7 +96,7 @@ const query = async(user, name) => {
     let res = {};
     try {
         await USER_SERVICE.active(user);
-        res.errcode = 0;
+        res.errcode = 30003;
         res.data = await ACTION.query(name);
         res.msg = "查询作业成功";
     } catch (e) {
@@ -110,7 +111,7 @@ const queryNameBeforeDeadLine = async(user, name, deadLine) => {
     let res = {};
     try {
         await USER_SERVICE.active(user);
-        res.errcode = 0;
+        res.errcode = 30003;
         res.data = await ACTION.queryNameBeforeDeadLine(name, deadLine);
         res.msg = "查询作业成功";
     } catch (e) {
@@ -125,7 +126,7 @@ const queryNameAfterStartLine = async(user, name, startLine) => {
     let res = {};
     try {
         await USER_SERVICE.active(user);
-        res.errcode = 0;
+        res.errcode = 30003;
         res.data = await ACTION.queryNameAfterStartLine(name, startLine);
         res.msg = "查询作业成功";
     } catch (e) {
@@ -140,7 +141,7 @@ const queryNameInPeriod = async(user, name, startLine, deadLine) => {
     let res = {};
     try {
         await USER_SERVICE.active(user);
-        res.errcode = 0;
+        res.errcode = 30003;
         res.data = await ACTION.queryNameInPeriod(name, startLine, deadLine);
         res.msg = "查询作业成功";
     } catch (e) {
@@ -155,7 +156,7 @@ const queryBeforeDeadLine = async(user, deadLine) => {
     let res = {};
     try {
         await USER_SERVICE.active(user);
-        res.errcode = 0;
+        res.errcode = 30003;
         res.data = await ACTION.queryBeforeDeadLine(deadLine);
         res.msg = "查询作业成功";
     } catch (e) {
@@ -170,7 +171,7 @@ const queryAfterStartLine = async(user, startLine) => {
     let res = {};
     try {
         await USER_SERVICE.active(user);
-        res.errcode = 0;
+        res.errcode = 30003;
         res.data = await ACTION.queryAfterStartLine(startLine);
         res.msg = "查询作业成功";
     } catch (e) {
@@ -185,7 +186,7 @@ const queryInPeriod = async(user, startLine, deadLine) => {
     let res = {};
     try {
         await USER_SERVICE.active(user);
-        res.errcode = 0;
+        res.errcode = 30003;
         res.data = await ACTION.queryInPeriod(startLine, deadLine);
         res.msg = "查询作业成功";
     } catch (e) {
@@ -204,7 +205,7 @@ const queryAll = async(user) => {
         res.data = await ACTION.queryAll();
         res.msg = "遍历作业成功";
     } catch (e) {
-        res.errcode = 1;
+        res.errcode = 30104;
         res.msg = "遍历作业失败";
     }
     return res;

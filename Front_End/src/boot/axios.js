@@ -24,7 +24,7 @@ axios.interceptors.response.use(
     res => {
         // 将从响应头拿到的JWT存在本地浏览器缓存
         let token = res.headers.authorization;
-        if (token) {
+        if (token && token != 0) {
             // 拿到token
             localStorage.setItem("Authorization", token);
         } else {
@@ -35,16 +35,20 @@ axios.interceptors.response.use(
         // 判断错误
         let errcode = res.data.errcode;
         let data = res.data.data;
-        if (errcode) {
+        if (
+            errcode === 1 ||
+            !(
+                (errcode >= 10000 && errcode <= 10006) ||
+                (errcode >= 20000 && errcode <= 20004) ||
+                (errcode >= 30000 && errcode <= 30004)
+            )
+        ) {
             // 操作失败
             let err = {
                 errcode: errcode,
                 message: res.data.msg || "",
                 data: data || null
             };
-            // if (errcode === 1062) {
-            //     err.message = "主键重复";
-            // }
             return Promise.reject(err);
         }
 

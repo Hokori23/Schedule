@@ -27,11 +27,9 @@ const checkAndSpawn = async(req, res, next) => {
                 res.status(401).end();
                 return;
             }
-
             //重新加密jwt
             //未过期，更新JWT
             let jwt = encode(decoded);
-            // decoded.expires = time + tokenExpiresTime;
 
             //改变活跃时间
             SERVICE.active({
@@ -52,8 +50,7 @@ const checkAndSpawn = async(req, res, next) => {
         if (id) {
             //设置JWT
             let queryResult = await SERVICE.query(id);
-            if (queryResult.errcode === 0) {
-                // let jwt = {};
+            if (queryResult.errcode === 10000) {
                 if (queryResult.data.length) {
                     let jwt = {
                         iss: "Hokori-Nodejs-Server",
@@ -66,7 +63,7 @@ const checkAndSpawn = async(req, res, next) => {
                 }
             }
         } else {
-            console.log('游客访问')
+            console.log("游客访问");
         }
         next();
     }

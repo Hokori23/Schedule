@@ -16,7 +16,7 @@ const getAllSubjects = ({ commit, state }, vm) => {
             .then(res => {
                 //获取科目成功
                 commit("subjects", res.data.data);
-                resolve(null);
+                resolve(res);
             })
             .catch(e => {
                 if ((e.message = "取消请求")) {
@@ -76,7 +76,6 @@ const getAssignmentsInPeriod = ({ commit, state }, [days, vm]) => {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
         vm.cancelTokenArr.push(source);
-
         vm.assignmentState = true;
         vm.$q.loadingBar.start();
 
@@ -117,6 +116,22 @@ const getAssignmentsInPeriod = ({ commit, state }, [days, vm]) => {
             });
     });
 };
+const addAssignment = ({ commit, state }, [data, vm]) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .post("/assignment", {
+                name: data.name,
+                info: data.info,
+                deadLine: data.deadLine
+            })
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(e => {
+                reject(e);
+            });
+    });
+};
 
 const getSelf = ({ commit, state }, vm) => {
     return new Promise((resolve, reject) => {
@@ -128,7 +143,7 @@ const getSelf = ({ commit, state }, vm) => {
             })
             .then(res => {
                 commit("user", res.data.data[0]);
-                resolve();
+                resolve(res);
             })
             .catch(e => {
                 reject(e);
@@ -145,7 +160,7 @@ const editSelf = ({ commit, state }, [name, vm]) => {
             })
             .then(res => {
                 commit("user", res.data.data[0]);
-                resolve();
+                resolve(res);
             })
             .catch(e => {
                 reject(e);
@@ -165,7 +180,7 @@ const deleteSelf = ({ commit, state }, [password, vm]) => {
             .then(res => {
                 //Log out operation here
                 commit("login", false);
-                resolve();
+                resolve(res);
             })
             .catch(e => {
                 reject(e);
@@ -176,6 +191,7 @@ export {
     getAllSubjects,
     getAllAssignments,
     getAssignmentsInPeriod,
+    addAssignment,
     getSelf,
     editSelf,
     deleteSelf

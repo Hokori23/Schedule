@@ -108,7 +108,9 @@ export default {
         let length = this.data.length;
         for (let i = 0; i < this.data.length; i++) {
           let nowTimeStamp = this.getTimeStamp(index);
-          let subjectTimeStamp = this.$timeStampFloor(this.data[i].deadLine);
+          let subjectTimeStamp = this.$timeStampFloor(
+            Number(this.data[i].deadLine)
+          );
           if (
             subjectTimeStamp === nowTimeStamp &&
             this.data[i].name === subject.name
@@ -173,31 +175,27 @@ export default {
 
       /************* 获取所有科目 *************/
       try {
-        await this.$store.dispatch("MainLayout/getAllSubjects", this);
+        this.$store.dispatch("MainLayout/getAllSubjects", this)
       } catch (e) {
-        this.$q.dialog({
-          message: e.message
-        });
+        this.$dealWithError(this, e);
       }
       /************* 处理数据转为events *************/
-      let rowEvents = null;
       try {
+        let rowEvents = null;
         rowEvents =
           (await this.$store.dispatch("MainLayout/getAllAssignments", this)) ||
           [];
+        let arrEvents = [];
+        let eventsLength = rowEvents.length;
+        for (let i = 0; i < eventsLength; i++) {
+          let date = this.$formatTimeStamp(rowEvents[i].deadLine).format1();
+          arrEvents[arrEvents.length] = date;
+        }
+        this.events = arrEvents || this.events;
       } catch (e) {
-        this.$q.dialog({
-          message: e.message
-        });
+        this.$dealWithError(this, e);
         rowEvents = [];
       }
-      let arrEvents = [];
-      let eventsLength = rowEvents.length;
-      for (let i = 0; i < eventsLength; i++) {
-        let date = this.$formatTimeStamp(rowEvents[i].deadLine).format1();
-        arrEvents[arrEvents.length] = date;
-      }
-      this.events = arrEvents || this.events;
 
       /************* 获取指定时间戳前的所有作业 *************/
       try {
@@ -207,9 +205,7 @@ export default {
             this
           ])) || this.data;
       } catch (e) {
-        this.$q.dialog({
-          message: e.message
-        });
+        this.$dealWithError(this, e);
       }
 
       //状态复原
@@ -237,180 +233,6 @@ export default {
   },
   created: async function() {
     this.init();
-  },
-  mounted: async function() {
-    //注册
-    // this.$axios
-    //   .post("/user", {
-    //     id: "test4",
-    //     name: "Hokori4",
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(e => {
-    //     console.log(e.message);
-    //   });
-    // //登录
-    // this.$axios
-    //   .get("/user", {
-    //     params: {
-    //       id: "524159845",
-    //       password: "bnm19990412"
-    //     }
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(e => {
-    //     console.log(e);
-    //   });
-    //查找
-    // this.$axios
-    //   .get("/user")
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(e => {
-    //     console.log(e);
-    //   });
-    //删除
-    // this.$axios
-    //   .delete("/user", {
-    //     params: {
-    //       id: "123125"
-    //     }
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(e => {
-    //     console.log(e.message);
-    //   });
-    //改
-    // this.$axios
-    //   .put("/user", {
-    //       id: "524159845",
-    //       name:'Natsuya'
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(e => {
-    //     console.log(e);
-    //   });
-    //添加科目
-    // this.$axios({
-    //     url:'/subject',
-    //     method:'post',
-    //     data:{
-    //         name:'test',
-    //         type:'0'
-    //     }
-    // }).then(res=>{
-    //     console.log(res)
-    // }).catch(err=>{
-    //     console.log(err.message)
-    // })
-    // 删除科目
-    // this.$axios
-    //   .delete("/subject", {
-    //     params: {
-    //       name: "Chinese"
-    //     }
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err.message);
-    //   });
-    //修改科目;
-    // this.$axios
-    //   .put("/subject", {
-    //       name: "test2",
-    //       type:0,
-    //       oldname:'test'
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err.message);
-    //   });
-    // 查询科目;
-    // this.$axios
-    //   .get("/subject",{
-    //     params:{
-    //       name:'Math'
-    //     }
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //     console.log(err.message);
-    //   });
-    //添加作业
-    // let time = new Date();
-    // console.log(time.getDay())
-    // let dealTime = new Date(
-    //   time.getFullYear(),
-    //   time.getMonth(),
-    //   time.getDate()
-    // );
-    // this.$axios
-    //   .post("/assignment", {
-    //     name: "PE",
-    //     info: "assignment2",
-    //     deadLine: Date.now() + this.$day*2
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //     console.log(err.message);
-    //   });
-    //编辑作业
-    // this.$axios
-    //   .put("/assignment", {
-    //     name: "test",
-    //     info: "edit",
-    //     deadLine: dealTime.getTime()
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //     console.log(err.message);
-    //   });
-    //删除作业
-    // this.$axios
-    //   .delete("/assignment", {
-    //     params: {
-    //       name: "test",
-    //       deadLine: dealTime.getTime()
-    //     }
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //     console.log(err.message);
-    //   });
-    // 查询作业
-    // this.$axios.get('/assignment',{
-    //   params:{
-    //     name:'JavaWeb',
-    //     startLine:1588882210855,
-    //   }
-    // }).then(res=>{
-    //   console.log(res)
-    // })
   }
 };
 </script>

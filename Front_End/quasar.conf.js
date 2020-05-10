@@ -54,7 +54,7 @@ module.exports = function(ctx) {
                     size: "5px"
                 },
                 notify: {
-                    color: "secondary",
+                    color: "positive",
                     position: "bottom",
                     timeout: "500",
                     icon: "announcement"

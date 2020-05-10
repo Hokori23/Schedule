@@ -152,20 +152,9 @@ export default {
         //登录
         try {
           let res = await this.$store.dispatch("LoginLayout/login", this);
-          this.$store.commit("MainLayout/user",res.data.data[0]);
-          this.$router.push("/");
+          this.$dealWithSuccess(this,res.data)
         } catch (e) {
-          if (e.errcode === 2) {
-            e.message = this.$t("login.accountWrong");
-          } else if (e.errcode === 3) {
-            e.message = this.$t("login.passwordWrong");
-          }
-          this.$q.dialog({
-            message: e.message,
-            title: this.$t("common.alert"),
-            ok:this.$t('common.confirm'),
-            cancel:this.$t('common.cancel')
-          });
+          this.$dealWithError(this,e);
         }
       }
     },

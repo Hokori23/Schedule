@@ -39,7 +39,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="drawer" side="left" elevated>
+    <q-drawer show-if-above v-model="drawer" side="left" elevated class='non-selectable'>
       <!-- drawer content -->
       <q-list>
         <!-- Banner -->
@@ -187,18 +187,20 @@ export default {
     //添加作业
     async rightTopIconClick() {
       if (this.rightTopIcon === "add") {
-        //添加作业
+        //判断路由路径
         if (this.$route.path === "/") {
           let subjectsObject = this.$store.state.MainLayout.subjects;
           //判断是否有科目
           if (!subjectsObject.length) {
+            //没有的话尝试获取一遍
             await this.$store.dispatch("MainLayout/getAllsubjects", this);
           }
+
+          //处理数据
           let subjects = subjectsObject.map(value => {
-            console.log(value.name);
             return value.name;
           });
-          console.log(subjects);
+
           this.$q
             .dialog({
               component: AddAssignment,
@@ -207,9 +209,18 @@ export default {
               ok: this.$t("common.confirm"),
               cancel: this.$t("common.cancel")
             })
-            .onOk(data => {
+            .onOk(async data => {
               //添加作业
-              console.log("get data", data);
+              try {
+                let res = await this.$store.dispatch(
+                  "MainLayout/addAssignment",
+                  [data, this]
+                );
+                this.$dealWithSuccess(this,res)
+                this.$store.commit("MainLayout/refreshState", true);
+              } catch (e) {
+                this.$dealWithError(this,e)
+              }
             });
         }
       }

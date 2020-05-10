@@ -5,7 +5,7 @@ const MIDDLEWARE = require('./middleware/index');
 const COMPRESSION = require('compression');
 const USER_LISTEN = require('./LISTEN/userListen');
 const SUBJECT_LISTEN = require('./LISTEN/subjectListen');
-const ASSIGN_LISTEN = require('./LISTEN/AssignmentListen');
+const ASSIGN_LISTEN = require('./LISTEN/assignmentListen');
 APP.set('env', 'development');
 // APP.set('env','production');
 const port = 8000

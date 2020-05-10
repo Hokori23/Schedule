@@ -25,6 +25,7 @@ export default {
         nickName: "Nickname",
         nickNameErr: "Nickname required",
         login: "Login",
+        loginSuccess: 'Logged in successfully',
         loginExpired: "Login has expired, please log in again",
         noAccountYet: "Have no account yet?",
         register: "Register now",
@@ -47,7 +48,9 @@ export default {
         confirm: "Confirm",
         cancel: "Cancel",
         reconnect: "Reconnect",
-        unknownErr: "Unknown Error!",
+        err: 'Error',
+        unknownErr: "Unknown Error",
+        unknownErrTip: "Something goes wrong, maybe effect the execution of the program, you can contact me on [hokori23@qq.com] if you in need.",
         save: "Save",
         continue: "Continue",
         finish: "Finish",
@@ -70,10 +73,35 @@ export default {
         createdTime: "Created Time",
         activatedTime: "Last Activated Time",
         editMsg: "Edit Nickname",
+        editSuccess: 'Edited your info successfully',
         delete: "Cancel Account",
         deleteMsg: "Input your password to confirm the operation",
+        deleteSuccess: "Account was Canceled successfully",
         logOut: "Log out",
-        logOutConfirm: "Are you really want to log out?"
+        logOutConfirm: "Are you really want to log out?",
+        noPower: "You have no permission to do such thing."
+    },
+    assignment: {
+        add: "Added the assignment successfully",
+        addInfo: 'Add assignment',
+        addErr: "This day's assignment already exists, Do you wanna have a look?",
+        remove: "Removed this assignment successfully",
+        removeErr: "Removed failed because of no assignment in this day",
+        edit: "Edited the assignment successfully",
+        editErr: "Edit the assignment failed",
+        query: "Queried assignment(s) successfully",
+        queryAll: "Queried all assignments successfully",
+        queryAllErr: "Query all assignments failed"
+    },
+    subject: {
+        add: "Added the subject successfully",
+        addErr: "The subject already exists",
+        remove: "Removed this subject successfully",
+        removeErr: "Removed failed with non-existent subject",
+        edit: "Edited the subject successfully",
+        editErr: "Edit the subject failed",
+        query: "Queried subject(s) successfully",
+        queryAll: "Queried all subjects successfully",
     },
     setting: {
         language: "Language",
@@ -82,7 +110,12 @@ export default {
         days: "The numbers of shown days"
     },
     error: {
-        unauthorized: 'Unauthorized',
-        forbidden: 'Forbidden'
+        unauthorized: "Unauthorized",
+        forbidden: "Forbidden"
+    },
+    table: {
+        subject: "Subject",
+        assignment: "Assignment Info",
+        category: "Category"
     }
 };

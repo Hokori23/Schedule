@@ -62,7 +62,224 @@ const timeStampFloor = timeStamp => {
     let floorTime = new Date(time.getFullYear(), time.getMonth(), time.getDate());
     return floorTime.getTime();
 };
+const dealWithSuccess = (vm, e) => {
+    //自定义错误码处理
+    let message = "";
+    let onOk = null;
+    let flag = 0;
+    /**
+     * @flag
+     * Number 0 对话框
+     * Number 1 通知栏
+     */
+    switch (e.errcode) {
+        case 10001:
+            {
+                message = vm.$t("login.registerSuccess");
+                onOk = async() => {
+                    //登录
+                    let res = await this.$store.dispatch("LoginLayout/login", this);
+                    this.$dealWithSuccess(this, res.data)
+                };
+                break;
+            }
+            //登陆成功
+        case 10002:
+            {
+                message = vm.$t("login.loginSuccess");
+                flag = 1;
+                vm.$store.commit("MainLayout/user", res.data.data[0]);
+                vm.$router.push("/");
+                break;
+            }
+        case 10004:
+            {
+                message = vm.$t("user.deleteSuccess");
+                flag = 1;
+                break;
+            }
+        case 10006:
+            {
+                message = vm.$t("user.editSuccess");
+                flag = 1;
+                break;
+            }
+        case 20000:
+            {
+                message = vm.$t("subject.add");
+                flag = 1;
+                break;
+            }
+        case 20001:
+            {
+                message = vm.$t("subject.remove");
+                flag = 1;
+                break;
+            }
+        case 20002:
+            {
+                message = vm.$t("subject.edit");
+                flag = 1;
+                break;
+            }
+        case 30000:
+            {
+                message = vm.$t("assignment.add");
+                flag = 1;
+                break;
+            }
+        case 30001:
+            {
+                message = vm.$t("assignment.remove");
+                flag = 1;
+                break;
+            }
+        case 30002:
+            {
+                message = vm.$t("assignment.edit");
+                flag = 1;
+                break;
+            }
+        default:
+            {
+                title = vm.$t("common.unknownErr");
+                message = vm.$t("common.unknownErrTip");
+            }
+    }
+    if (!flag) {
+        vm.$q
+            .dialog({
+                title: vm.$t("common.alert"),
+                message: message
+            })
+            .onOk(onOk);
+    } else {
+        vm.$q.notify({
+            message: message
+        });
+    }
+};
+const dealWithError = (vm, e) => {
+    //HTTP协议错误码处理
+    if (e.errcode >= 400 && e.errcode <= 505) {
+        if (e.errcode === 401) {
+            vm.$q
+                .dialog({
+                    title: vm.$t("error.unauthorized"),
+                    message: vm.$t("user.notLogin"),
+                    ok: vm.$t("user.suggestToLogin"),
+                    cancel: vm.$t("common.cancel")
+                })
+                .onOk(() => {
+                    vm.$router.push("/login");
+                });
+        } else if (e.errcode === 403) {
+            vm.$q.dialog({
+                title: vm.$t("error.forbidden"),
+                message: vm.$t("user.noPower")
+            });
+        } else {
+            vm.$q.dialog({
+                title: vm.$t("common.unknownErr"),
+                message: vm.$t("user.noPower") + e.errcode
+            });
+        }
+        return;
+    }
+
+    //自定义错误码处理
+    let message = "";
+    let title = vm.$t("common.err");
+    let func = null;
+
+    switch (e.errcode) {
+        case 1:
+            {
+                message = e.msg;
+                break;
+            }
+        case 10100:
+        case 10103:
+        case 10104:
+            {
+                message = vm.$t("login.accountWrong");
+                break;
+            }
+        case 10101:
+            {
+                message = vm.$t("login.accountExisted");
+                break;
+            }
+        case 10102:
+        case 10105:
+            {
+                message = vm.$t("login.passwordWrong");
+                break;
+            }
+        case 20100:
+            {
+                message = vm.$t("subject.addErr");
+                cancel = $vm.$t("common.cancel");
+                break;
+            }
+        case 20101:
+            {
+                message = vm.$t("subject.removeErr");
+                break;
+            }
+        case 20102:
+            {
+                message = vm.$t("subject.editErr");
+                break;
+            }
+        case 30100:
+            {
+                message = vm.$t("assignment.addErr");
+                func = null; //跳转
+                break;
+            }
+        case 30101:
+            {
+                message = vm.$t("assignment.removeErr");
+                break;
+            }
+        case 30102:
+            {
+                message = vm.$t("assignment.editErr");
+                break;
+            }
+        case 30104:
+            {
+                message = vm.$t("assignment.queryAllErr");
+                break;
+            }
+        default:
+            {
+                title = vm.$t("common.unknownErr");
+                message = vm.$t("common.unknownErrTip");
+            }
+    }
+
+    //是否跳转查看该日作业
+    if (func) {
+        vm.$q
+            .dialog({
+                title: title,
+                message: message,
+                cancel: vm.$t("common.cancel")
+            })
+            .onOk(func());
+    } else {
+        vm.$q.dialog({
+            title: title,
+            message: message
+        });
+    }
+};
+
 const day = 1000 * 60 * 60 * 24;
 Vue.prototype.$formatTimeStamp = formatTimeStamp;
 Vue.prototype.$timeStampFloor = timeStampFloor;
 Vue.prototype.$day = day;
+Vue.prototype.$dealWithError = dealWithError;
+Vue.prototype.$dealWithSuccess = dealWithSuccess;
