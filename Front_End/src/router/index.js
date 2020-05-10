@@ -31,7 +31,6 @@ export default function( /* { store, ssrContext } */ ) {
         if (!Number(localStorage.getItem("login")) ||
             !localStorage.getItem("Authorization")
         ) {
-            console.log("清除登陆状态");
             localStorage.removeItem("Authorization");
             localStorage.removeItem("user");
             localStorage.setItem("login", 0);

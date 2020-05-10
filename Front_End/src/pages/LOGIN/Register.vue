@@ -15,7 +15,7 @@
       <q-step
         :name="1"
         :title="$t('login.registerAnnounceTitle')"
-        icon="message"
+        icon="create_new_folder"
         :done="step > 1"
         class="register-box"
       >
@@ -54,7 +54,7 @@
       </q-step>
 
       <!-- Step 2 -->
-      <q-step :name="2" title="Register format" icon="assignment" :done="step > 2" class="register-box">
+      <q-step :name="2" title="Register format" icon="create" :done="step > 2" class="register-box">
         <!-- 账号或邮箱 -->
         <q-input
           bottom-slots
@@ -120,9 +120,10 @@
             :label="step === 2 ? $t('common.finish') : $t('common.continue')"
           />
           <q-btn
+            v-if="step > 1"
             flat
             color="primary"
-            @click="step>1?$refs.stepper.previous():$router.back()"
+            @click="$refs.stepper.previous()"
             :label="$t('common.back')"
             class="q-ml-sm"
           />
@@ -219,8 +220,6 @@ export default {
 
 .stepper
   min-height: calc(100vh - 50px)
-  box-sizing: border-box
-  padding-bottom: 55px
   position: relative
   width: 100%
 
@@ -230,8 +229,6 @@ export default {
   right: 0
   display: flex
   flex-direction: row-reverse
-  button.q-btn
-    margin: 0 5px
 
 .register-box
   display: flex

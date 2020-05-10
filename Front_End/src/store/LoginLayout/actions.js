@@ -2,7 +2,6 @@ import axios from "axios";
 
 const login = ({ commit, state }, vm) => {
     return new Promise((resolve, reject) => {
-        console.log(vm.info.account)
         vm.loginState = true;
         vm.$q.loadingBar.start();
         axios
@@ -15,8 +14,8 @@ const login = ({ commit, state }, vm) => {
             })
             .then(res => {
                 //登陆成功
-                vm.$store.commit("MainLayout/login", true)
-                vm.$store.commit("MainLayout/user", res.data.data[0])
+                commit("login", true)
+                commit("user", res.data.data[0])
                 resolve(res);
             })
             .catch(e => {

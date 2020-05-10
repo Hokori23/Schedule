@@ -41,7 +41,7 @@
           <q-item-label>{{$t('user.createdTime')}}</q-item-label>
         </q-item-section>
         <q-item-section class="text-primary text-weight-bold" side>
-          <q-item-label>{{$formatTimeStamp(user.createdTime||true).format1()}}</q-item-label>
+          <q-item-label>{{$formatTimeStamp(user.createdTime).format1()}}</q-item-label>
         </q-item-section>
       </q-item>
 
@@ -54,7 +54,7 @@
           <q-item-label>{{$t('user.activatedTime')}}</q-item-label>
         </q-item-section>
         <q-item-section class="text-primary text-weight-bold" side>
-          <q-item-label>{{$formatTimeStamp(user.activatedTime||true).format1()}}</q-item-label>
+          <q-item-label>{{$formatTimeStamp(user.activatedTime).format1()}}</q-item-label>
         </q-item-section>
       </q-item>
 

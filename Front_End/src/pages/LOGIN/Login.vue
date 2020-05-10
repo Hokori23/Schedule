@@ -153,7 +153,6 @@ export default {
         //登录
         try {
           let res = await this.$store.dispatch("LoginLayout/login", this);
-          console.log(res)
           this.$store.commit("MainLayout/user",res.data.data[0]);
           this.$router.push("/");
         } catch (e) {
@@ -261,11 +260,11 @@ export default {
       height: 100%
       width: 100%
 
-      // .lang
-      //   position: absolute
-      //   right: 0
-      //   bottom: 0
-      //   transform: translateX(100%)
+      .lang
+        position: absolute
+        right: 0
+        bottom: 0
+        transform: translateX(100%)
 
   @keyframes bound
     0%
