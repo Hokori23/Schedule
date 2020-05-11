@@ -1,24 +1,39 @@
 const path = (state, value) => {
     state.path = value;
 };
+
 const title = (state, value) => {
     state.title = value;
 };
-const rightTopIcon = (state, value) => {
-    state.rightTopIcon = value;
+
+const rightTopIcon = (state, { display, icon }) => {
+    state.rightTopIcon.display = display || state.rightTopIcon.display;
+    state.rightTopIcon.icon = icon || state.rightTopIcon.icon;
 };
-const leftTopIcon = (state, value) => {
-    state.leftTopIcon = value;
+
+const rightTopIcon2 = (state, { display, icon }) => {
+    state.rightTopIcon2.display = display || state.rightTopIcon2.display;
+    state.rightTopIcon2.icon = icon || state.rightTopIcon2.icon;
 };
-const refreshIcon = (state, value) => {
-    state.refreshIcon = value;
+
+const rightTopIcon3 = (state, { display, icon }) => {
+    state.rightTopIcon3.display = display || state.rightTopIcon3.display;
+    state.rightTopIcon3.icon = icon || state.rightTopIcon3.icon;
 };
+
+const leftTopIcon = (state, { display, icon }) => {
+    state.leftTopIcon.display = display || state.leftTopIcon.display;
+    state.leftTopIcon.icon = icon || state.leftTopIcon.icon;
+};
+
 const refreshState = (state, value) => {
     state.refreshState = value;
 };
+//加载科目状态
 const subjectState = (state, value) => {
     state.subjectState = value;
 };
+
 const login = (state, value) => {
     localStorage.setItem("login", Number(value));
     if (value) {
@@ -29,9 +44,11 @@ const login = (state, value) => {
         localStorage.removeItem("user");
     }
 };
+
 const subjects = (state, value) => {
     state.subjects = value;
 };
+
 const user = (state, value) => {
     state.user = value;
     localStorage.setItem("user", JSON.stringify(value));
@@ -40,16 +57,27 @@ const user = (state, value) => {
 const online = (state, value) => {
     state.online = value;
 };
+
+const subjectSort = (state, value) => {
+    state.subjectSort = value;
+    if (value === null) {
+        localStorage.setItem("subjectSort", null);
+        return;
+    }
+    localStorage.setItem("subjectSort", Number(value));
+};
 export {
     path,
     title,
     rightTopIcon,
+    rightTopIcon2,
+    rightTopIcon3,
     leftTopIcon,
-    refreshIcon,
     refreshState,
     subjectState,
     login,
     subjects,
     user,
-    online
+    online,
+    subjectSort
 };

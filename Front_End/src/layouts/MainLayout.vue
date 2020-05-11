@@ -2,18 +2,27 @@
   <q-layout view="hHh LpR fFf" class="mainLayout">
     <q-header reveal elevated class="bg-primary text-white">
       <q-toolbar>
-        <!-- btn Animation -->
+        <!--  Animation -->
         <transition
           appear
           enter-active-class="animated fadeIn"
           leave-active-class="animated fadeOut"
         >
-          <q-btn flat round :icon="leftTopIcon" @click="leftTopIconClick()" />
+          <q-btn flat round :icon="leftTopIcon.icon" @click="leftTopIconClick()" />
         </transition>
 
         <q-toolbar-title>{{title}}</q-toolbar-title>
 
-        <!-- btn Animation -->
+        <!-- SORT Animation -->
+        <transition
+          appear
+          enter-active-class="animated fadeIn"
+          leave-active-class="animated fadeOut"
+        >
+          <q-btn flat round :icon="rightTopIcon3.icon" v-if="rightTopIcon3.display" @click="subjectSort" />
+        </transition>
+
+        <!-- ADD Animation -->
         <transition
           appear
           enter-active-class="animated fadeIn"
@@ -22,19 +31,19 @@
           <q-btn
             flat
             round
-            :icon="refreshIcon"
-            v-if="refreshIcon"
-            @click.prevent="refreshIconClick"
+            :icon="rightTopIcon2.icon"
+            v-if="rightTopIcon2.display"
+            @click="rightTopIconClick"
           />
         </transition>
 
-        <!-- btn Animation -->
+        <!-- MORE Animation -->
         <transition
           appear
           enter-active-class="animated fadeIn"
           leave-active-class="animated fadeOut"
         >
-          <q-btn flat round :icon="rightTopIcon" v-if="rightTopIcon" @click="rightTopIconClick" />
+          <q-btn flat round :icon="rightTopIcon.icon" v-if="rightTopIcon.display" />
         </transition>
       </q-toolbar>
     </q-header>
@@ -148,11 +157,14 @@ export default {
     rightTopIcon() {
       return this.$store.state.MainLayout.rightTopIcon;
     },
+    rightTopIcon2() {
+      return this.$store.state.MainLayout.rightTopIcon2;
+    },
+    rightTopIcon3() {
+      return this.$store.state.MainLayout.rightTopIcon3;
+    },
     leftTopIcon() {
       return this.$store.state.MainLayout.leftTopIcon;
-    },
-    refreshIcon() {
-      return this.$store.state.MainLayout.refreshIcon;
     },
     refreshState() {
       return this.$store.state.MainLayout.refreshState;
@@ -179,55 +191,67 @@ export default {
         this.$router.back();
       }
     },
-    refreshIconClick() {
-      if (this.refreshIcon && !this.refreshState) {
-        this.$store.commit("MainLayout/refreshState", true);
-      }
-    },
-    //添加作业
     async rightTopIconClick() {
-      if (this.rightTopIcon === "add") {
-        //判断路由路径
-        if (this.$route.path === "/") {
-          let subjectsObject = this.$store.state.MainLayout.subjects;
-          //判断是否有科目
-          if (!subjectsObject.length) {
-            //没有的话尝试获取一遍
-            await this.$store.dispatch("MainLayout/getAllsubjects", this);
+      //添加作业
+      let subjectsObject = this.$store.state.MainLayout.subjects;
+      //判断是否有科目
+      if (!subjectsObject.length) {
+        //没有的话尝试获取一遍
+        await this.$store.dispatch("MainLayout/getAllsubjects", this);
+      }
+
+      //处理数据
+      let subjects = subjectsObject.map(value => {
+        return value.name;
+      });
+
+      this.$q
+        .dialog({
+          component: AddAssignment,
+          parent: this,
+          subjects: subjects,
+          ok: this.$t("common.confirm"),
+          cancel: this.$t("common.cancel")
+        })
+        .onOk(async ({ assignment, vm }) => {
+          //添加作业
+          try {
+            let res = await this.$store.dispatch("MainLayout/addAssignment", [
+              assignment,
+              this
+            ]);
+            this.$store.commit("MainLayout/refreshState", true);
+            this.$dealWithSuccess(this, res);
+          } catch (e) {
+            this.$dealWithError(this, e);
+          } finally {
+            vm.submitState = false;
+            if (vm.hide) {
+              vm.hide();
+            }
           }
-
-          //处理数据
-          let subjects = subjectsObject.map(value => {
-            return value.name;
-          });
-
-          this.$q
-            .dialog({
-              component: AddAssignment,
-              parent: this,
-              subjects: subjects,
-              ok: this.$t("common.confirm"),
-              cancel: this.$t("common.cancel")
-            })
-            .onOk(async ({ assignment, vm }) => {
-              //添加作业
-              try {
-                let res = await this.$store.dispatch(
-                  "MainLayout/addAssignment",
-                  [assignment, this]
-                );
-                this.$store.commit("MainLayout/refreshState", true);
-                this.$dealWithSuccess(this, res);
-              } catch (e) {
-                this.$dealWithError(this, e);
-              } finally {
-                vm.submitState = false;
-                if (vm.hide) {
-                  vm.hide();
-                }
-              }
-            });
-        }
+        });
+    },
+    subjectSort() {
+      let icon = this.$store.state.MainLayout.rightTopIcon3.icon;
+      if (icon === "sort") {
+        //顺序排序
+        this.$store.commit("MainLayout/rightTopIcon3", {
+          icon: "arrow_upward"
+        });
+        this.$store.commit("MainLayout/subjectSort", true);
+      } else if (icon === "arrow_upward") {
+        //降序排序
+        this.$store.commit("MainLayout/rightTopIcon3", {
+          icon: "arrow_downward"
+        });
+        this.$store.commit("MainLayout/subjectSort", false);
+      } else {
+        //不排序
+        this.$store.commit("MainLayout/rightTopIcon3", {
+          icon: "sort"
+        });
+        this.$store.commit("MainLayout/subjectSort", null);
       }
     }
   },

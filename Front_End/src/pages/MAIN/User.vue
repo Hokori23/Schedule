@@ -152,6 +152,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
+      // 未登录
       if (!Number(localStorage.getItem("login"))) {
         let flag = 0;
         vm.$q
@@ -170,13 +171,13 @@ export default {
             }
           });
       } else {
+        // 已登录
         vm.$store.commit("MainLayout/title", vm.$t("location.user"));
         try {
           vm.$store.dispatch("MainLayout/getSelf", vm);
         } catch (e) {
-          this.$dealWithError(this, e);
+          vm.$dealWithError(vm, e);
         }
-        vm.$store.commit("MainLayout/rightTopIcon", "");
       }
     });
   }

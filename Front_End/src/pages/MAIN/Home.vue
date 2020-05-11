@@ -1,6 +1,10 @@
 <template>
   <q-pull-to-refresh @refresh="init">
-    <section class="page column" v-touch-pan.horizontal.prevent.mouse="drag" ref="homeContainer">
+    <section
+      class="page column no-wrap"
+      v-touch-pan.horizontal.prevent.mouse="drag"
+      ref="homeContainer"
+    >
       <header class="row items-center no-wrap">
         <div>
           <q-btn icon="date_range" round color="primary" flat>
@@ -29,7 +33,9 @@
         :key="subject.name"
         :class="headerClass(subject.type)"
       >
-        <div class="text-white non-selectable text-justify header-subject relative-position">
+        <div
+          class="text-center text-white non-selectable ellipsis-3-lines header-subject relative-position q-pa-lg"
+        >
           {{subject.name}}
           <q-inner-loading :showing="subjectState">
             <q-spinner-audio size="50px" color="primary" />
@@ -73,6 +79,7 @@
   </q-pull-to-refresh>
 </template>
 <script>
+import { debounce } from "quasar";
 import AddAssignment from "components/AddAssignment";
 import AssignmentDetail from "components/AssignmentDetail";
 import languages from "quasar/lang/index.json";
@@ -143,12 +150,27 @@ export default {
       return this.$store.state.Setting.days;
     },
     subjects() {
-      let subjects = this.$store.state.MainLayout.subjects;
+      let subjects = Array.prototype.slice.call(
+        this.$store.state.MainLayout.subjects
+      );
       if (!subjects.length) {
         subjects = [{ name: this.$t("common.loading"), type: 0 }];
       }
 
+      if (this.subjectSort !== null && !this.subjectSort) {
+        subjects.sort((a, b) => {
+          return a.type - b.type;
+        });
+      } else if (this.subjectSort) {
+        subjects.sort((a, b) => {
+          return b.type - a.type;
+        });
+      }
       return subjects;
+    },
+    /**是否对科目排序 */
+    subjectSort() {
+      return this.$store.state.MainLayout.subjectSort;
     }
   },
   data() {
@@ -163,12 +185,17 @@ export default {
       events: [],
       data: [],
       cancelTokenArr: [],
-      offsetX: 0
+      scrollLeft: 0
     };
   },
   methods: {
     drag({ evt, ...info }) {
-      this.$refs.homeContainer.scrollLeft -= info.offset.x/10;
+      this.$refs.homeContainer.scrollLeft =
+        this.scrollLeft - info.offset.x / 25;
+      this.setScrollLeft(this.$refs.homeContainer.scrollLeft);
+    },
+    setScrollLeft(val) {
+      this.scrollLeft = val;
     },
     async getDetail(index, subject, day) {
       if (index !== false) {
@@ -284,9 +311,17 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(async vm => {
       vm.$store.commit("MainLayout/title", vm.$t("location.home"));
-      vm.$store.commit("MainLayout/rightTopIcon", "add");
-      // vm.$store.commit("MainLayout/leftTopIcon", "menu");
-      vm.$store.commit("MainLayout/refreshIcon", "refresh");
+      vm.$store.commit("MainLayout/rightTopIcon", {
+        display: true,
+        icon: "more_vert"
+      });
+      vm.$store.commit("MainLayout/rightTopIcon2", {
+        display: true,
+        icon: "add"
+      });
+      vm.$store.commit("MainLayout/rightTopIcon3", {
+        display: true,
+      });
       vm.init();
     });
   },
@@ -295,11 +330,13 @@ export default {
     this.cancelTokenArr.forEach(source => {
       source.cancel("取消请求");
     });
-
-    this.$store.commit("MainLayout/refreshIcon", "");
+    this.$store.commit("MainLayout/rightTopIcon", { display: false });
+    this.$store.commit("MainLayout/rightTopIcon2", { display: false });
+    this.$store.commit("MainLayout/rightTopIcon3", { display: false });
     next();
   },
   created: async function() {
+    // this.setScrollLeft = debounce(this.setScrollLeft, 50);
     this.init();
   }
 };

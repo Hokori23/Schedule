@@ -32,8 +32,6 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.$store.commit("MainLayout/title", vm.$t("location.about"));
-      vm.$store.commit("MainLayout/rightTopIcon", "");
-      // vm.$store.commit("MainLayout/leftTopIcon", "arrow_back");
     });
   }
 };

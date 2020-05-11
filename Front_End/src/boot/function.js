@@ -77,8 +77,8 @@ const dealWithSuccess = (vm, data) => {
                 message = vm.$t("login.registerSuccess");
                 onOk = async() => {
                     //登录
-                    let res = await this.$store.dispatch("LoginLayout/login", this);
-                    this.$dealWithSuccess(this, data);
+                    let res = await vm.$store.dispatch("LoginLayout/login", vm);
+                    vm.$dealWithSuccess(vm, res.data);
                 };
                 break;
             }
