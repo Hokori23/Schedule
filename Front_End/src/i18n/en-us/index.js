@@ -25,7 +25,8 @@ export default {
         nickName: "Nickname",
         nickNameErr: "Nickname required",
         login: "Login",
-        loginSuccess: 'Logged in successfully',
+        loginSuccess: "Logged in successfully",
+        viewAsVisitor: 'View as a visitor',
         loginExpired: "Login has expired, please log in again",
         noAccountYet: "Have no account yet?",
         register: "Register now",
@@ -48,7 +49,7 @@ export default {
         confirm: "Confirm",
         cancel: "Cancel",
         reconnect: "Reconnect",
-        err: 'Error',
+        err: "Error",
         unknownErr: "Unknown Error",
         unknownErrTip: "Something goes wrong, maybe effect the execution of the program, you can contact me on [hokori23@qq.com] if you in need.",
         save: "Save",
@@ -58,7 +59,10 @@ export default {
         alert: "Alert",
         more: "More",
         loading: "Loading",
-        edit: "Edit"
+        edit: "Edit",
+        maxLength: "Max Length",
+        delete: "Delete",
+        deleteConfirm: "Do you really want to delete it?"
     },
     location: {
         home: "Home",
@@ -73,27 +77,31 @@ export default {
         createdTime: "Created Time",
         activatedTime: "Last Activated Time",
         editMsg: "Edit Nickname",
-        editSuccess: 'Edited your info successfully',
+        editSuccess: "Edited your info successfully",
         delete: "Cancel Account",
         deleteMsg: "Input your password to confirm the operation",
         deleteSuccess: "Account was Canceled successfully",
         logOut: "Log out",
-        logOutConfirm: "Are you really want to log out?",
+        logOutConfirm: "Do you really want to log out?",
         noPower: "You have no permission to do such thing."
     },
     assignment: {
+        self: " Assignment",
         add: "Added the assignment successfully",
-        addInfo: 'Add assignment',
-        addErr: "This day's assignment already exists, Do you wanna have a look?",
+        addInfo: "Add assignment",
+        addErr: "This day's assignment already exists, \nDo you wanna have a look?",
         remove: "Removed this assignment successfully",
         removeErr: "Removed failed because of no assignment in this day",
         edit: "Edited the assignment successfully",
         editErr: "Edit the assignment failed",
         query: "Queried assignment(s) successfully",
         queryAll: "Queried all assignments successfully",
-        queryAllErr: "Query all assignments failed"
+        queryAllErr: "Query all assignments failed",
+        deadLine: 'Deadline',
+        lastModified: 'Last modified time'
     },
     subject: {
+        self: "subject",
         add: "Added the subject successfully",
         addErr: "The subject already exists",
         remove: "Removed this subject successfully",
@@ -101,7 +109,7 @@ export default {
         edit: "Edited the subject successfully",
         editErr: "Edit the subject failed",
         query: "Queried subject(s) successfully",
-        queryAll: "Queried all subjects successfully",
+        queryAll: "Queried all subjects successfully"
     },
     setting: {
         language: "Language",
@@ -111,7 +119,11 @@ export default {
     },
     error: {
         unauthorized: "Unauthorized",
-        forbidden: "Forbidden"
+        forbidden: "Forbidden",
+        unavailable: "Unavailable",
+        unavailableInfo: "The server is unavailable temporary",
+        offLine: 'Offline',
+        offLineInfo: 'You are offline now'
     },
     table: {
         subject: "Subject",

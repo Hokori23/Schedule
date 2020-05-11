@@ -39,7 +39,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="drawer" side="left" elevated class='non-selectable'>
+    <q-drawer show-if-above v-model="drawer" side="left" elevated class="non-selectable">
       <!-- drawer content -->
       <q-list>
         <!-- Banner -->
@@ -128,7 +128,7 @@
 
 
 <script>
-import AddAssignment from "../components/AddAssignment";
+import AddAssignment from "components/AddAssignment";
 import languages from "quasar/lang/index.json";
 const appLanguages = languages.filter(lang =>
   ["zh-hans", "en-us"].includes(lang.isoName)
@@ -209,17 +209,22 @@ export default {
               ok: this.$t("common.confirm"),
               cancel: this.$t("common.cancel")
             })
-            .onOk(async data => {
+            .onOk(async ({ assignment, vm }) => {
               //添加作业
               try {
                 let res = await this.$store.dispatch(
                   "MainLayout/addAssignment",
-                  [data, this]
+                  [assignment, this]
                 );
-                this.$dealWithSuccess(this,res)
                 this.$store.commit("MainLayout/refreshState", true);
+                this.$dealWithSuccess(this, res);
               } catch (e) {
-                this.$dealWithError(this,e)
+                this.$dealWithError(this, e);
+              } finally {
+                vm.submitState = false;
+                if (vm.hide) {
+                  vm.hide();
+                }
               }
             });
         }

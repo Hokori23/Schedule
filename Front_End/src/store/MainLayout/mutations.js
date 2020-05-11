@@ -16,12 +16,11 @@ const refreshIcon = (state, value) => {
 const refreshState = (state, value) => {
     state.refreshState = value;
 };
+const subjectState = (state, value) => {
+    state.subjectState = value;
+};
 const login = (state, value) => {
-    console.log("commit MainLayout/login", value);
     localStorage.setItem("login", Number(value));
-    console.log(!Number(localStorage.getItem("login")) ||
-        !localStorage.getItem("Authorization")
-    )
     if (value) {
         state.login = true;
     } else {
@@ -37,6 +36,10 @@ const user = (state, value) => {
     state.user = value;
     localStorage.setItem("user", JSON.stringify(value));
 };
+
+const online = (state, value) => {
+    state.online = value;
+};
 export {
     path,
     title,
@@ -44,7 +47,9 @@ export {
     leftTopIcon,
     refreshIcon,
     refreshState,
+    subjectState,
     login,
     subjects,
-    user
+    user,
+    online
 };

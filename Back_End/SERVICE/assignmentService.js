@@ -68,12 +68,12 @@ const remove = async(user, assignment) => {
 };
 
 //编辑作业
-const edit = async(user, assignment) => {
+const edit = async(user, assignment, oldDeadLine) => {
     let res = {};
     try {
         await USER_SERVICE.active(user);
         if (await getPower(user.id)) {
-            let sqlRes = await ACTION.edit(assignment);
+            let sqlRes = await ACTION.edit(assignment, oldDeadLine);
             if (sqlRes.affectedRows > 0) {
                 res.errcode = 30002;
                 res.msg = "编辑作业成功";
@@ -201,7 +201,7 @@ const queryAll = async(user) => {
     let res = {};
     try {
         await USER_SERVICE.active(user);
-        res.errcode = 0;
+        res.errcode = 30004;
         res.data = await ACTION.queryAll();
         res.msg = "遍历作业成功";
     } catch (e) {

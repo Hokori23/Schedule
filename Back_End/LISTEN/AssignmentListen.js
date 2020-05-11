@@ -27,6 +27,10 @@ const listen = (APP) => {
 
     //添加--作业
     APP.post(path, async(req, res) => {
+        if (!req.get("Authorization")) {
+            res.status(401).end();
+            return;
+        }
         let { name, info, deadLine } = req.body;
 
         if (!name || !info || !deadLine) {
@@ -37,7 +41,7 @@ const listen = (APP) => {
             return;
         }
         if (!req.user_id) {
-            res.status(401).end()
+            res.status(401).end();
             return;
         }
         name = proofXSS(name);
@@ -60,6 +64,10 @@ const listen = (APP) => {
 
     //删除--作业
     APP.delete(path, async(req, res) => {
+        if (!req.get("Authorization")) {
+            res.status(401).end();
+            return;
+        }
         let { name, deadLine } = req.query;
 
         if (!name || !deadLine) {
@@ -87,26 +95,30 @@ const listen = (APP) => {
 
     //编辑--作业
     APP.put(path, async(req, res) => {
-        let { name, info, deadLine } = req.body;
+        if (!req.get("Authorization")) {
+            res.status(401).end();
+            return;
+        }
+        let { name, info, deadLine, oldDeadLine } = req.body;
 
         deadLine = timeStampFloor(Number(deadLine));
         name = proofXSS(name);
         info = proofXSS(info);
-        if (!name || !info || !deadLine) {
+        if (!name || !info || !deadLine || !oldDeadLine) {
             res.status(400).json({
                 errcode: 1,
-                msg: "参数错误, {name, info, deadLine}",
+                msg: "参数错误, {name, info, deadLine, oldDeadLine}",
             });
             return;
         }
-
         let user = {
             activatedTime: req.reqTime,
             id: req.user_id,
         };
         let result = await SERVICE.edit(
             user,
-            new VO.assignmentEdit(name, info, deadLine, req.reqTime, req.user_name)
+            new VO.assignmentEdit(name, info, deadLine, req.reqTime, req.user_name),
+            oldDeadLine
         );
         if (result) {
             res.status(200).json(result);

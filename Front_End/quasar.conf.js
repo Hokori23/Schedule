@@ -44,20 +44,28 @@ module.exports = function(ctx) {
             directives: ["GoBack"],
 
             // Quasar plugins
-            plugins: ["Dialog", "LoadingBar", "Notify", "QDate", "QSpinnerAudio"],
+            plugins: [
+                "Dialog",
+                "LoadingBar",
+                "Notify",
+                "QDate",
+                "QSpinnerAudio",
+                "QPullToRefresh"
+            ],
 
             // QUasar plugins config
             config: {
                 loadingBar: {
                     position: "top",
                     color: "info",
-                    size: "5px"
+                    size: "5px",
+                    skipHijack: true
                 },
                 notify: {
                     color: "positive",
                     position: "bottom",
                     timeout: "500",
-                    icon: "announcement"
+                    icon: "message"
                 }
             }
         },
@@ -108,7 +116,7 @@ module.exports = function(ctx) {
 
         // animations: 'all', // --- includes all animations
         // https://quasar.dev/options/animations
-        animations: ["fadeIn", "fadeOut", 'zoomIn', 'zoomOut'],
+        animations: ["fadeIn", "fadeOut", "zoomIn", "zoomOut"],
 
         // https://quasar.dev/quasar-cli/developing-ssr/configuring-ssr
         ssr: {

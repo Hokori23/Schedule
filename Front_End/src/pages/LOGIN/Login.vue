@@ -60,7 +60,7 @@
             </template>
           </q-input>
 
-          <!-- 忘记密码 -->
+          <!-- 无法登录 -->
           <q-btn
             flat
             color="primary"
@@ -78,6 +78,16 @@
             style="width:50vw;max-width:200px"
             class="q-mt-md"
             @click="login()"
+          />
+          <!-- 登录 -->
+          <q-btn
+            flat
+            :label="$t('login.viewAsVisitor')"
+            rounded
+            unelevated
+            style="width:50vw;max-width:200px"
+            class="q-mt-md"
+            @click="visit()"
           />
         </div>
 
@@ -132,7 +142,7 @@ export default {
         password: this.$t("login.passwordErr")
       },
       loginState: false,
-      isPwd: true,
+      isPwd: true
     };
   },
   methods: {
@@ -152,11 +162,14 @@ export default {
         //登录
         try {
           let res = await this.$store.dispatch("LoginLayout/login", this);
-          this.$dealWithSuccess(this,res.data)
+          this.$dealWithSuccess(this, res.data);
         } catch (e) {
-          this.$dealWithError(this,e);
+          this.$dealWithError(this, e);
         }
       }
+    },
+    visit() {
+      this.$router.push("/");
     },
     clear(value) {
       this.valid[value] = true;

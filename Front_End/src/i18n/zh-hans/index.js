@@ -25,7 +25,8 @@ export default {
         nickName: "昵称",
         nickNameErr: "昵称不能为空",
         login: "登录",
-        loginSuccess: '登陆成功',
+        loginSuccess: "登陆成功",
+        viewAsVisitor: "游客访问",
         loginExpired: "登录失效，请重新登录",
         noAccountYet: "还没有账号？",
         register: "立即注册",
@@ -48,7 +49,7 @@ export default {
         confirm: "确定",
         cancel: "取消",
         reconnect: "重新连接",
-        err: '错误',
+        err: "错误",
         unknownErr: "未知错误",
         unknownErrTip: "这里出现了一些未知的错误，或许会影响程序的运行噢，有需求的话可以反馈给我 [hokori23@qq.com]",
         save: "保存",
@@ -58,7 +59,10 @@ export default {
         alert: "提示",
         more: "更多",
         loading: "加载中",
-        edit: "修改"
+        edit: "修改",
+        maxLength: "最大长度",
+        delete: "删除",
+        deleteConfirm: "确定要删除吗？"
     },
     location: {
         home: "首页",
@@ -73,17 +77,18 @@ export default {
         createdTime: "创建时间",
         activatedTime: "最后活跃时间",
         editMsg: "修改昵称",
-        editSuccess: '更改信息成功',
+        editSuccess: "更改信息成功",
         delete: "注销账号",
         deleteMsg: "输入密码以确定注销账号",
         deleteSuccess: "注销成功",
         logOut: "退出登录",
         logOutConfirm: "确定要退出登录吗？",
-        noPower: "您没有权限进行此操作",
+        noPower: "您没有权限进行此操作"
     },
     assignment: {
+        self: "作业信息",
         add: "添加作业成功",
-        addInfo: '添加作业',
+        addInfo: "添加作业",
         addErr: "已有该日作业，是否查看？",
         remove: "删除作业成功",
         removeErr: "无此日作业，删除失败",
@@ -91,17 +96,20 @@ export default {
         editErr: "编辑作业失败",
         query: "查询作业成功",
         queryAll: "遍历作业成功",
-        queryAllErr: "遍历作业失败"
+        queryAllErr: "遍历作业失败",
+        deadLine: "期限",
+        lastModified: '最后修改时间'
     },
     subject: {
-        add: '添加科目成功',
-        addErr: '科目已存在',
-        remove: '删除科目成功',
-        removeErr: '科目不存在',
-        edit: '编辑科目成功',
-        editErr: '编辑科目失败',
-        query: '查询科目成功',
-        queryAll: "遍历科目成功",
+        self: "科目",
+        add: "添加科目成功",
+        addErr: "科目已存在",
+        remove: "删除科目成功",
+        removeErr: "科目不存在",
+        edit: "编辑科目成功",
+        editErr: "编辑科目失败",
+        query: "查询科目成功",
+        queryAll: "遍历科目成功"
     },
     setting: {
         language: "多语言",
@@ -111,7 +119,11 @@ export default {
     },
     error: {
         unauthorized: "登录失效",
-        forbidden: "无权限"
+        forbidden: "无权限",
+        unavailable: "不可用",
+        unavailableInfo: "暂时连接不上服务器",
+        offLine: '离线',
+        offLineInfo: '您现在处于离线状态'
     },
     table: {
         subject: "科目",

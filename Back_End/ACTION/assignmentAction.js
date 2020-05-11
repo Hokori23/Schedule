@@ -48,13 +48,15 @@ const remove = (assignment) => {
  * @String lastModified
  * @String author
  */
-const edit = (assignment) => {
+const edit = (assignment, oldDeadLine) => {
     return new Promise(async(resolve, reject) => {
         let sql = `UPDATE assignment SET    info = ?,
                                             lastModified = ?,
-                                            author = ?
+                                            author = ?,
+                                            deadLine = ?
                                     WHERE (name = ?) AND (deadLine = ?)`;
         let params = assignment.destruct();
+        params.push(oldDeadLine);
         let db = await DB();
         db.query(sql, params, (err, res) => {
             if (err) {

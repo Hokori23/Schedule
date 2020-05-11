@@ -2,7 +2,6 @@ import Vue from "vue";
 
 const formatTimeStamp = timeStamp => {
     let time = null;
-    // timeStamp = timeStamp || null;
     if (timeStamp) {
         time = new Date(Number(timeStamp));
     } else {
@@ -62,7 +61,7 @@ const timeStampFloor = timeStamp => {
     let floorTime = new Date(time.getFullYear(), time.getMonth(), time.getDate());
     return floorTime.getTime();
 };
-const dealWithSuccess = (vm, e) => {
+const dealWithSuccess = (vm, data) => {
     //自定义错误码处理
     let message = "";
     let onOk = null;
@@ -72,14 +71,14 @@ const dealWithSuccess = (vm, e) => {
      * Number 0 对话框
      * Number 1 通知栏
      */
-    switch (e.errcode) {
+    switch (data.errcode) {
         case 10001:
             {
                 message = vm.$t("login.registerSuccess");
                 onOk = async() => {
                     //登录
                     let res = await this.$store.dispatch("LoginLayout/login", this);
-                    this.$dealWithSuccess(this, res.data)
+                    this.$dealWithSuccess(this, data);
                 };
                 break;
             }
@@ -88,7 +87,7 @@ const dealWithSuccess = (vm, e) => {
             {
                 message = vm.$t("login.loginSuccess");
                 flag = 1;
-                vm.$store.commit("MainLayout/user", res.data.data[0]);
+                vm.$store.commit("MainLayout/user", data.data[0]);
                 vm.$router.push("/");
                 break;
             }
@@ -160,9 +159,21 @@ const dealWithSuccess = (vm, e) => {
     }
 };
 const dealWithError = (vm, e) => {
+    if (!navigator.onLine) {
+        vm.$q.dialog({
+            title: vm.$t("error.offLine"),
+            message: vm.$t("error.offLineInfo")
+        });
+        return;
+    }
     //HTTP协议错误码处理
     if (e.errcode >= 400 && e.errcode <= 505) {
-        if (e.errcode === 401) {
+        if (e.errcode === 400) {
+            vm.$q.dialog({
+                title: vm.$t("common.unknownErr"),
+                message: e.message
+            });
+        } else if (e.errcode === 401) {
             vm.$q
                 .dialog({
                     title: vm.$t("error.unauthorized"),
@@ -178,10 +189,15 @@ const dealWithError = (vm, e) => {
                 title: vm.$t("error.forbidden"),
                 message: vm.$t("user.noPower")
             });
+        } else if (e.errcode >= 500) {
+            vm.$q.dialog({
+                title: vm.$t("error.unavailable"),
+                message: vm.$t("error.unavailableInfo ") + e.errcode
+            });
         } else {
             vm.$q.dialog({
                 title: vm.$t("common.unknownErr"),
-                message: vm.$t("user.noPower") + e.errcode
+                message: vm.$t("user.noPower ") + e.errcode
             });
         }
         return;
@@ -195,7 +211,7 @@ const dealWithError = (vm, e) => {
     switch (e.errcode) {
         case 1:
             {
-                message = e.msg;
+                message = e.msg || e.message;
                 break;
             }
         case 10100:

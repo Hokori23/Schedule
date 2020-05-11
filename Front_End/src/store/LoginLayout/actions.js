@@ -13,7 +13,6 @@ const login = ({ commit, state }, vm) => {
             })
             .then(res => {
                 //登陆成功
-                console.log('dispatch LoginLayout/login', '登陆成功')
                 vm.$store.commit("MainLayout/login", true)
                 vm.$store.commit("MainLayout/user", res.data.data[0])
                 resolve(res);

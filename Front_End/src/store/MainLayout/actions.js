@@ -116,10 +116,18 @@ const getAssignmentsInPeriod = ({ commit, state }, [days, vm]) => {
             });
     });
 };
+
 const addAssignment = ({ commit, state }, [data, vm]) => {
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    vm.cancelTokenArr.push(source);
+    vm.assignmentState = true;
+    vm.$q.loadingBar.start();
+
     return new Promise((resolve, reject) => {
         axios
             .post("/assignment", {
+                cancelToken: source.token,
                 name: data.name,
                 info: data.info,
                 deadLine: data.deadLine
@@ -129,12 +137,64 @@ const addAssignment = ({ commit, state }, [data, vm]) => {
             })
             .catch(e => {
                 reject(e);
+            })
+            .finally(() => {
+                vm.assignmentState = false;
+                vm.$q.loadingBar.stop();
+                const index = vm.cancelTokenArr.indexOf(source);
+                if (index !== -1) {
+                    vm.cancelTokenArr.splice(index, 1);
+                }
             });
     });
 };
 
+const editAssignment = ({ commit, state }, [data, oldDeadLine, vm]) => {
+    return new Promise((resolve, reject) => {
+        vm.$q.loadingBar.start();
+        axios
+            .put("/assignment", {
+                name: data.name,
+                info: data.info,
+                deadLine: data.deadLine,
+                oldDeadLine: oldDeadLine
+            })
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(e => {
+                reject(e);
+            })
+            .finally(() => {
+                vm.$q.loadingBar.stop();
+            });
+    });
+};
+
+const removeAssignment = ({ commit, state }, [assignment, vm]) => {
+    return new Promise((resolve, reject) => {
+        vm.$q.loadingBar.start();
+        axios
+            .delete("/assignment", {
+                params: {
+                    name: assignment.name,
+                    deadLine: assignment.deadLine
+                }
+            })
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(e => {
+                reject(e);
+            })
+            .finally(() => {
+                vm.$q.loadingBar.stop();
+            });
+    });
+};
 const getSelf = ({ commit, state }, vm) => {
     return new Promise((resolve, reject) => {
+        vm.$q.loadingBar.start();
         axios
             .get("/user", {
                 params: {
@@ -147,12 +207,16 @@ const getSelf = ({ commit, state }, vm) => {
             })
             .catch(e => {
                 reject(e);
+            })
+            .finally(() => {
+                vm.$q.loadingBar.stop();
             });
     });
 };
 
 const editSelf = ({ commit, state }, [name, vm]) => {
     return new Promise((resolve, reject) => {
+        vm.$q.loadingBar.start();
         axios
             .put("/user", {
                 id: vm.user.id,
@@ -164,11 +228,15 @@ const editSelf = ({ commit, state }, [name, vm]) => {
             })
             .catch(e => {
                 reject(e);
+            })
+            .finally(() => {
+                vm.$q.loadingBar.stop();
             });
     });
 };
 
 const deleteSelf = ({ commit, state }, [password, vm]) => {
+    vm.$q.loadingBar.start();
     return new Promise((resolve, reject) => {
         axios
             .delete("/user", {
@@ -184,7 +252,79 @@ const deleteSelf = ({ commit, state }, [password, vm]) => {
             })
             .catch(e => {
                 reject(e);
+            })
+            .finally(() => {
+                vm.$q.loadingBar.stop();
             });
+    });
+};
+
+//Home.vue 初始化
+const init = ({ commit, state }, [vm, done]) => {
+    return new Promise(async(resolve, reject) => {
+        if (vm.initState) {
+            return;
+        }
+        vm.initState = true;
+        vm.initState = true;
+        /************* 初始化今日时间 *************/
+        let dateObject = vm.$formatTimeStamp(vm.$timeStampFloor(Date.now()));
+        vm.date = vm.proxyDate = dateObject.format1();
+
+        /************* 获取所有科目 *************/
+        try {
+            vm.$store.dispatch("MainLayout/getAllSubjects", vm);
+        } catch (e) {
+            vm.$dealWithError(vm, e);
+        }
+
+        /**
+         * 注意解耦
+         */
+        await refreshAssignment({ commit, state }, [vm]);
+
+        //状态复原
+        commit("refreshState", false);
+        vm.initState = false;
+        if (done) {
+            done();
+        }
+        resolve();
+    });
+};
+
+const refreshAssignment = ({ commit, state }, [vm, done]) => {
+    /************* 处理数据转为events *************/
+    return new Promise(async(resolve, reject) => {
+        let rowEvents = null;
+        try {
+            rowEvents = (await getAllAssignments({ commit, state }, vm)) || [];
+            let arrEvents = [];
+            let eventsLength = rowEvents.length;
+            for (let i = 0; i < eventsLength; i++) {
+                let date = vm.$formatTimeStamp(rowEvents[i].deadLine).format1();
+                arrEvents[arrEvents.length] = date;
+            }
+            vm.events = arrEvents || vm.events;
+        } catch (e) {
+            vm.$dealWithError(vm, e);
+            rowEvents = [];
+        }
+
+        /************* 获取指定时间戳前的所有作业 *************/
+        try {
+            vm.data =
+                (await vm.$store.dispatch("MainLayout/getAssignmentsInPeriod", [
+                    vm.days,
+                    vm
+                ])) || vm.data;
+        } catch (e) {
+            vm.$dealWithError(vm, e);
+        }
+        if (done) {
+            done();
+        }
+        resolve();
     });
 };
 export {
@@ -192,7 +332,11 @@ export {
     getAllAssignments,
     getAssignmentsInPeriod,
     addAssignment,
+    editAssignment,
+    removeAssignment,
     getSelf,
     editSelf,
-    deleteSelf
+    deleteSelf,
+    init,
+    refreshAssignment
 };

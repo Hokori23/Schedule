@@ -22,7 +22,7 @@
           :label="$t('table.subject')"
         >
           <template v-slot:prepend>
-            <q-icon name="assignment" />
+            <q-icon name="assignment" color="primary" />
           </template>
           <template v-slot:append>
             <q-icon name="close" @click.stop="assignment.name = ''" class="cursor-pointer" />
@@ -36,33 +36,31 @@
           :label="$t('table.assignment')"
           :dense="$q.screen.lt.sm"
           :options-dense="$q.screen.lt.sm"
+          input-style="min-height:100px;"
+          counter
+          bottom-slots
+          maxlength="1450"
+          autogrow
         >
           <template v-slot:prepend>
-            <q-icon name="message" />
+            <q-icon name="message" color="primary" />
           </template>
           <template v-slot:append>
             <q-icon name="close" @click.stop="assignment.info = ''" class="cursor-pointer" />
           </template>
+          <template v-slot:hint>{{$t('common.maxLength')}}</template>
         </q-input>
 
         <!-- 期限 -->
-        <q-input
-          v-model="proxy.deadLine"
-          mask="####  年  ##  月  ##  日"
-          fill-mask="_"
-          unmasked-value
-          :dense="$q.screen.lt.sm"
-          :options-dense="$q.screen.lt.sm"
-          input-class="q-px-md"
-        >
-          <template v-slot:before>
+        <q-item class="q-mb-sm non-selectable">
+          <q-item-section avatar>
             <q-btn icon="event" round color="primary" :dense="$q.screen.lt.sm">
               <q-popup-proxy
                 @before-show="updateDateProxy"
                 transition-show="scale"
                 transition-hide="scale"
               >
-                <q-date v-model="proxyDate">
+                <q-date v-model="proxyDate" :minimal="$q.screen.lt.md">
                   <div class="row items-center justify-end q-gutter-sm">
                     <q-btn label="Cancel" color="primary" flat v-close-popup />
                     <q-btn label="OK" color="primary" flat @click="saveDate" v-close-popup />
@@ -70,14 +68,18 @@
                 </q-date>
               </q-popup-proxy>
             </q-btn>
-          </template>
-        </q-input>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label overline class="text-primary">{{$t('assignment.deadLine')}}</q-item-label>
+            <q-item-label>{{date}}</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-card-section>
 
-      <!-- 按钮示例 -->
+      <!-- 按钮组 -->
       <q-card-actions align="right">
         <q-btn color="primary" label="Cancel" @click="onCancelClick" flat />
-        <q-btn color="primary" label="OK" @click="onOKClick" />
+        <q-btn color="primary" label="OK" @click="onOKClick" :loading="submitState" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -86,22 +88,21 @@
 export default {
   name: "addAssignment",
   props: {
-    subjects: Array
+    subjects: Array,
+    time: Number, //决定是否为直接添加模式
+    subject: String
   },
   data() {
     return {
       assignment: {
-        name: "",
+        name: this.subject || "",
         info: "",
         deadLine: 0 /** Number */
       },
-      //DATE INPUT VALUE
-      proxy: {
-        deadLine: "" /** String */
-      },
       /******日历选择器日期******/
       date: "" /** YYYY/MM/DD */,
-      proxyDate: "" /** YYYY/MM/DD */
+      proxyDate: "" /** YYYY/MM/DD */,
+      submitState: false
     };
   },
   watch: {
@@ -121,7 +122,6 @@ export default {
       //传进值为'YYYY/MM/DD'
       //将其处理成时间戳
       this.assignment.deadLine = new Date(val).getTime();
-      console.log(this.assignment.deadLine);
     }
   },
   methods: {
@@ -130,7 +130,6 @@ export default {
     },
     saveDate() {
       //处理和保存时间
-      this.proxy.deadLine = this.proxyDate.replace("/", "");
       this.date = this.proxyDate;
     },
     // 以下方法是必需的
@@ -155,11 +154,9 @@ export default {
       // 按OK，在隐藏QDialog之前
       // 发出“ok”事件（带有可选的有效负载）
       // 是必需的
-      this.$emit("ok", this.assignment);
+      this.submitState = true;
+      this.$emit("ok", { assignment: this.assignment, vm: this });
       // 或带有有效负载：this.$emit('ok', { ... })
-
-      // 然后隐藏对话框
-      this.hide();
     },
 
     onCancelClick() {
@@ -168,12 +165,9 @@ export default {
     }
   },
   created() {
-    this.$q.screen.setSizes({ sm: 330, md: 500, lg: 1000, xl: 2000 });
-
     //初始化时间
-    let time = this.$formatTimeStamp();
+    let time = this.$formatTimeStamp(this.time || null);
     this.date = time.format1();
-    this.proxy.deadLine = this.date.replace("/", "");
   }
 };
 </script>

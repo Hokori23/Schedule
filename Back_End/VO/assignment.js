@@ -52,7 +52,7 @@ class assignmentEdit extends assignment {
     //解构
     destruct() {
         let { name, info, deadLine, lastModified, author } = this;
-        let res = [info, lastModified, author, name, deadLine];
+        let res = [info, lastModified, author, deadLine, name];
 
         //取出空元素
         for (let i = 0; i < res.length; i++) {
