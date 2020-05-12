@@ -40,6 +40,7 @@ export default {
         checkCodeErr: "Verification code required",
         resend: "Retry",
         send: "Send",
+        registerFormat: 'Register Format',
         registerAnnounceTitle: "Register Announcement",
         registerAnnouncement1: "I promise that the ID and Password that you register here will not be public anywhere.",
         registerAnnouncement2: "If you got interest on me, you can click this message to visit my blog and leave a comment there.\n \nOr just contact me through this email [ hokori23@qq.com ]",
@@ -120,6 +121,7 @@ export default {
     },
     error: {
         unauthorized: "Unauthorized",
+        verifyFailed: "Account verification failed",
         forbidden: "Forbidden",
         unavailable: "Unavailable",
         unavailableInfo: "The server is unavailable temporary",

@@ -55,7 +55,7 @@
       </q-step>
 
       <!-- Step 2 -->
-      <q-step :name="2" title="Register format" icon="create" :done="step > 2" class="register-box">
+      <q-step :name="2" :title="$t('login.registerFormat')" icon="create" :done="step > 2" class="register-box">
         <!-- 账号或邮箱 -->
         <q-input
           bottom-slots
@@ -190,7 +190,7 @@ export default {
         if (flag) {
           try {
             let res = await this.$store.dispatch("LoginLayout/register", this);
-            this.$dealWithSuccess(this,res.data)
+            this.$dealWithSuccess(this,res.data);
           } catch (e) {
           this.$dealWithError(this,e);
           }

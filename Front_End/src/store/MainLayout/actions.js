@@ -19,11 +19,12 @@ const getAllSubjects = ({ commit, state }, vm) => {
                 resolve(res);
             })
             .catch(e => {
-                if ((e.message = "取消请求")) {
+                if (e.message === "取消请求") {
                     resolve(null);
+                } else {
+                    //获取科目失败
+                    reject(e);
                 }
-                //获取科目失败
-                reject(e);
             })
             .finally(() => {
                 vm.subjectState = false;
@@ -273,7 +274,7 @@ const init = ({ commit, state }, [vm, done]) => {
 
         /************* 获取所有科目 *************/
         try {
-            vm.$store.dispatch("MainLayout/getAllSubjects", vm);
+            await vm.$store.dispatch("MainLayout/getAllSubjects", vm);
         } catch (e) {
             vm.$dealWithError(vm, e);
         }
@@ -292,11 +293,11 @@ const init = ({ commit, state }, [vm, done]) => {
         resolve();
     });
 };
-
-const refreshAssignment = ({ commit, state }, [vm, done]) => {
-    /************* 处理数据转为events *************/
+const getEvents = ({ commit, state }, [vm]) => {
     return new Promise(async(resolve, reject) => {
-        let rowEvents = null;
+        vm.eventState = true;
+        /************* 处理数据转为日历的events *************/
+        let rowEvents = true;
         try {
             rowEvents = (await getAllAssignments({ commit, state }, vm)) || [];
             let arrEvents = [];
@@ -306,11 +307,19 @@ const refreshAssignment = ({ commit, state }, [vm, done]) => {
                 arrEvents[arrEvents.length] = date;
             }
             vm.events = arrEvents || vm.events;
+            console.log(vm.events)
         } catch (e) {
             vm.$dealWithError(vm, e);
             rowEvents = [];
+        } finally {
+            vm.eventState = false;
         }
+        resolve();
+    });
+};
 
+const refreshAssignment = ({ commit, state }, [vm, done]) => {
+    return new Promise(async(resolve, reject) => {
         /************* 获取指定时间戳前的所有作业 *************/
         try {
             vm.data =
@@ -334,6 +343,7 @@ export {
     addAssignment,
     editAssignment,
     removeAssignment,
+    getEvents,
     getSelf,
     editSelf,
     deleteSelf,

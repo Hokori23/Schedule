@@ -63,7 +63,10 @@
         <!-- 作业信息 -->
         <q-item class="q-mb-sm q-pt-none">
           <q-item-section>
-            <q-item-label style="word-break:break-all">{{submitAssignment.info}}</q-item-label>
+            <q-item-label
+              class='q-px-sm'
+              style="word-break:break-all;min-height:100px;white-space: pre-wrap;"
+            >{{submitAssignment.info}}</q-item-label>
           </q-item-section>
         </q-item>
 

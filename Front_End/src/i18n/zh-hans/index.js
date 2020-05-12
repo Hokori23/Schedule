@@ -40,6 +40,7 @@ export default {
         checkCodeErr: "验证码不能为空",
         resend: "重发",
         send: "发送",
+        registerFormat: '注册表单',
         registerAnnounceTitle: "注册须知",
         registerAnnouncement1: "您在此注册所用的账号密码将不会被公开滥用，请放心注册。",
         registerAnnouncement2: "如果你对我的项目感兴趣的话，可以通过点击这条信息访问我的博客，亦可以在评论区留言\n \n或者直接通过邮箱联系我[ hokori23@qq.com ]",
@@ -120,6 +121,7 @@ export default {
     },
     error: {
         unauthorized: "登录失效",
+        verifyFailed: "登录信息验证失败",
         forbidden: "无权限",
         unavailable: "不可用",
         unavailableInfo: "暂时连接不上服务器",

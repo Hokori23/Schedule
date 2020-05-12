@@ -9,7 +9,7 @@
       <section
         class="page column no-wrap q-pb-xs"
         ref="homeContainer"
-        style="height:auto;overflow-y:auto;"
+        style="height:auto;overflow-y:auto;min-height:calc(100vh - 50px)"
       >
         <!-- 第一行：时间 -->
         <header class="row items-center no-wrap">
@@ -20,9 +20,21 @@
                 transition-show="scale"
                 transition-hide="scale"
               >
-                <q-date v-model="proxyDate" today-btn :events="events" :minimal="$q.screen.lt.md">
+                <q-date
+                  v-model="proxyDate"
+                  today-btn
+                  :events="events"
+                  :minimal="$q.screen.lt.md"
+                  class="relative-position"
+                >
                   <q-btn label="Cancel" color="primary" flat v-close-popup />
                   <q-btn label="OK" color="primary" flat @click="saveDate()" v-close-popup />
+
+                  <!-- 内部加载 -->
+                  <q-inner-loading :showing="eventState">
+                    <!-- <q-spinner-gears size="50px" color="primary" /> -->
+                    <q-spinner-oval color="primary" size="2em" />
+                  </q-inner-loading>
                 </q-date>
               </q-popup-proxy>
             </q-btn>
@@ -51,35 +63,38 @@
               <q-spinner-audio size="50px" color="primary" />
             </q-inner-loading>
           </div>
+          <!-- Assign-Blcok Container HERE -->
           <div
             v-for="(n,index) in days"
             :key="subject.name+'-'+n"
             class="relative-position non-selectable cursor-pointer"
             v-ripple
-            :class="{'shadow-2':paintAssign(subject,index),'assign-block':paintAssign(subject,index)}"
+            :class="{'shadow-2':paintAssign(subject,index),'assign-block':paintAssign(subject,index),'dimmed':$q.dark.mode}"
             @click="getDetail(paintAssign(subject,index),subject,index)"
           >
             <transition
               appear
               enter-active-class="animated zoomIn"
               leave-active-class="animated zoomOut"
+              mode="out-in"
             >
               <!-- Assign-Block HERE -->
               <div
                 v-if="paintAssign(subject,index)"
                 v-html="data[Number(paintAssign(subject,index))].info"
-                class="ellipsis-3-lines text-force-wrap q-px-md text-weight-bold"
+                class="ellipsis-3-lines text-force-wrap q-px-sm text-weight-bold"
+                key="assignment"
               ></div>
+              <div v-else key="blank">
+                <q-icon size="sm" name="add" color="grey" :class="{'blank__light-dimmed':!$q.dark.mode}" />
+              </div>
             </transition>
             <transition
               appear
               enter-active-class="animated zoomIn"
               leave-active-class="animated zoomOut"
-            >
-              <div v-if="!paintAssign(subject,index)">
-                <q-icon size="sm" name="add" color="grey" :class="{'light-dimmed':!$q.dark.mode}" />
-              </div>
-            </transition>
+              mode="out-in"
+            ></transition>
           </div>
         </header>
         <!-- <q-inner-loading :showing="initState">
@@ -194,6 +209,8 @@ export default {
       proxyDate: "" /** YYYY/MM/DD */,
       /******日历选择器高亮事件******/
       events: [],
+      /** 日历事件加载状态 */
+      eventState: false,
       data: [],
       cancelTokenArr: [],
       scrollLeft: 0
@@ -305,11 +322,12 @@ export default {
     },
     updateDateProxy() {
       this.proxyDate = this.date;
+      this.$store.dispatch("MainLayout/getEvents", this);
     },
     saveDate() {
       this.date = this.proxyDate;
     },
-    init: async function(done) {
+    init: function(done) {
       this.$store.dispatch("MainLayout/init", [this, done]);
     }
   },
@@ -404,6 +422,10 @@ export default {
   color: #fff
   letter-spacing: .5px
 
-div.header-subject.dimmed::after
-    background: rgba(0, 0, 0, 0.25) !important
+div.header-subject.dimmed::after,
+div.assign-block.dimmed::after
+  background: rgba(0, 0, 0, 0.2) !important
+
+.blank__light-dimmed
+  opacity: .4
 </style>

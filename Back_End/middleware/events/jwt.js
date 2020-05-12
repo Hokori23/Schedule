@@ -24,7 +24,7 @@ const checkAndSpawn = async(req, res, next) => {
             if (queryResult.errcode === 0 && queryResult.data.length) {
                 decoded.name = queryResult.data[0].name;
             } else if (!queryResult.data.length) {
-                res.status(401).end();
+                res.status(402).end();
                 return;
             }
             //重新加密jwt

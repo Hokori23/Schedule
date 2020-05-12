@@ -20,7 +20,7 @@
       </q-item>
 
       <!-- ID -->
-      <q-item class="cursor-not-allowed light-dimmed">
+      <q-item class="cursor-not-allowed" :class="$q.dark.mode?'dimmed':'light-dimmed'">
         <q-item-section avatar>
           <q-icon name="account_circle" />
         </q-item-section>
@@ -33,7 +33,7 @@
       </q-item>
 
       <!-- 创建时间 -->
-      <q-item class="cursor-not-allowed light-dimmed">
+      <q-item class="cursor-not-allowed" :class="$q.dark.mode?'dimmed':'light-dimmed'">
         <q-item-section avatar>
           <q-icon name="add" />
         </q-item-section>
@@ -46,7 +46,7 @@
       </q-item>
 
       <!-- 最后活跃时间 -->
-      <q-item class="cursor-not-allowed light-dimmed">
+      <q-item class="cursor-not-allowed" :class="$q.dark.mode?'dimmed':'light-dimmed'">
         <q-item-section avatar>
           <q-icon name="access_time" />
         </q-item-section>

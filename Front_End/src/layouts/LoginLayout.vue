@@ -69,6 +69,7 @@ export default {
     // } else {
     next(vm => {
       vm.$q.dark.set(false);
+      vm.$store.commit("MainLayout/login",false)
     });
     // }
   },

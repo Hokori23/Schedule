@@ -64,7 +64,7 @@ const timeStampFloor = timeStamp => {
 const dealWithSuccess = (vm, data) => {
     //自定义错误码处理
     let message = "";
-    let onOk = null;
+    let onDismiss = null;
     let flag = 0;
     /**
      * @flag
@@ -75,7 +75,7 @@ const dealWithSuccess = (vm, data) => {
         case 10001:
             {
                 message = vm.$t("login.registerSuccess");
-                onOk = async() => {
+                onDismiss = async() => {
                     //登录
                     let res = await vm.$store.dispatch("LoginLayout/login", vm);
                     vm.$dealWithSuccess(vm, res.data);
@@ -142,7 +142,7 @@ const dealWithSuccess = (vm, data) => {
         default:
             {
                 title = vm.$t("common.unknownErr");
-                message = vm.$t("common.unknownErrTip");
+                message = vm.$t("common.unknownErrTip") + ", " + e.errcode;
             }
     }
     if (!flag) {
@@ -151,7 +151,7 @@ const dealWithSuccess = (vm, data) => {
                 title: vm.$t("common.alert"),
                 message: message
             })
-            .onOk(onOk);
+            .onDismiss(onDismiss);
     } else {
         vm.$q.notify({
             message: message
@@ -184,6 +184,16 @@ const dealWithError = (vm, e) => {
                 .onOk(() => {
                     vm.$router.push("/login");
                 });
+        } else if (e.errcode === 402) {
+            //登录信息验证失败
+            vm.$q
+                .dialog({
+                    title: vm.$t("error.unauthorized"),
+                    message: vm.$t("error.verifyFailed")
+                })
+                .onDismiss(() => {
+                    vm.$router.push("/login");
+                });
         } else if (e.errcode === 403) {
             vm.$q.dialog({
                 title: vm.$t("error.forbidden"),
@@ -197,7 +207,7 @@ const dealWithError = (vm, e) => {
         } else {
             vm.$q.dialog({
                 title: vm.$t("common.unknownErr"),
-                message: vm.$t("user.noPower ") + e.errcode
+                message: vm.$t("common.unknownErrTip ") + ", " + e.errcode
             });
         }
         return;
@@ -272,7 +282,7 @@ const dealWithError = (vm, e) => {
         default:
             {
                 title = vm.$t("common.unknownErr");
-                message = vm.$t("common.unknownErrTip");
+                message = vm.$t("common.unknownErrTip") + ", " + e.errcode;
             }
     }
 
