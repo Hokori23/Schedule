@@ -38,13 +38,13 @@
         </transition>
 
         <!-- MORE Animation -->
-        <transition
+        <!-- <transition
           appear
           enter-active-class="animated fadeIn"
           leave-active-class="animated fadeOut"
         >
           <q-btn flat round :icon="rightTopIcon.icon" v-if="rightTopIcon.display" />
-        </transition>
+        </transition> -->
       </q-toolbar>
     </q-header>
 
@@ -185,11 +185,7 @@ export default {
       // this.drawer = false;
     },
     leftTopIconClick() {
-      if (this.leftTopIcon === "menu") {
         this.drawer = !this.drawer;
-      } else if (this.leftTopIcon === "arrow_back") {
-        this.$router.back();
-      }
     },
     async rightTopIconClick() {
       //添加作业

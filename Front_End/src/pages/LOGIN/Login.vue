@@ -8,7 +8,7 @@
 
     <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
       <!-- 输入框 -->
-      <div class="input items-center column justify-between" v-show="init">
+      <div class="input items-center column justify-between no-wrap" v-show="init">
         <div class="loginAbout items-center column">
           <!-- 账号或邮箱 -->
           <q-input

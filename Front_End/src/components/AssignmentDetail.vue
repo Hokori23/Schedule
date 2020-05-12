@@ -111,6 +111,20 @@
             <q-item-label>{{lastModified}}</q-item-label>
           </q-item-section>
         </q-item>
+
+        <q-separator inset />
+
+        <!-- 提交人 -->
+        <q-item class="q-my-sm non-selectable">
+          <q-item-section avatar>
+            <q-icon flat round color="primary" name="account_circle" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label overline class="text-primary">{{$t('assignment.author')}}</q-item-label>
+            <q-item-label>{{assignment.author}}</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
 
       <q-separator />

@@ -7,22 +7,28 @@ const title = (state, value) => {
 };
 
 const rightTopIcon = (state, { display, icon }) => {
-    state.rightTopIcon.display = display || state.rightTopIcon.display;
+    if (display !== undefined) {
+        state.rightTopIcon.display = display;
+    }
     state.rightTopIcon.icon = icon || state.rightTopIcon.icon;
 };
 
 const rightTopIcon2 = (state, { display, icon }) => {
-    state.rightTopIcon2.display = display || state.rightTopIcon2.display;
+    if (display !== undefined) {
+        state.rightTopIcon2.display = display;
+    }
     state.rightTopIcon2.icon = icon || state.rightTopIcon2.icon;
 };
 
 const rightTopIcon3 = (state, { display, icon }) => {
-    state.rightTopIcon3.display = display || state.rightTopIcon3.display;
+    if (display !== undefined) {
+        state.rightTopIcon3.display = display;
+    }
     state.rightTopIcon3.icon = icon || state.rightTopIcon3.icon;
 };
 
 const leftTopIcon = (state, { display, icon }) => {
-    state.leftTopIcon.display = display || state.leftTopIcon.display;
+    state.leftTopIcon.display = display;
     state.leftTopIcon.icon = icon || state.leftTopIcon.icon;
 };
 

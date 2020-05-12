@@ -173,6 +173,9 @@ export default {
       } else {
         // 已登录
         vm.$store.commit("MainLayout/title", vm.$t("location.user"));
+        vm.$store.commit("MainLayout/rightTopIcon", { display: false });
+        vm.$store.commit("MainLayout/rightTopIcon2", { display: false });
+        vm.$store.commit("MainLayout/rightTopIcon3", { display: false });
         try {
           vm.$store.dispatch("MainLayout/getSelf", vm);
         } catch (e) {

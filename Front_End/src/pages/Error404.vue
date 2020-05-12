@@ -29,6 +29,13 @@ export default {
     goBack(){
       this.$router.back();
     }
+  },
+  beforeRouteEnter(to,from,next){
+    if(to.path==='/index.html'){
+      next('/')
+    }else{
+      next()
+    }
   }
 }
 </script>

@@ -5,7 +5,7 @@ export default {
     config: {
         name: "Assignment Table",
         version: "0.1.4",
-        updateTime: "2020/5/8",
+        updateTime: "2020/5/12",
         author: "Hokori"
     },
     configInfo: {
@@ -98,7 +98,8 @@ export default {
         queryAll: "Queried all assignments successfully",
         queryAllErr: "Query all assignments failed",
         deadLine: 'Deadline',
-        lastModified: 'Last modified time'
+        lastModified: 'Last modified time',
+        author: 'Author'
     },
     subject: {
         self: "subject",

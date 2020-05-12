@@ -3,6 +3,8 @@ import axios from "axios";
 require("promise.prototype.finally").shim();
 if (process.env.DEV) {
     axios.defaults.baseURL = "/api";
+} else {
+    axios.defaults.baseURL = "https://api.hokori.online/schedule";
 }
 axios.interceptors.request.use(
     req => {

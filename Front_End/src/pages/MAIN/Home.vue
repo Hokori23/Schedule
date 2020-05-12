@@ -1,82 +1,93 @@
 <template>
-  <q-pull-to-refresh @refresh="init">
-    <section
-      class="page column no-wrap"
+  <q-page class="scroll" style="height:calc(100vh - 50px)">
+    <q-pull-to-refresh @refresh="init">
+      <!-- <section
+      class="page column no-wrap q-pb-xs"
       v-touch-pan.horizontal.prevent.mouse="drag"
       ref="homeContainer"
-    >
-      <header class="row items-center no-wrap">
-        <div>
-          <q-btn icon="date_range" round color="primary" flat>
-            <q-popup-proxy
-              @before-show="updateDateProxy()"
-              transition-show="scale"
-              transition-hide="scale"
-            >
-              <q-date v-model="proxyDate" today-btn :events="events" :minimal="$q.screen.lt.md">
-                <q-btn label="Cancel" color="primary" flat v-close-popup />
-                <q-btn label="OK" color="primary" flat @click="saveDate()" v-close-popup />
-              </q-date>
-            </q-popup-proxy>
-          </q-btn>
-        </div>
-        <div
-          v-for="(n,index) in days"
-          :key="'time-block-'+n"
-          :timeStamp="getTimeStamp(index)"
-          v-html="formatTimeStamp(index)"
-        ></div>
-      </header>
-      <header
-        class="row items-center no-wrap"
-        v-for="subject in subjects"
-        :key="subject.name"
-        :class="headerClass(subject.type)"
+      >-->
+      <section
+        class="page column no-wrap q-pb-xs"
+        ref="homeContainer"
+        style="height:auto;overflow-y:auto;"
       >
-        <div
-          class="text-center text-white non-selectable ellipsis-3-lines header-subject relative-position q-pa-lg"
+        <!-- 第一行：时间 -->
+        <header class="row items-center no-wrap">
+          <div>
+            <q-btn icon="date_range" round color="primary" flat>
+              <q-popup-proxy
+                @before-show="updateDateProxy()"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date v-model="proxyDate" today-btn :events="events" :minimal="$q.screen.lt.md">
+                  <q-btn label="Cancel" color="primary" flat v-close-popup />
+                  <q-btn label="OK" color="primary" flat @click="saveDate()" v-close-popup />
+                </q-date>
+              </q-popup-proxy>
+            </q-btn>
+          </div>
+          <div
+            v-for="(n,index) in days"
+            :key="'time-block-'+n"
+            :timeStamp="getTimeStamp(index)"
+            v-html="formatTimeStamp(index)"
+          ></div>
+        </header>
+
+        <header
+          class="row items-center no-wrap"
+          v-for="subject in subjects"
+          :key="subject.name"
+          :class="headerClass(subject.type)"
         >
-          {{subject.name}}
-          <q-inner-loading :showing="subjectState">
-            <q-spinner-audio size="50px" color="primary" />
-          </q-inner-loading>
-        </div>
-        <div
-          v-for="(n,index) in days"
-          :key="subject.name+'-'+n"
-          class="relative-position non-selectable cursor-pointer"
-          v-ripple
-          :class="{'shadow-2':paintAssign(subject,index),'assign-block':paintAssign(subject,index)}"
-          @click="getDetail(paintAssign(subject,index),subject,index)"
-        >
-          <transition
-            appear
-            enter-active-class="animated zoomIn"
-            leave-active-class="animated zoomOut"
+          <!-- 科目名 -->
+          <div
+            class="non-selectable header-subject relative-position q-px-sm shadow-10"
+            :class="{'dimmed':$q.dark.mode}"
           >
-            <!-- Assign-Block HERE -->
-            <div
-              v-if="paintAssign(subject,index)"
-              v-html="data[Number(paintAssign(subject,index))].info"
-              class="ellipsis-3-lines text-force-wrap q-px-md text-weight-bold"
-            ></div>
-          </transition>
-          <transition
-            appear
-            enter-active-class="animated zoomIn"
-            leave-active-class="animated zoomOut"
+            <div class="text-center text-white ellipsis-3-lines">{{subject.name}}</div>
+            <q-inner-loading :showing="subjectState">
+              <q-spinner-audio size="50px" color="primary" />
+            </q-inner-loading>
+          </div>
+          <div
+            v-for="(n,index) in days"
+            :key="subject.name+'-'+n"
+            class="relative-position non-selectable cursor-pointer"
+            v-ripple
+            :class="{'shadow-2':paintAssign(subject,index),'assign-block':paintAssign(subject,index)}"
+            @click="getDetail(paintAssign(subject,index),subject,index)"
           >
-            <div v-if="!paintAssign(subject,index)">
-              <q-icon size="sm" name="add" color="grey" class="light-dimmed" />
-            </div>
-          </transition>
-        </div>
-      </header>
-      <!-- <q-inner-loading :showing="initState">
+            <transition
+              appear
+              enter-active-class="animated zoomIn"
+              leave-active-class="animated zoomOut"
+            >
+              <!-- Assign-Block HERE -->
+              <div
+                v-if="paintAssign(subject,index)"
+                v-html="data[Number(paintAssign(subject,index))].info"
+                class="ellipsis-3-lines text-force-wrap q-px-md text-weight-bold"
+              ></div>
+            </transition>
+            <transition
+              appear
+              enter-active-class="animated zoomIn"
+              leave-active-class="animated zoomOut"
+            >
+              <div v-if="!paintAssign(subject,index)">
+                <q-icon size="sm" name="add" color="grey" :class="{'light-dimmed':!$q.dark.mode}" />
+              </div>
+            </transition>
+          </div>
+        </header>
+        <!-- <q-inner-loading :showing="initState">
         <q-spinner-audio size="50px" color="primary" />
-      </q-inner-loading>-->
-    </section>
-  </q-pull-to-refresh>
+        </q-inner-loading>-->
+      </section>
+    </q-pull-to-refresh>
+  </q-page>
 </template>
 <script>
 import { debounce } from "quasar";
@@ -189,14 +200,15 @@ export default {
     };
   },
   methods: {
-    drag({ evt, ...info }) {
-      this.$refs.homeContainer.scrollLeft =
-        this.scrollLeft - info.offset.x / 25;
-      this.setScrollLeft(this.$refs.homeContainer.scrollLeft);
-    },
+    // drag({ evt, ...info }) {
+    //   this.$refs.homeContainer.scrollLeft =
+    //     this.scrollLeft - info.offset.x / 15;
+    //   this.setScrollLeft(this.$refs.homeContainer.scrollLeft);
+    // },
     setScrollLeft(val) {
       this.scrollLeft = val;
     },
+    refresh() {},
     async getDetail(index, subject, day) {
       if (index !== false) {
         //查看编辑
@@ -320,7 +332,7 @@ export default {
         icon: "add"
       });
       vm.$store.commit("MainLayout/rightTopIcon3", {
-        display: true,
+        display: true
       });
       vm.init();
     });
@@ -330,9 +342,6 @@ export default {
     this.cancelTokenArr.forEach(source => {
       source.cancel("取消请求");
     });
-    this.$store.commit("MainLayout/rightTopIcon", { display: false });
-    this.$store.commit("MainLayout/rightTopIcon2", { display: false });
-    this.$store.commit("MainLayout/rightTopIcon3", { display: false });
     next();
   },
   created: async function() {
@@ -343,21 +352,24 @@ export default {
 </script>
 <style lang="sass" scoped>
 .page
-  overflow: auto
+  // overflow: auto
   height: calc(100vh - 50px)
 
 .row
   &:first-child
     user-select: none
     flex: 0 0 80px
+    height: 80px
     >div
       border-bottom: 1px solid #ccc
   &:not(:first-child)
     flex: 1 0 20vh
+    height: 20vh
     min-height: 80px
     max-height: 130px
   &>div
     flex: 1 0 10vw
+    width: 10vw
     height: 100%
     min-width: 50px
     display: flex
@@ -372,6 +384,7 @@ export default {
       max-width: 80px
     &:not(:first-child)
       flex: 1 0 15vh
+      height: 15vh
 
 .subject-general
   .header-subject
@@ -390,4 +403,7 @@ export default {
   opacity: .9
   color: #fff
   letter-spacing: .5px
+
+div.header-subject.dimmed::after
+    background: rgba(0, 0, 0, 0.25) !important
 </style>

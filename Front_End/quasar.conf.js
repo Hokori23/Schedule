@@ -57,7 +57,7 @@ module.exports = function(ctx) {
             config: {
                 loadingBar: {
                     position: "top",
-                    color: "info",
+                    color: "warning",
                     size: "5px",
                     skipHijack: true
                 },
@@ -78,19 +78,20 @@ module.exports = function(ctx) {
             vueRouterMode: "history", // available values: 'hash', 'history'
             showProgress: true,
             gzip: true,
+            showProgress: true,
 
             // rtl: false, // https://quasar.dev/options/rtl-support
-            // showProgress: false,
             // gzip: true,
             // analyze: true,
 
             // Options below are automatically set depending on the env, set them if you want to override
+            preloadChunks: true,
             // preloadChunks: false,
             // extractCSS: false,
 
             //DIY***************************************************************
-            publicPath: "schedule",
-            vueRouterBase: "schedule",
+            publicPath: "assignment",
+            vueRouterBase: "assignment",
             //DIY***************************************************************
 
             // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
@@ -104,8 +105,8 @@ module.exports = function(ctx) {
             open: true, // opens browser window automatically
             proxy: {
                 "/api": {
-                    // target: "https://api.hokori.online/schedule",
-                    target: "http://localhost:8000/schedule",
+                    target: "https://api.hokori.online/schedule",
+                    // target: "http://localhost:8000/schedule",
                     changeOrigin: true,
                     pathRewrite: {
                         "^/api": ""
@@ -136,8 +137,8 @@ module.exports = function(ctx) {
 
                 //DIY***************************************************************
                 background_color: "#ffffff",
-                theme_color: "#ffffff",
-                start_url: "/schedule/index.html",
+                theme_color: "#1976D2",
+                start_url: "/assignment/index.html",
                 //DIY***************************************************************
                 icons: [{
                         src: "statics/icons/icon-128x128.png",
@@ -181,7 +182,7 @@ module.exports = function(ctx) {
                     msapplicationTileImage: "statics/icons/ms-icon-144x144.png",
 
                     //DIY***************************************************************
-                    msapplicationTileColor: "#ffffff"
+                    msapplicationTileColor: "#1976D2"
                         //DIY***************************************************************
                 }
             }

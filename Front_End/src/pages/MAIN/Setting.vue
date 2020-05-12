@@ -1,6 +1,6 @@
 <template>
   <section class="page">
-    <q-list class='list-container' bordered>
+    <q-list class="list-container" bordered>
       <!-- 语言设置 -->
       <q-item-label header>{{$t('setting.language')}}</q-item-label>
 
@@ -38,8 +38,7 @@
         </q-item-section>
       </q-item>
 
-
-      <q-separator class='q-my-xs'/>
+      <q-separator class="q-my-xs" />
 
       <!-- 更多 -->
       <q-item-label header>{{$t('common.more')}}</q-item-label>
@@ -109,6 +108,9 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.$store.commit("MainLayout/title", vm.$t("location.setting"));
+      vm.$store.commit("MainLayout/rightTopIcon", { display: false });
+      vm.$store.commit("MainLayout/rightTopIcon2", { display: false });
+      vm.$store.commit("MainLayout/rightTopIcon3", { display: false });
     });
   },
   created() {

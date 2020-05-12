@@ -5,7 +5,7 @@ export default {
     config: {
         name: "作业板",
         version: "0.1.4",
-        updateTime: "2020/5/8",
+        updateTime: "2020/5/12",
         author: "Hokori"
     },
     configInfo: {
@@ -98,7 +98,8 @@ export default {
         queryAll: "遍历作业成功",
         queryAllErr: "遍历作业失败",
         deadLine: "期限",
-        lastModified: '最后修改时间'
+        lastModified: '最后修改时间',
+        author: '提交人'
     },
     subject: {
         self: "科目",

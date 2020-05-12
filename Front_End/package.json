@@ -1,8 +1,8 @@
 {
-    "name": "Assignment Table",
+    "name": "assignment_table",
     "version": "0.1.4",
-    "description": "Assignment Table",
-    "productName": "Assignment Table",
+    "description": "assignment_table",
+    "productName": "assignment_table",
     "cordovaId": "",
     "capacitorId": "",
     "author": "Hokori <hokori23@qq.com>",
