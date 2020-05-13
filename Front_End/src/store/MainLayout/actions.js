@@ -377,7 +377,6 @@ const getAllUsers = ({ commit, state }, [vm, done]) => {
                 cancelToken: (source && source.token) || null
             })
             .then(res => {
-                console.log(res)
                 vm.$dealWithSuccess(vm, res.data);
                 resolve(res);
             })

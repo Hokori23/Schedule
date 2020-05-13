@@ -2,101 +2,103 @@
   <section
     class="page column no-wrap"
     ref="homeContainer"
-    style="height:auto;min-height:calc(100vh - 50px);overflow:hidden"
+    style="overflow:hidden"
   >
-    <q-page class="scroll relative-position" style="height:calc(100vh - 50px)">
+    <q-page class="scroll relative-position" style="height:calc(100vh - 50px);">
       <q-pull-to-refresh @refresh="init">
-        <!-- 第一行：时间 -->
-        <header class="row items-center no-wrap">
-          <div>
-            <q-btn icon="date_range" round color="primary" flat>
-              <q-popup-proxy
-                @before-show="updateDateProxy()"
-                transition-show="scale"
-                transition-hide="scale"
-              >
-                <q-date
-                  v-model="proxyDate"
-                  today-btn
-                  :events="events"
-                  :minimal="$q.screen.lt.sm"
-                  class="relative-position"
+        <div class="box q-pb-xs" style='min-height:calc(100vh - 50px);'>
+          <!-- 第一行：时间 -->
+          <header class="row items-center no-wrap">
+            <div>
+              <q-btn icon="date_range" round color="primary" flat>
+                <q-popup-proxy
+                  @before-show="updateDateProxy()"
+                  transition-show="scale"
+                  transition-hide="scale"
                 >
-                  <q-btn label="Cancel" color="primary" flat v-close-popup />
-                  <q-btn label="OK" color="primary" flat @click="saveDate()" v-close-popup />
+                  <q-date
+                    v-model="proxyDate"
+                    today-btn
+                    :events="events"
+                    :minimal="$q.screen.lt.sm"
+                    class="relative-position"
+                  >
+                    <q-btn label="Cancel" color="primary" flat v-close-popup />
+                    <q-btn label="OK" color="primary" flat @click="saveDate()" v-close-popup />
 
-                  <!-- 内部加载 -->
-                  <q-inner-loading :showing="eventState">
-                    <!-- <q-spinner-gears size="50px" color="primary" /> -->
-                    <q-spinner-oval color="primary" size="2em" />
-                  </q-inner-loading>
-                </q-date>
-              </q-popup-proxy>
-            </q-btn>
-          </div>
-          <div
-            v-for="(n,index) in days"
-            :key="'time-block-'+n"
-            :timeStamp="getTimeStamp(index)"
-            v-html="formatTimeStamp(index)"
-          ></div>
-        </header>
+                    <!-- 内部加载 -->
+                    <q-inner-loading :showing="eventState">
+                      <!-- <q-spinner-gears size="50px" color="primary" /> -->
+                      <q-spinner-oval color="primary" size="2em" />
+                    </q-inner-loading>
+                  </q-date>
+                </q-popup-proxy>
+              </q-btn>
+            </div>
+            <div
+              v-for="(n,index) in days"
+              :key="'time-block-'+n"
+              :timeStamp="getTimeStamp(index)"
+              v-html="formatTimeStamp(index)"
+            ></div>
+          </header>
 
-        <header
-          class="row items-center no-wrap"
-          v-for="subject in subjects"
-          :key="subject.name"
-          :class="headerClass(subject.type)"
-        >
-          <!-- 科目名 -->
-          <div
-            class="non-selectable header-subject relative-position q-px-sm shadow-10"
-            :class="{'dimmed':$q.dark.mode}"
+          <header
+            class="row items-center no-wrap"
+            v-for="subject in subjects"
+            :key="subject.name"
+            :class="headerClass(subject.type)"
           >
-            <div class="text-center text-white ellipsis-3-lines">{{subject.name}}</div>
-            <q-inner-loading :showing="subjectState">
-              <q-spinner-audio size="50px" color="primary" />
-            </q-inner-loading>
-          </div>
-          <!-- Assign-Blcok Container HERE -->
-          <div
-            v-for="(n,index) in days"
-            :key="subject.name+'-'+n"
-            class="relative-position non-selectable cursor-pointer"
-            v-ripple
-            :class="{'shadow-2':paintAssign(subject,index),'assign-block':paintAssign(subject,index),'dimmed':$q.dark.mode}"
-            @click="getDetail(paintAssign(subject,index),subject,index)"
-          >
-            <transition
-              appear
-              enter-active-class="animated zoomIn"
-              leave-active-class="animated zoomOut"
-              mode="out-in"
+            <!-- 科目名 -->
+            <div
+              class="non-selectable header-subject relative-position q-px-sm shadow-10"
+              :class="{'dimmed':$q.dark.mode}"
             >
-              <!-- Assign-Block HERE -->
-              <div
-                v-if="paintAssign(subject,index)"
-                v-html="data[Number(paintAssign(subject,index))].info"
-                class="ellipsis-3-lines text-force-wrap q-px-sm text-weight-bold"
-                key="assignment"
-              ></div>
-              <div v-else key="blank">
-                <q-icon
-                  size="sm"
-                  name="add"
-                  color="grey"
-                  :class="{'blank__light-dimmed':!$q.dark.mode}"
-                />
-              </div>
-            </transition>
-            <transition
-              appear
-              enter-active-class="animated zoomIn"
-              leave-active-class="animated zoomOut"
-              mode="out-in"
-            ></transition>
-          </div>
-        </header>
+              <div class="text-center text-white ellipsis-3-lines">{{subject.name}}</div>
+              <q-inner-loading :showing="subjectState">
+                <q-spinner-audio size="50px" color="primary" />
+              </q-inner-loading>
+            </div>
+            <!-- Assign-Blcok Container HERE -->
+            <div
+              v-for="(n,index) in days"
+              :key="subject.name+'-'+n"
+              class="relative-position non-selectable cursor-pointer"
+              v-ripple
+              :class="{'shadow-2':paintAssign(subject,index),'assign-block':paintAssign(subject,index),'dimmed':$q.dark.mode}"
+              @click="getDetail(paintAssign(subject,index),subject,index)"
+            >
+              <transition
+                appear
+                enter-active-class="animated zoomIn"
+                leave-active-class="animated zoomOut"
+                mode="out-in"
+              >
+                <!-- Assign-Block HERE -->
+                <div
+                  v-if="paintAssign(subject,index)"
+                  v-html="data[Number(paintAssign(subject,index))].info"
+                  class="ellipsis-3-lines text-force-wrap q-px-sm text-weight-bold"
+                  key="assignment"
+                ></div>
+                <div v-else key="blank">
+                  <q-icon
+                    size="sm"
+                    name="add"
+                    color="grey"
+                    :class="{'blank__light-dimmed':!$q.dark.mode}"
+                  />
+                </div>
+              </transition>
+              <transition
+                appear
+                enter-active-class="animated zoomIn"
+                leave-active-class="animated zoomOut"
+                mode="out-in"
+              ></transition>
+            </div>
+          </header>
+        </div>
       </q-pull-to-refresh>
     </q-page>
   </section>
@@ -367,7 +369,7 @@ export default {
 </script>
 <style lang="sass" scoped>
 .page
-  // overflow: auto
+  overflow: auto
   height: calc(100vh - 50px)
 
 .row
@@ -425,4 +427,7 @@ div.assign-block.dimmed::after
 
 .blank__light-dimmed
   opacity: .4
+
+.box
+  overflow-x: auto
 </style>
