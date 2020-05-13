@@ -1,5 +1,5 @@
 <template>
-  <section></section>
+  <section class='page'></section>
 </template>
 <script>
 export default {

@@ -1,5 +1,5 @@
 <template>
-  <q-page class="scroll" style="height:calc(100vh - 50px)">
+  <q-page class="scroll relative-position" style="height:calc(100vh - 50px)">
     <q-pull-to-refresh @refresh="init">
       <!-- <section
       class="page column no-wrap q-pb-xs"

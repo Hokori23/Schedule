@@ -105,8 +105,8 @@ module.exports = function(ctx) {
             open: true, // opens browser window automatically
             proxy: {
                 "/api": {
-                    // target: "https://api.hokori.online/schedule",
-                    target: "http://localhost:8000/schedule",
+                    target: "https://api.hokori.online/schedule",
+                    // target: "http://localhost:8000/schedule",
                     changeOrigin: true,
                     pathRewrite: {
                         "^/api": ""
