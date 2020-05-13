@@ -1,16 +1,11 @@
 <template>
-  <q-page class="scroll relative-position" style="height:calc(100vh - 50px)">
-    <q-pull-to-refresh @refresh="init">
-      <!-- <section
-      class="page column no-wrap q-pb-xs"
-      v-touch-pan.horizontal.prevent.mouse="drag"
-      ref="homeContainer"
-      >-->
-      <section
-        class="page column no-wrap q-pb-xs"
-        ref="homeContainer"
-        style="height:auto;overflow-y:auto;min-height:calc(100vh - 50px)"
-      >
+  <section
+    class="page column no-wrap"
+    ref="homeContainer"
+    style="height:auto;min-height:calc(100vh - 50px);overflow:hidden"
+  >
+    <q-page class="scroll relative-position" style="height:calc(100vh - 50px)">
+      <q-pull-to-refresh @refresh="init">
         <!-- 第一行：时间 -->
         <header class="row items-center no-wrap">
           <div>
@@ -86,7 +81,12 @@
                 key="assignment"
               ></div>
               <div v-else key="blank">
-                <q-icon size="sm" name="add" color="grey" :class="{'blank__light-dimmed':!$q.dark.mode}" />
+                <q-icon
+                  size="sm"
+                  name="add"
+                  color="grey"
+                  :class="{'blank__light-dimmed':!$q.dark.mode}"
+                />
               </div>
             </transition>
             <transition
@@ -97,12 +97,9 @@
             ></transition>
           </div>
         </header>
-        <!-- <q-inner-loading :showing="initState">
-        <q-spinner-audio size="50px" color="primary" />
-        </q-inner-loading>-->
-      </section>
-    </q-pull-to-refresh>
-  </q-page>
+      </q-pull-to-refresh>
+    </q-page>
+  </section>
 </template>
 <script>
 import { debounce } from "quasar";

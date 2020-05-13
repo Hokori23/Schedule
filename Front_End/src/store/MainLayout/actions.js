@@ -301,7 +301,6 @@ const init = ({ commit, state }, [vm, done]) => {
         try {
             await vm.$store.dispatch("MainLayout/getAllSubjects", vm);
         } catch (e) {
-            console.log(e)
             vm.$dealWithError(vm, e);
         }
 
@@ -333,7 +332,6 @@ const getEvents = ({ commit, state }, [vm]) => {
                 arrEvents[arrEvents.length] = date;
             }
             vm.events = arrEvents || vm.events;
-            console.log(vm.events);
         } catch (e) {
             vm.$dealWithError(vm, e);
             rowEvents = [];
@@ -362,6 +360,47 @@ const refreshAssignment = ({ commit, state }, [vm, done]) => {
         resolve();
     });
 };
+
+const getAllUsers = ({ commit, state }, [vm, done]) => {
+    vm.loadingState = true;
+    vm.$q.loadingBar.start();
+
+    let source = null;
+    if (vm.cancelTokenArr) {
+        const CancelToken = axios.CancelToken;
+        source = CancelToken.source();
+        vm.cancelTokenArr.push(source);
+    }
+    return new Promise((resolve, reject) => {
+        axios
+            .get("/user", {
+                cancelToken: (source && source.token) || null
+            })
+            .then(res => {
+                console.log(res)
+                vm.$dealWithSuccess(vm, res.data);
+                resolve(res);
+            })
+            .catch(e => {
+                vm.$dealWithError(vm, e);
+                reject()
+            })
+            .finally(() => {
+                vm.loadingState = false;
+                vm.$q.loadingBar.stop();
+
+                if (vm.cancelTokenArr) {
+                    const index = vm.cancelTokenArr.indexOf(source);
+                    if (index !== -1) {
+                        vm.cancelTokenArr.splice(index, 1);
+                    }
+                }
+            });
+        if (done) {
+            done();
+        }
+    });
+};
 export {
     getAllSubjects,
     getAllAssignments,
@@ -374,5 +413,6 @@ export {
     editSelf,
     deleteSelf,
     init,
-    refreshAssignment
+    refreshAssignment,
+    getAllUsers
 };

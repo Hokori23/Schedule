@@ -81,7 +81,10 @@ export default {
         deleteSuccess: "注销成功",
         logOut: "退出登录",
         logOutConfirm: "确定要退出登录吗？",
-        noPower: "您没有权限进行此操作"
+        noPower: "您没有权限进行此操作",
+        getUsersSuccess: '获取用户信息成功',
+        user: '用户',
+        admin: '管理员'
     },
     assignment: {
         self: "作业信息",

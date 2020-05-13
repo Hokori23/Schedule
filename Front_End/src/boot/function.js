@@ -62,7 +62,9 @@ const timeStampFloor = timeStamp => {
     return floorTime.getTime();
 };
 const dealWithSuccess = (vm, data) => {
+    // console.log("success", data);
     //自定义错误码处理
+    let title = "";
     let message = "";
     let onDismiss = null;
     let flag = 0;
@@ -72,6 +74,12 @@ const dealWithSuccess = (vm, data) => {
      * Number 1 通知栏
      */
     switch (data.errcode) {
+        case 10000:
+            {
+                message = vm.$t("user.getUsersSuccess");
+                flag = 1;
+                break;
+            }
         case 10001:
             {
                 message = vm.$t("login.registerSuccess");
@@ -142,13 +150,14 @@ const dealWithSuccess = (vm, data) => {
         default:
             {
                 title = vm.$t("common.unknownErr");
-                message = vm.$t("common.unknownErrTip") + ", " + e.errcode;
+                message = vm.$t("common.unknownErrTip") + ", " + data.errcode;
             }
     }
+
     if (!flag) {
         vm.$q
             .dialog({
-                title: vm.$t("common.alert"),
+                title: title || vm.$t("common.alert"),
                 message: message
             })
             .onDismiss(onDismiss);
@@ -157,8 +166,11 @@ const dealWithSuccess = (vm, data) => {
             message: message
         });
     }
+    return data;
 };
+
 const dealWithError = (vm, e) => {
+    // console.log("error", e);
     if (!navigator.onLine) {
         vm.$q.dialog({
             title: vm.$t("error.offLine"),
@@ -301,6 +313,7 @@ const dealWithError = (vm, e) => {
             message: message
         });
     }
+    return e;
 };
 
 const day = 1000 * 60 * 60 * 24;

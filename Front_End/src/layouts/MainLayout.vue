@@ -91,6 +91,22 @@
           <q-item-section>{{$t('location.user')}}</q-item-section>
         </q-item>
 
+        <!-- 用户目录 -->
+        <q-item
+          clickable
+          v-ripple
+          :active="path === '/userlist'"
+          @click="to('/userlist')"
+          class="drawer-item"
+          active-class="text-primary shadow-transition shadow-24 inset-shadow hoverable"
+        >
+          <q-item-section avatar>
+            <q-icon name="people" />
+          </q-item-section>
+
+          <q-item-section>{{$t('location.userList')}}</q-item-section>
+        </q-item>
+
         <!-- 设置 -->
         <q-item
           clickable

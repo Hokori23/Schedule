@@ -12,7 +12,7 @@
       </q-item>
       <q-item clickable v-ripple>
         <q-item-section>{{$t('configInfo.updateTime')}}</q-item-section>
-        <q-item-section side>2020/5/12</q-item-section>
+        <q-item-section side>2020/5/14</q-item-section>
       </q-item>
       <q-item clickable v-ripple @click="popup">
         <q-item-section side>

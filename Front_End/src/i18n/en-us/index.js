@@ -3,7 +3,7 @@
 
 export default {
     config: {
-        name: "Assignment Table",
+        name: "Assignment Table"
     },
     configInfo: {
         name: "Project Name",
@@ -23,7 +23,7 @@ export default {
         nickNameErr: "Nickname required",
         login: "Login",
         loginSuccess: "Logged in successfully",
-        viewAsVisitor: 'View as a visitor',
+        viewAsVisitor: "View as a visitor",
         loginExpired: "Login has expired, please log in again",
         noAccountYet: "Have no account yet?",
         register: "Register now",
@@ -37,7 +37,7 @@ export default {
         checkCodeErr: "Verification code required",
         resend: "Retry",
         send: "Send",
-        registerFormat: 'Register Format',
+        registerFormat: "Register Format",
         registerAnnounceTitle: "Register Announcement",
         registerAnnouncement1: "I promise that the ID and Password that you register here will not be public anywhere.",
         registerAnnouncement2: "If you got interest on me, you can click this message to visit my blog and leave a comment there.\n \nOr just contact me through this email\n[ hokori23@qq.com ]",
@@ -81,7 +81,10 @@ export default {
         deleteSuccess: "Account was Canceled successfully",
         logOut: "Log out",
         logOutConfirm: "Do you really want to log out?",
-        noPower: "You have no permission to do such thing."
+        noPower: "You have no permission to do such thing.",
+        getUsersSuccess: "Get Users' information successfully",
+        user: 'User',
+        admin: 'Admin'
     },
     assignment: {
         self: " Assignment",
@@ -95,9 +98,9 @@ export default {
         query: "Queried assignment(s) successfully",
         queryAll: "Queried all assignments successfully",
         queryAllErr: "Query all assignments failed",
-        deadLine: 'Deadline',
-        lastModified: 'Last modified time',
-        author: 'Author'
+        deadLine: "Deadline",
+        lastModified: "Last modified time",
+        author: "Author"
     },
     subject: {
         self: "subject",
@@ -122,8 +125,8 @@ export default {
         forbidden: "Forbidden",
         unavailable: "Unavailable",
         unavailableInfo: "The server is unavailable temporary",
-        offLine: 'Offline',
-        offLineInfo: 'You are offline now'
+        offLine: "Offline",
+        offLineInfo: "You are offline now"
     },
     table: {
         subject: "Subject",
@@ -131,6 +134,6 @@ export default {
         category: "Category"
     },
     about: {
-        announcement: 'Something to say'
+        announcement: "Something to say"
     }
 };

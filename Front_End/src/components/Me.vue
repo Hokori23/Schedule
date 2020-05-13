@@ -11,7 +11,7 @@
         narrow-indicator
       >
         <q-tab name="me" icon="account_circle" label="Me" />
-        <q-tab name="project" icon="menu" label="Project" />
+        <q-tab name="project" icon="description" label="Project" />
         <!-- <q-tab name="account_circle" label="Movies" /> -->
       </q-tabs>
 
@@ -35,7 +35,7 @@
 
             <q-separator />
 
-            <q-card-section>
+            <q-card-section :class="{'q-pa-none':$q.screen.lt.sm,'q-pt-sm':$q.screen.lt.sm}">
               <p>这是一个简单的小项目，主要用来记录我的作业，以及满足自己想要一个完整的个人项目的愿望</p>
               <p>虽然我可能以后不会怎么做作业了（？），所以最终很可能演变成一个Deadline表（具有更高的扩展性）</p>
               <p>

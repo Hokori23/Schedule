@@ -146,7 +146,7 @@ const queryAll = async() => {
     try {
         res.data = await ACTION.queryAll();
         res.msg = "遍历用户成功";
-        res.errcode = 0;
+        res.errcode = 10000;
     } catch (e) {
         res.errcode = e.errno;
         res.msg = e.message;
