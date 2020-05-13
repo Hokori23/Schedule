@@ -1,12 +1,8 @@
 <template>
-  <section
-    class="page column no-wrap"
-    ref="homeContainer"
-    style="overflow:hidden"
-  >
+  <section class="page column no-wrap" style="overflow:hidden">
     <q-page class="scroll relative-position" style="height:calc(100vh - 50px);">
       <q-pull-to-refresh @refresh="init">
-        <div class="box q-pb-xs" style='min-height:calc(100vh - 50px);'>
+        <div class="box q-pb-xs" style="min-height:calc(100vh - 50px);">
           <!-- 第一行：时间 -->
           <header class="row items-center no-wrap">
             <div>
@@ -77,10 +73,9 @@
                 <!-- Assign-Block HERE -->
                 <div
                   v-if="paintAssign(subject,index)"
-                  v-html="data[Number(paintAssign(subject,index))].info"
                   class="ellipsis-3-lines text-force-wrap q-px-sm text-weight-bold"
                   key="assignment"
-                ></div>
+                >{{data[Number(paintAssign(subject,index))].info}}</div>
                 <div v-else key="blank">
                   <q-icon
                     size="sm"
@@ -211,19 +206,10 @@ export default {
       /** 日历事件加载状态 */
       eventState: false,
       data: [],
-      cancelTokenArr: [],
-      scrollLeft: 0
+      cancelTokenArr: []
     };
   },
   methods: {
-    // drag({ evt, ...info }) {
-    //   this.$refs.homeContainer.scrollLeft =
-    //     this.scrollLeft - info.offset.x / 15;
-    //   this.setScrollLeft(this.$refs.homeContainer.scrollLeft);
-    // },
-    setScrollLeft(val) {
-      this.scrollLeft = val;
-    },
     refresh() {},
     async getDetail(index, subject, day) {
       if (index !== false) {
@@ -244,6 +230,7 @@ export default {
                   "MainLayout/removeAssignment",
                   [assignment, vm]
                 );
+                this.$dealWithSuccess(this,res)
                 await this.$store.dispatch("MainLayout/refreshAssignment", [
                   this
                 ]);
@@ -321,13 +308,25 @@ export default {
     },
     updateDateProxy() {
       this.proxyDate = this.date;
-      this.$store.dispatch("MainLayout/getEvents", this);
+      this.$store.dispatch("MainLayout/getEvents", [this]);
     },
     saveDate() {
       this.date = this.proxyDate;
+      const DATE = new Date(this.date);
+      this.$router.push({
+        name: "day/:time",
+        params: {
+          time: DATE.getTime()
+        }
+      });
+      // this.$router.push('/day')
     },
     init: function(done) {
       this.$store.dispatch("MainLayout/init", [this, done]);
+    },
+    /**待办 */
+    singleSubjectClick(name) {
+      this.$router.push(`/subject/${name}`);
     }
   },
   watch: {

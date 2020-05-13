@@ -42,6 +42,50 @@ const getAllSubjects = ({ commit, state }, vm) => {
     });
 };
 
+const getSingleAssignments = ({ commit, state }, vm) => {
+    return new Promise((resolve, reject) => {
+        vm.loadingState = true;
+        vm.$q.loadingBar.start();
+
+        let source = null;
+        if (vm.cancelTokenArr) {
+            const CancelToken = axios.CancelToken;
+            source = CancelToken.source();
+            vm.cancelTokenArr.push(source);
+        }
+
+        axios
+            .get("/assignment", {
+                cancelToken: (source && source.token) || null,
+                params: {
+                    name: vm.name
+                }
+            })
+            .then(res => {
+                //获取所有作业成功
+                resolve(res.data.data);
+            })
+            .catch(e => {
+                if ((e.message = "取消请求")) {
+                    resolve(null);
+                }
+                //获取所有作业失败
+                reject(e);
+            })
+            .finally(() => {
+                vm.loadingState = false;
+                vm.$q.loadingBar.stop();
+
+                if (vm.cancelTokenArr) {
+                    const index = vm.cancelTokenArr.indexOf(source);
+                    if (index !== -1) {
+                        vm.cancelTokenArr.splice(index, 1);
+                    }
+                }
+            });
+    });
+};
+
 const getAllAssignments = ({ commit, state }, vm) => {
     return new Promise((resolve, reject) => {
         vm.assignmentState = true;
@@ -83,7 +127,7 @@ const getAllAssignments = ({ commit, state }, vm) => {
     });
 };
 
-const getAssignmentsInPeriod = ({ commit, state }, [days, vm]) => {
+const getAssignmentsInPeriod = ({ commit, state }, [days, vm, startTimeStamp]) => {
     return new Promise((resolve, reject) => {
         vm.assignmentState = true;
         vm.$q.loadingBar.start();
@@ -94,8 +138,7 @@ const getAssignmentsInPeriod = ({ commit, state }, [days, vm]) => {
             source = CancelToken.source();
             vm.cancelTokenArr.push(source);
         }
-
-        let nowFloorTimeStamp = vm.$timeStampFloor();
+        let nowFloorTimeStamp = startTimeStamp || vm.$timeStampFloor();
 
         axios
             .get("/assignment", {
@@ -402,6 +445,7 @@ const getAllUsers = ({ commit, state }, [vm, done]) => {
 };
 export {
     getAllSubjects,
+    getSingleAssignments,
     getAllAssignments,
     getAssignmentsInPeriod,
     addAssignment,

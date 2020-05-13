@@ -19,7 +19,13 @@
           enter-active-class="animated fadeIn"
           leave-active-class="animated fadeOut"
         >
-          <q-btn flat round :icon="rightTopIcon3.icon" v-if="rightTopIcon3.display" @click="subjectSort" />
+          <q-btn
+            flat
+            round
+            :icon="rightTopIcon3.icon"
+            v-if="rightTopIcon3.display"
+            @click="subjectSort"
+          />
         </transition>
 
         <!-- ADD Animation -->
@@ -44,7 +50,7 @@
           leave-active-class="animated fadeOut"
         >
           <q-btn flat round :icon="rightTopIcon.icon" v-if="rightTopIcon.display" />
-        </transition> -->
+        </transition>-->
       </q-toolbar>
     </q-header>
 
@@ -201,7 +207,11 @@ export default {
       // this.drawer = false;
     },
     leftTopIconClick() {
+      if (this.leftTopIcon.icon === "menu") {
         this.drawer = !this.drawer;
+      } else if (this.leftTopIcon.icon === "arrow_back") {
+        this.$routerBack(this);
+      }
     },
     async rightTopIconClick() {
       //添加作业

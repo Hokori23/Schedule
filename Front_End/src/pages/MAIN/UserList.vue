@@ -89,6 +89,7 @@ export default {
       usersData: null,
       loadingState: false,
       cancelTokenArr: [],
+      /**还没做，排序 */
       sortState: 0
     };
   },
@@ -106,11 +107,18 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.getData();
-      vm.$store.commit("MainLayout/title", vm.$t("location.userList", vm));
+      vm.$store.commit("MainLayout/title", vm.$t("location.userList"));
       vm.$store.commit("MainLayout/rightTopIcon", { display: false });
       vm.$store.commit("MainLayout/rightTopIcon2", { display: false });
       vm.$store.commit("MainLayout/rightTopIcon3", { display: false });
     });
+  },
+  beforeRouteLeave(to, from, next) {
+    //清除ajax请求队列
+    this.cancelTokenArr.forEach(source => {
+      source.cancel("取消请求");
+    });
+    next();
   }
 };
 </script>

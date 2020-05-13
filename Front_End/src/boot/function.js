@@ -1,5 +1,19 @@
 import Vue from "vue";
 
+const routerBack = (vm, callback) => {
+    const originRoutePath = vm.$route.path;
+    vm.$nextTick(() => {
+        // If the route is not changed, we do the redirect
+        if (originRoutePath === vm.$route.path) {
+            // Redirect to the home path by default
+            if (!callback) {
+                vm.$router.replace("/");
+            } else {
+                callback();
+            }
+        }
+    });
+};
 const formatTimeStamp = timeStamp => {
     let time = null;
     if (timeStamp) {
@@ -322,3 +336,4 @@ Vue.prototype.$timeStampFloor = timeStampFloor;
 Vue.prototype.$day = day;
 Vue.prototype.$dealWithError = dealWithError;
 Vue.prototype.$dealWithSuccess = dealWithSuccess;
+Vue.prototype.$routerBack = routerBack;
