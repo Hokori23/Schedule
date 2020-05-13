@@ -26,6 +26,9 @@
       "vue$": [
         "node_modules/vue/dist/vue.esm.js"
       ],
+      "static/*":[
+        "src/static/*"
+      ]
     }
   },
   "exclude": [

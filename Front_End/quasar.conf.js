@@ -90,8 +90,8 @@ module.exports = function(ctx) {
             // extractCSS: false,
 
             //DIY***************************************************************
-            publicPath: "assignment",
-            vueRouterBase: "assignment",
+            publicPath: "/",
+            vueRouterBase: "/",
             //DIY***************************************************************
 
             // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
@@ -138,7 +138,7 @@ module.exports = function(ctx) {
                 //DIY***************************************************************
                 background_color: "#ffffff",
                 theme_color: "#1976D2",
-                start_url: "/assignment/index.html",
+                start_url: "/index.html",
                 //DIY***************************************************************
                 icons: [{
                         src: "statics/icons/icon-128x128.png",

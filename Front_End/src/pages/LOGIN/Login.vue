@@ -2,7 +2,7 @@
   <q-page class="column items-center q-page" :class="{ init: init }">
     <div class="banner justify-center row items-end">
       <q-avatar :class="{ 'shadow-3': init, 'shadow-10': !init }" class="avatar">
-        <img src="../../statics/icons/icon-128x128.png" />
+        <img src="statics/icons/icon-128x128.png" />
       </q-avatar>
     </div>
 

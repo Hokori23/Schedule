@@ -1,5 +1,5 @@
 <template>
-  <section class='page'></section>
+  <section class='page'  :bordered="!$q.screen.lt.md"></section>
 </template>
 <script>
 export default {

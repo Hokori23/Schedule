@@ -4,9 +4,6 @@
 export default {
     config: {
         name: "Assignment Table",
-        version: "0.1.4",
-        updateTime: "2020/5/12",
-        author: "Hokori"
     },
     configInfo: {
         name: "Project Name",
@@ -43,7 +40,7 @@ export default {
         registerFormat: 'Register Format',
         registerAnnounceTitle: "Register Announcement",
         registerAnnouncement1: "I promise that the ID and Password that you register here will not be public anywhere.",
-        registerAnnouncement2: "If you got interest on me, you can click this message to visit my blog and leave a comment there.\n \nOr just contact me through this email [ hokori23@qq.com ]",
+        registerAnnouncement2: "If you got interest on me, you can click this message to visit my blog and leave a comment there.\n \nOr just contact me through this email\n[ hokori23@qq.com ]",
         registerAnnouncement3: "This is A website to record my assignment.\nIf you are my classmate you can feel free to register and login this website."
     },
     common: {
@@ -132,5 +129,8 @@ export default {
         subject: "Subject",
         assignment: "Assignment Info",
         category: "Category"
+    },
+    about: {
+        announcement: 'Something to say'
     }
 };

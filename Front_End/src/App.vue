@@ -8,7 +8,7 @@
 export default {
   name: "App",
   created() {
-    this.$q.screen.setSizes({ sm: 330, md: 400, lg: 1000, xl: 2000 });
+    this.$q.screen.setSizes({ xs:330,sm: 400, md: 450, lg: 1000, xl: 2000 });
   },
 };
 </script>

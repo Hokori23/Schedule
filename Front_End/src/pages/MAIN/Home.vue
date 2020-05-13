@@ -24,7 +24,7 @@
                   v-model="proxyDate"
                   today-btn
                   :events="events"
-                  :minimal="$q.screen.lt.md"
+                  :minimal="$q.screen.lt.sm"
                   class="relative-position"
                 >
                   <q-btn label="Cancel" color="primary" flat v-close-popup />

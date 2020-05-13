@@ -4,9 +4,6 @@
 export default {
     config: {
         name: "作业板",
-        version: "0.1.4",
-        updateTime: "2020/5/12",
-        author: "Hokori"
     },
     configInfo: {
         name: "项目名",
@@ -43,7 +40,7 @@ export default {
         registerFormat: '注册表单',
         registerAnnounceTitle: "注册须知",
         registerAnnouncement1: "您在此注册所用的账号密码将不会被公开滥用，请放心注册。",
-        registerAnnouncement2: "如果你对我的项目感兴趣的话，可以通过点击这条信息访问我的博客，亦可以在评论区留言\n \n或者直接通过邮箱联系我[ hokori23@qq.com ]",
+        registerAnnouncement2: "如果你对我的项目感兴趣的话，可以通过点击这条信息访问我的博客，亦可以在评论区留言\n \n或者直接通过邮箱联系我\n[ hokori23@qq.com ]",
         registerAnnouncement3: "这是一个用来记录我作业的网站。\n如果你是我的同学的话，请随意注册登录使用这个网站。"
     },
     common: {
@@ -132,5 +129,8 @@ export default {
         subject: "科目",
         assignment: "作业信息",
         category: "分类"
+    },
+    about: {
+        announcement: '一些想说的话'
     }
 };

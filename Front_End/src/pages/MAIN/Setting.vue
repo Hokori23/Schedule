@@ -1,6 +1,6 @@
 <template>
   <section class="page">
-    <q-list class="list-container" bordered>
+    <q-list class="list-container" :bordered="!$q.screen.lt.md">
       <!-- 语言设置 -->
       <q-item-label header>{{$t('setting.language')}}</q-item-label>
 

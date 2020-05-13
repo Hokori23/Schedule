@@ -1,6 +1,6 @@
 <template>
   <section class="page">
-    <q-list class="list-container non-selectable" bordered>
+    <q-list class="list-container non-selectable" :bordered="!$q.screen.lt.md">
       <q-item-label header>{{$t('location.user')}}</q-item-label>
 
       <!-- 昵称 -->

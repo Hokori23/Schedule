@@ -2,16 +2,18 @@ import axios from "axios";
 
 const getAllSubjects = ({ commit, state }, vm) => {
     return new Promise((resolve, reject) => {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source();
-        vm.cancelTokenArr.push(source);
-
         vm.subjectState = true;
         vm.$q.loadingBar.start();
 
+        let source = null;
+        if (vm.cancelTokenArr) {
+            const CancelToken = axios.CancelToken;
+            source = CancelToken.source();
+            vm.cancelTokenArr.push(source);
+        }
         axios
             .get("/subject", {
-                cancelToken: source.token
+                cancelToken: (source && source.token) || null
             })
             .then(res => {
                 //获取科目成功
@@ -29,9 +31,12 @@ const getAllSubjects = ({ commit, state }, vm) => {
             .finally(() => {
                 vm.subjectState = false;
                 vm.$q.loadingBar.stop();
-                const index = vm.cancelTokenArr.indexOf(source);
-                if (index !== -1) {
-                    vm.cancelTokenArr.splice(index, 1);
+
+                if (vm.cancelTokenArr) {
+                    const index = vm.cancelTokenArr.indexOf(source);
+                    if (index !== -1) {
+                        vm.cancelTokenArr.splice(index, 1);
+                    }
                 }
             });
     });
@@ -39,16 +44,19 @@ const getAllSubjects = ({ commit, state }, vm) => {
 
 const getAllAssignments = ({ commit, state }, vm) => {
     return new Promise((resolve, reject) => {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source();
-        vm.cancelTokenArr.push(source);
-
         vm.assignmentState = true;
         vm.$q.loadingBar.start();
 
+        let source = null;
+        if (vm.cancelTokenArr) {
+            const CancelToken = axios.CancelToken;
+            source = CancelToken.source();
+            vm.cancelTokenArr.push(source);
+        }
+
         axios
             .get("/assignment", {
-                cancelToken: source.token
+                cancelToken: (source && source.token) || null
             })
             .then(res => {
                 //获取所有作业成功
@@ -64,9 +72,12 @@ const getAllAssignments = ({ commit, state }, vm) => {
             .finally(() => {
                 vm.assignmentState = false;
                 vm.$q.loadingBar.stop();
-                const index = vm.cancelTokenArr.indexOf(source);
-                if (index !== -1) {
-                    vm.cancelTokenArr.splice(index, 1);
+
+                if (vm.cancelTokenArr) {
+                    const index = vm.cancelTokenArr.indexOf(source);
+                    if (index !== -1) {
+                        vm.cancelTokenArr.splice(index, 1);
+                    }
                 }
             });
     });
@@ -74,17 +85,21 @@ const getAllAssignments = ({ commit, state }, vm) => {
 
 const getAssignmentsInPeriod = ({ commit, state }, [days, vm]) => {
     return new Promise((resolve, reject) => {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source();
-        vm.cancelTokenArr.push(source);
         vm.assignmentState = true;
         vm.$q.loadingBar.start();
+
+        let source = null;
+        if (vm.cancelTokenArr) {
+            const CancelToken = axios.CancelToken;
+            source = CancelToken.source();
+            vm.cancelTokenArr.push(source);
+        }
 
         let nowFloorTimeStamp = vm.$timeStampFloor();
 
         axios
             .get("/assignment", {
-                cancelToken: source.token,
+                cancelToken: (source && source.token) || null,
                 params: {
                     startLine: nowFloorTimeStamp,
                     deadLine: nowFloorTimeStamp + vm.$day * days
@@ -110,25 +125,32 @@ const getAssignmentsInPeriod = ({ commit, state }, [days, vm]) => {
             .finally(() => {
                 vm.assignmentState = false;
                 vm.$q.loadingBar.stop();
-                const index = vm.cancelTokenArr.indexOf(source);
-                if (index !== -1) {
-                    vm.cancelTokenArr.splice(index, 1);
+
+                if (vm.cancelTokenArr) {
+                    const index = vm.cancelTokenArr.indexOf(source);
+                    if (index !== -1) {
+                        vm.cancelTokenArr.splice(index, 1);
+                    }
                 }
             });
     });
 };
 
 const addAssignment = ({ commit, state }, [data, vm]) => {
-    const CancelToken = axios.CancelToken;
-    const source = CancelToken.source();
-    vm.cancelTokenArr.push(source);
     vm.assignmentState = true;
     vm.$q.loadingBar.start();
+
+    let source = null;
+    if (vm.cancelTokenArr) {
+        const CancelToken = axios.CancelToken;
+        source = CancelToken.source();
+        vm.cancelTokenArr.push(source);
+    }
 
     return new Promise((resolve, reject) => {
         axios
             .post("/assignment", {
-                cancelToken: source.token,
+                cancelToken: (source && source.token) || null,
                 name: data.name,
                 info: data.info,
                 deadLine: data.deadLine
@@ -142,9 +164,12 @@ const addAssignment = ({ commit, state }, [data, vm]) => {
             .finally(() => {
                 vm.assignmentState = false;
                 vm.$q.loadingBar.stop();
-                const index = vm.cancelTokenArr.indexOf(source);
-                if (index !== -1) {
-                    vm.cancelTokenArr.splice(index, 1);
+
+                if (vm.cancelTokenArr) {
+                    const index = vm.cancelTokenArr.indexOf(source);
+                    if (index !== -1) {
+                        vm.cancelTokenArr.splice(index, 1);
+                    }
                 }
             });
     });
@@ -276,6 +301,7 @@ const init = ({ commit, state }, [vm, done]) => {
         try {
             await vm.$store.dispatch("MainLayout/getAllSubjects", vm);
         } catch (e) {
+            console.log(e)
             vm.$dealWithError(vm, e);
         }
 
@@ -307,7 +333,7 @@ const getEvents = ({ commit, state }, [vm]) => {
                 arrEvents[arrEvents.length] = date;
             }
             vm.events = arrEvents || vm.events;
-            console.log(vm.events)
+            console.log(vm.events);
         } catch (e) {
             vm.$dealWithError(vm, e);
             rowEvents = [];

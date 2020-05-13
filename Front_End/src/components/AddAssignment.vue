@@ -17,8 +17,8 @@
           outlined
           v-model="assignment.name"
           :options="subjects"
-          :dense="$q.screen.lt.sm"
-          :options-dense="$q.screen.lt.sm"
+          :dense="$q.screen.lt.xs"
+          :options-dense="$q.screen.lt.xs"
           :label="$t('table.subject')"
         >
           <template v-slot:prepend>
@@ -34,8 +34,8 @@
           outlined
           v-model="assignment.info"
           :label="$t('table.assignment')"
-          :dense="$q.screen.lt.sm"
-          :options-dense="$q.screen.lt.sm"
+          :dense="$q.screen.lt.xs"
+          :options-dense="$q.screen.lt.xs"
           input-style="min-height:100px;"
           counter
           bottom-slots
@@ -54,13 +54,13 @@
         <!-- 期限 -->
         <q-item class="q-mb-sm non-selectable">
           <q-item-section avatar>
-            <q-btn icon="event" round color="primary" :dense="$q.screen.lt.sm">
+            <q-btn icon="event" round color="primary" :dense="$q.screen.lt.xs">
               <q-popup-proxy
                 @before-show="updateDateProxy"
                 transition-show="scale"
                 transition-hide="scale"
               >
-                <q-date v-model="proxyDate" :minimal="$q.screen.lt.md">
+                <q-date v-model="proxyDate" :minimal="$q.screen.lt.sm">
                   <div class="row items-center justify-end q-gutter-sm">
                     <q-btn label="Cancel" color="primary" flat v-close-popup />
                     <q-btn label="OK" color="primary" flat @click="saveDate" v-close-popup />

@@ -7,7 +7,7 @@
         class="text-subtitle1 non-selectable text-primary q-px-md"
       >{{$t('assignment.self')}}</q-card-actions>
 
-      <q-list :dense="$q.screen.lt.sm" clickable>
+      <q-list :dense="$q.screen.lt.xs" clickable>
         <!-- 科目名 -->
         <q-item class="non-selectable">
           <q-item-section avatar>
@@ -46,7 +46,7 @@
             >
               <q-input
                 v-model="submitAssignment.info"
-                :dense="$q.screen.lt.sm"
+                :dense="$q.screen.lt.xs"
                 autofocus
                 counter
                 input-class="q-px-md"

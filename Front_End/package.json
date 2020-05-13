@@ -1,8 +1,8 @@
 {
     "name": "assignment_table",
     "version": "0.1.4",
-    "description": "assignment_table",
-    "productName": "assignment_table",
+    "description": "作业板",
+    "productName": "作业板",
     "cordovaId": "",
     "capacitorId": "",
     "author": "Hokori <hokori23@qq.com>",

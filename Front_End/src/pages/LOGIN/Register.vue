@@ -8,7 +8,7 @@
       header-nav
       keep-alive
       swipeable
-      :contracted="$q.screen.lt.md"
+      :contracted="$q.screen.lt.sm"
       class="stepper"
     >
       <!-- Step 1 -->
