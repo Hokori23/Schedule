@@ -68,8 +68,8 @@
                   transition-next="jump-up"
                 >
                   <q-tab-panel :name="subject.name" v-for="subject in data" :key="subject.name">
-                    <div class="text-h5 q-my-sm text-primary row justify-between">
-                      {{subject.name}}
+                    <div class="text-h5 q-my-sm text-primary row">
+                      <span style="flex:auto;">{{subject.name}}</span>
                       <!-- 按钮组 -->
                       <q-btn-group rounded :flat="true">
                         <q-btn
@@ -92,7 +92,7 @@
                       </q-btn-group>
                     </div>
                     <q-separator />
-                    <p style="white-space:pre-wrap" class="q-mt-md">{{subject.info}}</p>
+                    <p style="white-space:pre-wrap" class="q-mt-md text-force-wrap">{{subject.info}}</p>
                     <div class="column items-end non-selectable">
                       <q-list>
                         <q-item>
@@ -123,6 +123,8 @@
               </template>
             </q-splitter>
           </div>
+
+          <!-- 加载骨架 -->
           <div v-else>
             <q-splitter :value="20" style="min-height:calc(100vh - 104px)">
               <template v-slot:before>
@@ -349,4 +351,6 @@ export default {
     white-space: pre-wrap
     word-break: break-all
     text-transform: capitalize
+.q-panel.scroll
+    overflow-y: hidden
 </style>
