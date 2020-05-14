@@ -67,7 +67,8 @@ export default {
         setting: "设置",
         about: "关于",
         user: "用户中心",
-        userList: "用户目录"
+        userList: "用户目录",
+        dayAssignment: "该日作业",
     },
     user: {
         notLogin: "您还没有登录噢",

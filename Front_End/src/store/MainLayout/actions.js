@@ -127,7 +127,7 @@ const getAllAssignments = ({ commit, state }, vm) => {
     });
 };
 
-const getAssignmentsInPeriod = ({ commit, state }, [days, vm, startTimeStamp]) => {
+const getAssignmentsInPeriod = ({ commit, state }, [days, vm, startTimeStamp, done]) => {
     return new Promise((resolve, reject) => {
         vm.assignmentState = true;
         vm.$q.loadingBar.start();
@@ -174,6 +174,9 @@ const getAssignmentsInPeriod = ({ commit, state }, [days, vm, startTimeStamp]) =
                     if (index !== -1) {
                         vm.cancelTokenArr.splice(index, 1);
                     }
+                }
+                if (done) {
+                    done();
                 }
             });
     });
@@ -425,7 +428,7 @@ const getAllUsers = ({ commit, state }, [vm, done]) => {
             })
             .catch(e => {
                 vm.$dealWithError(vm, e);
-                reject()
+                reject();
             })
             .finally(() => {
                 vm.loadingState = false;

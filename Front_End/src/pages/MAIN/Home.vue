@@ -360,8 +360,7 @@ export default {
     });
     next();
   },
-  created: async function() {
-    // this.setScrollLeft = debounce(this.setScrollLeft, 50);
+  created() {
     this.init();
   }
 };

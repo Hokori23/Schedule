@@ -67,7 +67,8 @@ export default {
         setting: "Settings",
         about: "About",
         user: "User Center",
-        userList: "User Directory"
+        userList: "User Directory",
+        dayAssignment: "Day Assignment",
     },
     user: {
         notLogin: "Haven't logged in yet",
