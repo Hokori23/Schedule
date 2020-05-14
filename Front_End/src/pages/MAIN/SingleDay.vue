@@ -212,7 +212,7 @@ export default {
   methods: {
     updateDateProxy() {
       this.proxyDate = this.date;
-      this.$store.dispatch("MainLayout/getEvents", [this]);
+      this.$store.dispatch("MainLayout/getEvents", [this,true]);
     },
     saveDate() {
       this.date = this.proxyDate;

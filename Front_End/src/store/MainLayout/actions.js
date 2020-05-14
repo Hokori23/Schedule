@@ -86,9 +86,9 @@ const getSingleAssignments = ({ commit, state }, vm) => {
     });
 };
 
-const getAllAssignments = ({ commit, state }, vm) => {
+const getAllAssignments = ({ commit, state }, vm, nonStateFlag) => {
     return new Promise((resolve, reject) => {
-        vm.assignmentState = true;
+        !nonStateFlag && (vm.assignmentState = true);
         vm.$q.loadingBar.start();
 
         let source = null;
@@ -114,7 +114,7 @@ const getAllAssignments = ({ commit, state }, vm) => {
                 reject(e);
             })
             .finally(() => {
-                vm.assignmentState = false;
+                !nonStateFlag && (vm.assignmentState = false);
                 vm.$q.loadingBar.stop();
 
                 if (vm.cancelTokenArr) {
@@ -370,7 +370,7 @@ const getEvents = ({ commit, state }, [vm]) => {
         /************* 处理数据转为日历的events *************/
         let rowEvents = true;
         try {
-            rowEvents = (await getAllAssignments({ commit, state }, vm)) || [];
+            rowEvents = (await getAllAssignments({ commit, state }, vm, true)) || [];
             let arrEvents = [];
             let eventsLength = rowEvents.length;
             for (let i = 0; i < eventsLength; i++) {
