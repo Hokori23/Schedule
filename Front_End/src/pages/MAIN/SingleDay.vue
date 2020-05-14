@@ -4,7 +4,40 @@
       <q-pull-to-refresh @refresh="getData" class="relative-position" style="width:100%">
         <!-- Content -->
         <q-banner class="bg-primary text-white non-selectable text-center">
-          <span class="text-h5">{{formatTime($route.params.time)}}</span>
+          <div class="row" style="width:100%">
+            <span class="text-h5" style="flex:auto">{{formatTime($route.params.time)}}</span>
+            <q-btn
+              icon="date_range"
+              color="white"
+              rounded
+              flat
+              :dense="$q.screen.lt.sm"
+              :class="{'q-px-xs':$q.screen.lt.sm}"
+            >
+              <q-popup-proxy
+                @before-show="updateDateProxy()"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date
+                  v-model="proxyDate"
+                  today-btn
+                  :events="events"
+                  :minimal="$q.screen.lt.sm"
+                  class="relative-position"
+                >
+                  <q-btn label="Cancel" color="primary" flat v-close-popup />
+                  <q-btn label="OK" color="primary" flat @click="saveDate()" v-close-popup />
+
+                  <!-- 内部加载 -->
+                  <q-inner-loading :showing="eventState">
+                    <!-- <q-spinner-gears size="50px" color="primary" /> -->
+                    <q-spinner-oval color="primary" size="2em" />
+                  </q-inner-loading>
+                </q-date>
+              </q-popup-proxy>
+            </q-btn>
+          </div>
         </q-banner>
 
         <transition
@@ -38,45 +71,24 @@
                     <div class="text-h5 q-my-sm text-primary row justify-between">
                       {{subject.name}}
                       <!-- 按钮组 -->
-                      <q-btn-group rounded>
-                        <q-btn icon="date_range" round color="primary" flat>
-                          <q-popup-proxy
-                            @before-show="updateDateProxy()"
-                            transition-show="scale"
-                            transition-hide="scale"
-                          >
-                            <q-date
-                              v-model="proxyDate"
-                              today-btn
-                              :events="events"
-                              :minimal="$q.screen.lt.sm"
-                              class="relative-position"
-                            >
-                              <q-btn label="Cancel" color="primary" flat v-close-popup />
-                              <q-btn
-                                label="OK"
-                                color="primary"
-                                flat
-                                @click="saveDate()"
-                                v-close-popup
-                              />
-
-                              <!-- 内部加载 -->
-                              <q-inner-loading :showing="eventState">
-                                <!-- <q-spinner-gears size="50px" color="primary" /> -->
-                                <q-spinner-oval color="primary" size="2em" />
-                              </q-inner-loading>
-                            </q-date>
-                          </q-popup-proxy>
-                        </q-btn>
+                      <q-btn-group rounded :flat="true">
                         <q-btn
                           icon="delete"
                           flat
                           color="negative"
                           @click="remove(subject)"
                           :loading="deleteState"
+                          :dense="$q.screen.lt.sm"
+                          :class="{'q-px-xs':$q.screen.lt.sm}"
                         />
-                        <q-btn icon="create" flat color="primary" @click="editData(subject)" />
+                        <q-btn
+                          icon="create"
+                          flat
+                          color="primary"
+                          @click="editData(subject)"
+                          :dense="$q.screen.lt.sm"
+                          :class="{'q-px-xs':$q.screen.lt.sm}"
+                        />
                       </q-btn-group>
                     </div>
                     <q-separator />
@@ -116,7 +128,7 @@
               <template v-slot:before>
                 <q-tabs value="skeleton1" vertical class="text-negative">
                   <q-tab style="height:15vh" :name="'skeleton'+n" v-for="n in 4" :key="n">
-                    <q-skeleton type="QBtn" width="100%" />
+                    <q-skeleton type="QBtn" height="14px" width="40px" />
                   </q-tab>
                 </q-tabs>
               </template>
@@ -125,12 +137,25 @@
                 <q-tab-panels value="skeleton1">
                   <q-tab-panel :name="'skeleton'+n" v-for="n in 4" :key="n">
                     <div class="text-h5 q-my-sm text-primary row justify-between">
-                      <q-skeleton type="text" width="20%" />
+                      <q-skeleton type="text" height="29px" width="250px" />
                       <!-- 按钮组 -->
-                      <q-btn-group rounded>
-                        <q-btn icon="date_range" flat color="primary" :loading="true" />
-                        <q-btn icon="delete" flat color="negative" :loading="true" />
-                        <q-btn icon="create" flat color="primary" :loading="true" />
+                      <q-btn-group rounded :flat="true">
+                        <q-btn
+                          icon="delete"
+                          flat
+                          color="negative"
+                          :loading="true"
+                          :dense="$q.screen.lt.sm"
+                          :class="{'q-px-xs':$q.screen.lt.sm}"
+                        />
+                        <q-btn
+                          icon="create"
+                          flat
+                          color="primary"
+                          :loading="true"
+                          :dense="$q.screen.lt.sm"
+                          :class="{'q-px-xs':$q.screen.lt.sm}"
+                        />
                       </q-btn-group>
                     </div>
                     <q-separator />
@@ -212,7 +237,7 @@ export default {
   methods: {
     updateDateProxy() {
       this.proxyDate = this.date;
-      this.$store.dispatch("MainLayout/getEvents", [this,true]);
+      this.$store.dispatch("MainLayout/getEvents", [this, true]);
     },
     saveDate() {
       this.date = this.proxyDate;
@@ -295,6 +320,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.getData();
+      vm.date = vm.formatTime(vm.$route.params.time);
       vm.$store.commit("MainLayout/title", vm.$t("location.dayAssignment"));
       vm.$store.commit("MainLayout/leftTopIcon", { icon: "arrow_back" });
       vm.$store.commit("MainLayout/rightTopIcon", { display: false });
