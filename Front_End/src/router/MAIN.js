@@ -6,6 +6,7 @@ import User from "pages/MAIN/User.vue";
 import UserList from "pages/MAIN/UserList.vue";
 import SingleSubject from "pages/MAIN/SingleSubject.vue";
 import SingleDay from "pages/MAIN/SingleDay.vue";
+import ModifySubject from "pages/MAIN/ModifySubject.vue";
 
 export default {
     path: "/",
@@ -65,7 +66,16 @@ export default {
                 index: 1,
                 keepAlive: true
             },
-            component: SingleDay,
+            component: SingleDay
         },
+        {
+            path: "subject/modify",
+            name: "subject/modify",
+            meta: {
+                index: 1,
+                keepAlive: true
+            },
+            component: ModifySubject
+        }
     ]
 };

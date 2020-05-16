@@ -1,6 +1,3 @@
-// This is just an example,
-// so you can safely delete all default props below
-
 export default {
     config: {
         name: "Assignment Table"
@@ -68,7 +65,7 @@ export default {
         about: "About",
         user: "User Center",
         userList: "User Directory",
-        dayAssignment: "Day Assignment",
+        dayAssignment: "Day Assignment"
     },
     user: {
         notLogin: "Haven't logged in yet",
@@ -84,8 +81,8 @@ export default {
         logOutConfirm: "Do you really want to log out?",
         noPower: "You have no permission to do such thing.",
         getUsersSuccess: "Get Users' information successfully",
-        user: 'User',
-        admin: 'Admin'
+        user: "User",
+        admin: "Admin"
     },
     assignment: {
         self: " Assignment",

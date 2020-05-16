@@ -1,9 +1,6 @@
-// This is just an example,
-// so you can safely delete all default props below
-
 export default {
     config: {
-        name: "作业板",
+        name: "作业板"
     },
     configInfo: {
         name: "项目名",
@@ -37,7 +34,7 @@ export default {
         checkCodeErr: "验证码不能为空",
         resend: "重发",
         send: "发送",
-        registerFormat: '注册表单',
+        registerFormat: "注册表单",
         registerAnnounceTitle: "注册须知",
         registerAnnouncement1: "您在此注册所用的账号密码将不会被公开滥用，请放心注册。",
         registerAnnouncement2: "如果你对我的项目感兴趣的话，可以通过点击这条信息访问我的博客，亦可以在评论区留言\n \n或者直接通过邮箱联系我\n[ hokori23@qq.com ]",
@@ -68,7 +65,7 @@ export default {
         about: "关于",
         user: "用户中心",
         userList: "用户目录",
-        dayAssignment: "该日作业",
+        dayAssignment: "单日作业"
     },
     user: {
         notLogin: "您还没有登录噢",
@@ -83,9 +80,9 @@ export default {
         logOut: "退出登录",
         logOutConfirm: "确定要退出登录吗？",
         noPower: "您没有权限进行此操作",
-        getUsersSuccess: '获取用户信息成功',
-        user: '用户',
-        admin: '管理员'
+        getUsersSuccess: "获取用户信息成功",
+        user: "用户",
+        admin: "管理员"
     },
     assignment: {
         self: "作业信息",
@@ -100,8 +97,8 @@ export default {
         queryAll: "遍历作业成功",
         queryAllErr: "遍历作业失败",
         deadLine: "期限",
-        lastModified: '最后修改时间',
-        author: '提交人'
+        lastModified: "最后修改时间",
+        author: "提交人"
     },
     subject: {
         self: "科目",
@@ -126,8 +123,8 @@ export default {
         forbidden: "无权限",
         unavailable: "不可用",
         unavailableInfo: "暂时连接不上服务器",
-        offLine: '离线',
-        offLineInfo: '您现在处于离线状态'
+        offLine: "离线",
+        offLineInfo: "您现在处于离线状态"
     },
     table: {
         subject: "科目",
@@ -135,6 +132,6 @@ export default {
         category: "分类"
     },
     about: {
-        announcement: '一些想说的话'
+        announcement: "一些想说的话"
     }
 };

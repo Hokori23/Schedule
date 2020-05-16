@@ -42,15 +42,33 @@
                 后续可能会扩展到通过【建组】来分隔开不同的作业板，也有很多其它的构想
                 <span class="line-through">，如果我有精力</span>
               </p>
-              <p class='q-mb-none'>如果你有兴趣和我合作的话，可以联系我：</p>
+              <p class="q-mb-none">如果你有兴趣和我合作的话，可以联系我：</p>
               <q-list>
                 <q-item>
-                <q-item-section side>
-                  <q-icon name="mail" />
-                </q-item-section>
-                <q-item-section>
-                  hokori23@qq.com
-                </q-item-section>
+                  <q-item-section side>
+                    <q-icon name="mail" />
+                  </q-item-section>
+                  <q-item-section>
+                    <a
+                      data-email="hokori23@qq.com"
+                      href="mailto:hokori23@qq.com"
+                      class="text-primary"
+                      style="text-decoration:none"
+                    >hokori23@qq.com</a>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section side>
+                    <q-icon name="home" />
+                  </q-item-section>
+                  <q-item-section>
+                    <a
+                      href="https://hokori.online"
+                      target="_blank"
+                      class="text-primary"
+                      style="text-decoration:none"
+                    >https://hokori.online</a>
+                  </q-item-section>
                 </q-item>
               </q-list>
             </q-card-section>
