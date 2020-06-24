@@ -7,6 +7,7 @@ import UserList from "pages/MAIN/UserList.vue";
 import SingleSubject from "pages/MAIN/SingleSubject.vue";
 import SingleDay from "pages/MAIN/SingleDay.vue";
 import ModifySubject from "pages/MAIN/ModifySubject.vue";
+import Admin from "pages/MAIN/Admin.vue";
 
 export default {
     path: "/",
@@ -18,6 +19,14 @@ export default {
                 keepAlive: true
             },
             component: Home
+        },
+        {
+            path: "admin",
+            meta: {
+                index: 1,
+                keepAlive: true
+            },
+            component: Admin
         },
         {
             path: "setting",

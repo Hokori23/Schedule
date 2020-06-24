@@ -113,6 +113,23 @@
           <q-item-section>{{$t('location.userList')}}</q-item-section>
         </q-item>
 
+        <!-- 管理员中心 -->
+        <q-item
+          clickable
+          v-ripple
+          :active="path === '/admin'"
+          @click="to('/admin')"
+          class="drawer-item"
+          active-class="text-primary shadow-transition shadow-24 inset-shadow hoverable"
+          v-if="user&&user.power>0"
+        >
+          <q-item-section avatar>
+            <q-icon name="build" />
+          </q-item-section>
+
+          <q-item-section>{{$t('location.adminCenter')}}</q-item-section>
+        </q-item>
+
         <!-- 设置 -->
         <q-item
           clickable
@@ -190,6 +207,9 @@ export default {
     },
     refreshState() {
       return this.$store.state.MainLayout.refreshState;
+    },
+    user() {
+      return this.$store.state.MainLayout.user;
     }
   },
   data() {
@@ -320,6 +340,6 @@ export default {
     ).then(lang => {
       this.$q.lang.set(lang.default);
     });
-  }
+  },
 };
 </script>

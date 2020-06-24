@@ -61,6 +61,7 @@ export default {
     },
     location: {
         home: "首页",
+        adminCenter:'管理员中心',
         setting: "设置",
         about: "关于",
         user: "用户中心",

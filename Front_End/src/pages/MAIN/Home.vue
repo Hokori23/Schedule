@@ -45,6 +45,7 @@
             :key="subject.name"
             :class="headerClass(subject.type)"
           >
+
             <!-- 科目名 -->
             <div
               class="non-selectable header-subject relative-position q-px-sm shadow-10"
@@ -55,6 +56,8 @@
                 <q-spinner-audio size="50px" color="primary" />
               </q-inner-loading>
             </div>
+
+
             <!-- Assign-Blcok Container HERE -->
             <div
               v-for="(n,index) in days"
@@ -148,8 +151,10 @@ export default {
     },
     paintAssign() {
       return (subject, index) => {
+
         let length = this.data.length;
-        for (let i = 0; i < this.data.length; i++) {
+
+        for (let i = 0; i < length; i++) {
           let nowTimeStamp = this.getTimeStamp(index);
           let subjectTimeStamp = this.$timeStampFloor(
             Number(this.data[i].deadLine)

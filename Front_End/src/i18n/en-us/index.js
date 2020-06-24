@@ -61,6 +61,7 @@ export default {
     },
     location: {
         home: "Home",
+        adminCenter:'Admin Center',
         setting: "Settings",
         about: "About",
         user: "User Center",

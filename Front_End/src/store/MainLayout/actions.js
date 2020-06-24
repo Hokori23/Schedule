@@ -338,7 +338,6 @@ const init = ({ commit, state }, [vm, done]) => {
             return;
         }
         vm.initState = true;
-        vm.initState = true;
         /************* 初始化今日时间 *************/
         let dateObject = vm.$formatTimeStamp(vm.$timeStampFloor(Date.now()));
         vm.date = vm.proxyDate = dateObject.format1();
