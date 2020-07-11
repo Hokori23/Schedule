@@ -121,7 +121,7 @@
           @click="to('/admin')"
           class="drawer-item"
           active-class="text-primary shadow-transition shadow-24 inset-shadow hoverable"
-          v-if="user&&user.power>0"
+          v-if="user&&user.power>1"
         >
           <q-item-section avatar>
             <q-icon name="build" />
@@ -340,6 +340,7 @@ export default {
     ).then(lang => {
       this.$q.lang.set(lang.default);
     });
+    this.$store.dispatch('MainLayout/getSelf',this,false);
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <section class="page">
     <q-list class="list-container non-selectable" :bordered="!$q.screen.lt.md">
-      <q-item-label header>{{$t('location.user')}}</q-item-label>
+      <q-item-label header>{{ $t("location.user") }}</q-item-label>
 
       <!-- 昵称 -->
       <q-item clickable v-ripple @click="editNickName">
@@ -9,10 +9,10 @@
           <q-icon name="chrome_reader_mode" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>{{$t('login.nickName')}}</q-item-label>
+          <q-item-label>{{ $t("login.nickName") }}</q-item-label>
         </q-item-section>
         <q-item-section class="text-primary text-weight-bold">
-          <q-item-label>{{user.name}}</q-item-label>
+          <q-item-label>{{ user.name }}</q-item-label>
         </q-item-section>
         <q-item-section side>
           <q-icon name="create" color="grey" />
@@ -20,41 +20,70 @@
       </q-item>
 
       <!-- ID -->
-      <q-item class="cursor-not-allowed" :class="$q.dark.mode?'dimmed':'light-dimmed'">
+      <q-item
+        class="cursor-not-allowed"
+        :class="$q.dark.mode ? 'dimmed' : 'light-dimmed'"
+      >
         <q-item-section avatar>
           <q-icon name="account_circle" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>{{$t('login.account')}}</q-item-label>
+          <q-item-label>{{ $t("login.account") }}</q-item-label>
         </q-item-section>
         <q-item-section class="text-primary text-weight-bold" side>
-          <q-item-label>{{user.id}}</q-item-label>
+          <q-item-label>{{ user.id }}</q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <!-- 权限 -->
+      <q-item
+        class="cursor-not-allowed"
+        :class="$q.dark.mode ? 'dimmed' : 'light-dimmed'"
+      >
+        <q-item-section avatar>
+          <q-icon name="assistant" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ $t("user.status") }}</q-item-label>
+        </q-item-section>
+        <q-item-section class="text-primary text-weight-bold" side>
+          <q-item-label>{{ status }}</q-item-label>
         </q-item-section>
       </q-item>
 
       <!-- 创建时间 -->
-      <q-item class="cursor-not-allowed" :class="$q.dark.mode?'dimmed':'light-dimmed'">
+      <q-item
+        class="cursor-not-allowed"
+        :class="$q.dark.mode ? 'dimmed' : 'light-dimmed'"
+      >
         <q-item-section avatar>
           <q-icon name="add" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>{{$t('user.createdTime')}}</q-item-label>
+          <q-item-label>{{ $t("user.createdTime") }}</q-item-label>
         </q-item-section>
         <q-item-section class="text-primary text-weight-bold" side>
-          <q-item-label>{{$formatTimeStamp(user.createdTime).format1()}}</q-item-label>
+          <q-item-label>{{
+            $formatTimeStamp(user.createdTime).format1()
+          }}</q-item-label>
         </q-item-section>
       </q-item>
 
       <!-- 最后活跃时间 -->
-      <q-item class="cursor-not-allowed" :class="$q.dark.mode?'dimmed':'light-dimmed'">
+      <q-item
+        class="cursor-not-allowed"
+        :class="$q.dark.mode ? 'dimmed' : 'light-dimmed'"
+      >
         <q-item-section avatar>
           <q-icon name="access_time" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>{{$t('user.activatedTime')}}</q-item-label>
+          <q-item-label>{{ $t("user.activatedTime") }}</q-item-label>
         </q-item-section>
         <q-item-section class="text-primary text-weight-bold" side>
-          <q-item-label>{{$formatTimeStamp(user.activatedTime).format1()}}</q-item-label>
+          <q-item-label>{{
+            $formatTimeStamp(user.activatedTime).format1()
+          }}</q-item-label>
         </q-item-section>
       </q-item>
 
@@ -64,7 +93,7 @@
           <q-icon name="delete_forever" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>{{$t('user.delete')}}</q-item-label>
+          <q-item-label>{{ $t("user.delete") }}</q-item-label>
         </q-item-section>
       </q-item>
 
@@ -74,7 +103,7 @@
           <q-icon name="exit_to_app" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>{{$t('user.logOut')}}</q-item-label>
+          <q-item-label>{{ $t("user.logOut") }}</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
@@ -86,6 +115,13 @@ export default {
   computed: {
     user() {
       return this.$store.state.MainLayout.user;
+    },
+    status() {
+      if (this.user.power === 1) {
+        return this.$t("user.user");
+      } else if (this.user.power === 2) {
+        return this.$t("user.admin");
+      }
     }
   },
   methods: {
@@ -187,4 +223,6 @@ export default {
 };
 </script>
 <style lang="sass" scoped>
+.light-dimmed:after
+  background-color: rgba(255,255,255,0.35) !important
 </style>
