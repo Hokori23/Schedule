@@ -184,7 +184,6 @@ const dealWithSuccess = (vm, data) => {
 };
 
 const dealWithError = (vm, e) => {
-    // console.log("error", e);
     if (!navigator.onLine) {
         vm.$q.dialog({
             title: vm.$t("error.offLine"),
@@ -233,7 +232,7 @@ const dealWithError = (vm, e) => {
         } else {
             vm.$q.dialog({
                 title: vm.$t("common.unknownErr"),
-                message: vm.$t("common.unknownErrTip ") + ", " + e.errcode
+                message: `${vm.$t("common.unknownErrTip")}, \r\n${e.message}, CODE = ${e.errcode}` 
             });
         }
         return;
@@ -271,7 +270,6 @@ const dealWithError = (vm, e) => {
         case 20100:
             {
                 message = vm.$t("subject.addErr");
-                cancel = $vm.$t("common.cancel");
                 break;
             }
         case 20101:
@@ -308,7 +306,7 @@ const dealWithError = (vm, e) => {
         default:
             {
                 title = vm.$t("common.unknownErr");
-                message = vm.$t("common.unknownErrTip") + ", " + e.errcode;
+                message = `${vm.$t("common.unknownErrTip")}, \r\n${e.message}, CODE = ${e.errcode}` 
             }
     }
 

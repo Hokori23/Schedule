@@ -89,7 +89,9 @@ export default {
       usersData: null,
       loadingState: false,
       cancelTokenArr: [],
-      /**还没做，排序 */
+      /**
+       * 还没做，排序
+       */
       sortState: 0
     };
   },

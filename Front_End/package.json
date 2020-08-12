@@ -8,11 +8,17 @@
     "author": "Hokori <hokori23@qq.com>",
     "private": true,
     "scripts": {
-        "test": "echo \"No test specified\" && exit 0"
+        "test": "echo \"No test specified\" && exit 0",
+        "dev": "quasar dev",
+        "build": "quasar build",
+        "build:pwa": "quasar build -m pwa"
     },
     "dependencies": {
+        "@commitlint/cli": "^9.1.1",
+        "@commitlint/config-conventional": "^9.1.1",
         "@quasar/extras": "^1.0.0",
         "axios": "^0.18.1",
+        "husky": "^4.2.5",
         "promise.prototype.finally": "^3.1.2",
         "quasar": "^1.0.0",
         "vue-i18n": "^8.0.0"
@@ -29,5 +35,10 @@
     },
     "browserslist": [
         "last 1 version, not dead, ie >= 11"
-    ]
+    ],
+    "husky": {
+        "hooks": {
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+        }
+    }
 }

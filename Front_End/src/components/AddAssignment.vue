@@ -90,19 +90,19 @@ export default {
   props: {
     subjects: Array,
     time: Number, //决定是否为直接添加模式
-    subject: String
+    subject: String,
   },
   data() {
     return {
       assignment: {
         name: this.subject || "",
         info: "",
-        deadLine: 0 /** Number */
+        deadLine: 0 /** Number */,
       },
       /******日历选择器日期******/
       date: "" /** YYYY/MM/DD */,
       proxyDate: "" /** YYYY/MM/DD */,
-      submitState: false
+      submitState: false,
     };
   },
   watch: {
@@ -116,13 +116,13 @@ export default {
           this.date = `${YEAR}/${MONTH}/${DAY}`;
         }
       },
-      deep: true
+      deep: true,
     },
     date(val) {
       //传进值为'YYYY/MM/DD'
       //将其处理成时间戳
       this.assignment.deadLine = new Date(val).getTime();
-    }
+    },
   },
   methods: {
     updateDateProxy() {
@@ -162,13 +162,13 @@ export default {
     onCancelClick() {
       // 我们只需要隐藏对话框
       this.hide();
-    }
+    },
   },
   created() {
     //初始化时间
     let time = this.$formatTimeStamp(this.time || null);
     this.date = time.format1();
-  }
+  },
 };
 </script>
 <style lang="sass" scoped>

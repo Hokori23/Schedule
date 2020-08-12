@@ -48,7 +48,7 @@ const remove = async(user, name) => {
     try {
         await USER_SERVICE.active(user);
         if (await getPower(user.id)) {
-            let querySubject = await ACTION.query(subject.name);
+            let querySubject = await ACTION.query(name);
             if (querySubject.length) {
                 await ACTION.remove(name);
                 res.errcode = 20001;

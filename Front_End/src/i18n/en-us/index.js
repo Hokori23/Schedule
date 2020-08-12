@@ -108,6 +108,8 @@ export default {
   },
   subject: {
     self: "subject",
+    category: "Subject Category",
+    addTitle: "Add Subject",
     add: "Added the subject successfully",
     addErr: "The subject already exists",
     remove: "Removed this subject successfully",
