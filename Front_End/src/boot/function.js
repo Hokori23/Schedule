@@ -76,7 +76,6 @@ const timeStampFloor = timeStamp => {
     return floorTime.getTime();
 };
 const dealWithSuccess = (vm, data) => {
-    // console.log("success", data);
     //自定义错误码处理
     let title = "";
     let message = "";
@@ -232,7 +231,7 @@ const dealWithError = (vm, e) => {
         } else {
             vm.$q.dialog({
                 title: vm.$t("common.unknownErr"),
-                message: `${vm.$t("common.unknownErrTip")}, \r\n${e.message}, CODE = ${e.errcode}` 
+                message: `${vm.$t("common.unknownErrTip")}, \r\n${e.message}, CODE = ${e.errcode}`
             });
         }
         return;
@@ -306,7 +305,7 @@ const dealWithError = (vm, e) => {
         default:
             {
                 title = vm.$t("common.unknownErr");
-                message = `${vm.$t("common.unknownErrTip")}, \r\n${e.message}, CODE = ${e.errcode}` 
+                message = `${vm.$t("common.unknownErrTip")}, \r\n${e.message}, CODE = ${e.errcode}`
             }
     }
 

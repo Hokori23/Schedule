@@ -12,7 +12,6 @@ axios.interceptors.request.use(
     let token = localStorage.getItem("Authorization");
     if (token) {
       //取出token
-      console.log("send", token);
       req.headers.authorization = token;
     }
 
@@ -29,7 +28,6 @@ axios.interceptors.response.use(
     let token = res.headers.authorization;
     if (token && token != 0) {
       // 拿到token
-      console.log("get", token);
       localStorage.setItem("Authorization", token);
     } else {
       // 如果没有则清除缓存

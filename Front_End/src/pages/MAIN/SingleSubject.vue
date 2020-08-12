@@ -24,7 +24,6 @@ export default {
           this,
           done
         ]);
-        console.log(res.data.data);
         this.data = res.data.data || null;
       }
     }

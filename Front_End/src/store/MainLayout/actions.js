@@ -515,11 +515,9 @@ const removeSubject = ({ commit, state }, payload) => {
     axios
       .delete("/subject", { params: payload })
       .then(res => {
-        console.log(res);
         resolve(res.data);
       })
       .catch(e => {
-        console.log(e);
         reject(e);
       });
   });
