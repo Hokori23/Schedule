@@ -1,8 +1,9 @@
+const CONFIG = require("../ecosystem.config")
 const SERVICE = require("../SERVICE/userService");
 const VO = require("../VO/user");
 
 const listen = (APP) => {
-    const path = "/schedule/user";
+    const path = `${CONFIG.baseUrl}/user`;
 
     //注册--用户
     APP.post(path, async(req, res) => {

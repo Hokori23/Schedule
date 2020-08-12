@@ -1,8 +1,9 @@
+const CONFIG = require("../ecosystem.config")
 const SERVICE = require("../SERVICE/subjectService");
 const VO = require("../VO/subject");
 
 const listen = (APP) => {
-    const path = "/schedule/subject";
+    const path = `${CONFIG.baseUrl}/subject`;
 
     //添加--科目
     APP.post(path, async(req, res) => {

@@ -1,3 +1,4 @@
+const CONFIG = require("../ecosystem.config")
 const SERVICE = require("../SERVICE/assignmentService");
 const VO = require("../VO/assignment");
 const proofXSS = (info) => {
@@ -23,7 +24,7 @@ const timeStampFloor = (timeStamp) => {
     return floorTime.getTime();
 };
 const listen = (APP) => {
-    const path = "/schedule/assignment";
+    const path = `${CONFIG.baseUrl}/assignment`;
 
     //添加--作业
     APP.post(path, async(req, res) => {
