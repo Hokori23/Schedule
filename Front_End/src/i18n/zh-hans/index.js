@@ -108,6 +108,8 @@ export default {
   },
   subject: {
     self: "科目",
+    category: "科目类型",
+    addTitle: "添加科目",
     add: "添加科目成功",
     addErr: "科目已存在",
     remove: "删除科目成功",

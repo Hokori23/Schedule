@@ -177,8 +177,9 @@
 
 <script>
 import AddAssignment from "components/AddAssignment";
+import EditSubject from "components/EditSubject";
 import languages from "quasar/lang/index.json";
-const appLanguages = languages.filter(lang =>
+const appLanguages = languages.filter((lang) =>
   ["zh-hans", "en-us"].includes(lang.isoName)
 );
 export default {
@@ -210,13 +211,13 @@ export default {
     },
     user() {
       return this.$store.state.MainLayout.user;
-    }
+    },
   },
   data() {
     return {
       drawer: false,
       transitionName: "",
-      path: this.$route.path
+      path: this.$route.path,
     };
   },
   methods: {
@@ -234,68 +235,102 @@ export default {
       }
     },
     async rightTopIconClick() {
-      //添加作业
+      // 添加作业
       let subjectsObject = this.$store.state.MainLayout.subjects;
-      //判断是否有科目
+      // 判断是否有科目
       if (!subjectsObject.length) {
-        //没有的话尝试获取一遍
+        // 没有的话尝试获取一遍
         await this.$store.dispatch("MainLayout/getAllsubjects", this);
       }
 
-      //处理数据
-      let subjects = subjectsObject.map(value => {
+      // 处理数据
+      let subjects = subjectsObject.map((value) => {
         return value.name;
       });
 
-      this.$q
-        .dialog({
-          component: AddAssignment,
-          parent: this,
-          subjects: subjects,
-          ok: this.$t("common.confirm"),
-          cancel: this.$t("common.cancel")
-        })
-        .onOk(async ({ assignment, vm }) => {
-          //添加作业
-          try {
-            let res = await this.$store.dispatch("MainLayout/addAssignment", [
-              assignment,
-              this
-            ]);
-            this.$store.commit("MainLayout/refreshState", true);
-            this.$dealWithSuccess(this, res);
-          } catch (e) {
-            this.$dealWithError(this, e);
-          } finally {
-            vm.submitState = false;
-            if (vm.hide) {
-              vm.hide();
+      // 添加科目
+      if (this.$route.path === "/admin") {
+        this.$q
+          .dialog({
+            component: EditSubject,
+            parent: this,
+            ok: this.$t("common.confirm"),
+            cancel: this.$t("common.cancel"),
+          })
+          .onOk(async ({ subject, vm }) => {
+            try {
+              let res = await this.$store.dispatch(
+                "MainLayout/addSubject",
+                subject
+              );
+
+              // 获取最新科目列表
+              await this.$store.dispatch("MainLayout/getAllSubjects");
+              this.$dealWithSuccess(this, res);
+              if (vm.hide) {
+                vm.hide();
+              }
+            } catch (e) {
+              this.$dealWithError(this, e);
+            } finally {
+              vm.addState = false;
             }
-          }
-        });
+          });
+        return;
+      }
+
+      // 添加作业
+      if (this.$route.path === "/") {
+        this.$q
+          .dialog({
+            component: AddAssignment,
+            parent: this,
+            subjects: subjects,
+            ok: this.$t("common.confirm"),
+            cancel: this.$t("common.cancel"),
+          })
+          .onOk(async ({ assignment, vm }) => {
+            // 添加作业
+            try {
+              let res = await this.$store.dispatch("MainLayout/addAssignment", [
+                assignment,
+                this,
+              ]);
+              this.$store.commit("MainLayout/refreshState", true);
+              this.$dealWithSuccess(this, res);
+              if (vm.hide) {
+                vm.hide();
+              }
+            } catch (e) {
+              this.$dealWithError(this, e);
+            } finally {
+              vm.submitState = false;
+            }
+          });
+      }
     },
     subjectSort() {
       let icon = this.$store.state.MainLayout.rightTopIcon3.icon;
       if (icon === "sort") {
-        //顺序排序
+        // 顺序排序
         this.$store.commit("MainLayout/rightTopIcon3", {
-          icon: "arrow_upward"
+          icon: "arrow_upward",
         });
         this.$store.commit("MainLayout/subjectSort", true);
       } else if (icon === "arrow_upward") {
-        //降序排序
+        // 降序排序
         this.$store.commit("MainLayout/rightTopIcon3", {
-          icon: "arrow_downward"
+          icon: "arrow_downward",
         });
         this.$store.commit("MainLayout/subjectSort", false);
       } else {
-        //不排序
+        // 不排序
         this.$store.commit("MainLayout/rightTopIcon3", {
-          icon: "sort"
+          icon: "sort",
         });
         this.$store.commit("MainLayout/subjectSort", null);
       }
-    }
+    },
   },
   watch: {
     $route(to, from) {
@@ -305,16 +340,16 @@ export default {
       } else {
         this.transitionName = "slide-right";
       }
-      //  else if (to.meta.index < from.meta.index) {
-      //   this.transitionName = "slide-right";
-      // }
+      //   else if (to.meta.index < from.meta.index) {
+      //    this.transitionName = "slide-right";
+      //  }
     },
     lang(lang) {
-      // dynamic import, so loading on demand only
+      //  dynamic import, so loading on demand only
       import(
         /* webpackInclude: /(zh-hans|en-us)\.js$/ */
         `quasar/lang/${lang}`
-      ).then(lang => {
+      ).then((lang) => {
         this.$q.lang.set(lang.default);
       });
     },
@@ -323,11 +358,11 @@ export default {
         this.$store.commit("MainLayout/login", false);
         this.$router.replace("/login");
       }
-    }
+    },
   },
   beforeRouteEnter(to, from, next) {
-    next(vm => {
-      //夜间模式
+    next((vm) => {
+      // 夜间模式
       if (localStorage.getItem("dark-mode") == true) {
         vm.$q.dark.set(true);
       }
@@ -337,10 +372,10 @@ export default {
     import(
       /* webpackInclude: /(zh-hans|en-us)\.js$/ */
       `quasar/lang/${this.lang}`
-    ).then(lang => {
+    ).then((lang) => {
       this.$q.lang.set(lang.default);
     });
-    this.$store.dispatch('MainLayout/getSelf',this,false);
+    this.$store.dispatch("MainLayout/getSelf", this, false);
   },
 };
 </script>
