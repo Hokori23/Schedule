@@ -3,7 +3,7 @@ import axios from "axios";
 const getAllSubjects = ({ commit, state }, vm) => {
   return new Promise((resolve, reject) => {
     vm && (vm.subjectState = true);
-    vm && (vm.$q.loadingBar.start());
+    vm && vm.$q.loadingBar.start();
 
     let source = null;
     if (vm && vm.cancelTokenArr) {
@@ -30,7 +30,7 @@ const getAllSubjects = ({ commit, state }, vm) => {
       })
       .finally(() => {
         vm && (vm.subjectState = false);
-        vm && (vm.$q.loadingBar.stop());
+        vm && vm.$q.loadingBar.stop();
 
         if (vm && vm.cancelTokenArr) {
           const index = vm.cancelTokenArr.indexOf(source);
@@ -270,18 +270,20 @@ const removeAssignment = ({ commit, state }, [assignment, vm]) => {
 const getSelf = ({ commit, state }, vm, loadingBar = true) => {
   return new Promise((resolve, reject) => {
     loadingBar && vm.$q.loadingBar.start();
+    const id =
+      (vm && vm.user && vm.user.id) ||
+      (vm.$store.state.MainLayout.user && vm.$store.state.MainLayout.user.id);
     axios
       .get("/user", {
         params: {
-          id:
-            (vm && vm.user && vm.user.id) ||
-            (vm.$store.state.MainLayout.user &&
-              vm.$store.state.MainLayout.user.id)
+          id: id
           //vm.user.id || vm.$store.state.MainLayout.user.id
         }
       })
       .then(res => {
-        commit("user", res.data.data[0]);
+        if (id) {
+          commit("user", res.data.data[0]);
+        }
         resolve(res);
       })
       .catch(e => {
@@ -513,11 +515,9 @@ const removeSubject = ({ commit, state }, payload) => {
     axios
       .delete("/subject", { params: payload })
       .then(res => {
-        console.log(res)
         resolve(res.data);
       })
       .catch(e => {
-        console.log(e)
         reject(e);
       });
   });

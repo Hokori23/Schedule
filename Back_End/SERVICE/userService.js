@@ -112,7 +112,7 @@ const query = async(id) => {
             res.errcode = 10000;
         } else {
             res.msg = '无此用户',
-                res.errcode = 10100;
+            res.errcode = 10100;
         }
     } catch (e) {
         res.errcode = e.errno;

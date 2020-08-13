@@ -1,15 +1,17 @@
+const CONFIG = require("../ecosystem.config")
 const SERVICE = require("../SERVICE/userService");
 const VO = require("../VO/user");
 
 const listen = (APP) => {
-    const path = "/schedule/user";
+    const path = `${CONFIG.baseUrl}/user`;
 
     //注册--用户
     APP.post(path, async(req, res) => {
         let { id, name, password } = req.body;
 
         if (!id || !name || !password) {
-            res.set("Authorization", false);
+            console.log('clear Authorization in Register')
+            res.set("Authorization", 0);
             res.status(400).json({
                 errcode: 1,
                 msg: "参数错误, {id, name, password}",
@@ -32,9 +34,8 @@ const listen = (APP) => {
         let result = null;
         if (password) {
             result = await SERVICE.login(new VO.userLogin(id, password, req.reqTime));
-            console.log(result.errcode)
             if (result.errcode !== 10002) {
-                console.log('clear authorization')
+                console.log('clear Authorization in Login')
                 res.set("Authorization", 0);
             }
         } else {

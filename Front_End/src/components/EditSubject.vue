@@ -133,7 +133,7 @@ export default {
         subject: {
           name: this.newSubject.name,
           type: this.newSubject.type.value,
-          oldname: this.subject.name,
+          oldname: this.subject && this.subject.name || '',
         },
         vm: this,
       });

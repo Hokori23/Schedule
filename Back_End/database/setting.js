@@ -1,8 +1,8 @@
 module.exports = {
-    host: '47.95.111.177',
-    user: 'schedule',
+    host: '101.201.239.229',
+    user: 'Schedule',
     password: 'nt4dHnN34SxyLP8j',
     port: '3306',
-    database: 'schedule',
+    database: 'Schedule',
     charset: 'utf8mb4'
 }
