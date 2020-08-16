@@ -16,7 +16,6 @@ const checkAndSpawn = async (req, res, next) => {
   let jwt = req.get('Authorization')
   if (jwt) {
     let decoded = null
-    console.log('incoming jwt', jwt)
     try {
       // 检查jwt合法性并解密
       decoded = decode(jwt)
@@ -47,7 +46,6 @@ const checkAndSpawn = async (req, res, next) => {
         activatedTime: time,
         id: decoded.jti
       })
-      console.log('refreshed jwt', jwt)
       res.set('Authorization', jwt)
 
       //将id附带到req上
@@ -70,7 +68,6 @@ const checkAndSpawn = async (req, res, next) => {
             expires: time + tokenExpiresTime
           }
           jwt = encode(jwt)
-          console.log('new jwt', jwt)
           res.set('Authorization', jwt)
         }
       }

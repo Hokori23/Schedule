@@ -33,7 +33,6 @@ const listen = (APP) => {
         let result = null;
         if (password) {
             result = await SERVICE.login(new VO.userLogin(id, password, req.reqTime));
-            console.log(result.errcode)
             if (result.errcode !== 10002) {
                 console.log('clear Authorization in Login')
                 res.set("Authorization", 0);

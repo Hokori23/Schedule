@@ -4,7 +4,7 @@ require("promise.prototype.finally").shim();
 if (process.env.DEV) {
   axios.defaults.baseURL = "/api";
 } else {
-  axios.defaults.baseURL = "https://assignment.hokori.online/schedule";
+  axios.defaults.baseURL = "https://assignment.hokori.online/api/schedule";
 }
 axios.interceptors.request.use(
   req => {

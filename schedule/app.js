@@ -3,9 +3,7 @@ const EXPRESS = require('express')
 const APP = EXPRESS();
 const MIDDLEWARE = require('./middleware/index');
 const COMPRESSION = require('compression');
-const USER_LISTEN = require('./LISTEN/userListen');
-const SUBJECT_LISTEN = require('./LISTEN/subjectListen');
-const ASSIGN_LISTEN = require('./LISTEN/assignmentListen');
+const LISTEN = require('./LISTEN/index');
 APP.set('env', 'development');
 // APP.set('env','production');
 const port = 8000
@@ -34,12 +32,12 @@ APP.use(MIDDLEWARE.setHeaders)
 APP.use(COMPRESSION())
 
 //User listening
-USER_LISTEN(APP);
+LISTEN.user(APP);
 
 //Subject listening
-SUBJECT_LISTEN(APP);
+LISTEN.subject(APP);
 
 //Assignment listening
-ASSIGN_LISTEN(APP);
+LISTEN.assignment(APP);
 
 APP.listen(port, () => console.log(`Example APP listening on port ${port}!`))
