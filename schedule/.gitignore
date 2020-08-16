@@ -1,9 +1,0 @@
-.DS_Store
-.thumbs.db
-node_modules
-
-.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
